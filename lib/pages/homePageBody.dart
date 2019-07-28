@@ -9,7 +9,9 @@ class _HomePageBodyState extends State<HomePageBody> {
   double viewAllHeight = 0;
 
   Widget _getCategoryCard(String title, Color color, Color seondaryColor) {
-    return Stack(
+    return InkWell(
+      onTap: (){ Navigator.pushNamed(context, '/pokemonList');},
+      child: Stack(
       children: <Widget>[
         Container(
           padding: EdgeInsets.only(left: 20, top: 25, bottom: 20),
@@ -66,6 +68,7 @@ class _HomePageBodyState extends State<HomePageBody> {
           ),
         ),
       ],
+    ),
     );
   }
 

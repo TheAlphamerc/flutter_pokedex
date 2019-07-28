@@ -1,4 +1,5 @@
 import 'package:flutte_pokedex/pages/homePageBody.dart';
+import 'package:flutte_pokedex/pages/pokemonListPage.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -7,12 +8,26 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(),
-    );
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        // home: MyHomePage(),
+        routes: {
+          '/': (BuildContext context) => MyHomePage(),
+          '/pokemonList': (BuildContext context) => PokemonListPage(),
+        },
+        // onGenerateRoute: (RouteSettings settings ){
+        //     final List<String> pathElements = settings.name.split('/');
+        //       if (pathElements[0] != '') {
+        //         return null;
+        //       }
+        //       if(pathElements[0].contains('detail')){
+
+        //         return MaterialPageRoute<bool>(builder:(BuildContext context)=> HomePageBody());
+        //       }
+        // },
+        );
   }
 }
 
