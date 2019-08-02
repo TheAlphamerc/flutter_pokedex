@@ -27,6 +27,7 @@ dependencies:
   scoped_model: ^1.0.1
   http: ^0.12.0+2
   carousel_slider: ^1.3.0
+  sliding_up_panel: ^0.3.4
 
 dev_dependencies:
   flutter_test:
@@ -91,10 +92,14 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+    - family: circular-bold
+      fonts:
+        - asset: assets/fonts/CircularStd-Medium.ttf
+    - family: circular
+      fonts:
+        - asset: assets/fonts/CircularStd-Book.ttf
+          weight: 400
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

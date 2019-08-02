@@ -3,6 +3,7 @@ import 'package:flutte_pokedex/helper/colorTheme.dart';
 import 'package:flutte_pokedex/model/pokemon.dart';
 import 'package:flutte_pokedex/scoped_model/connetedModel.dart';
 import 'package:flutter/material.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class PokemonDetailPage extends StatefulWidget {
   PokemonDetailPage({this.model});
@@ -15,7 +16,9 @@ class PokemonDetailPage extends StatefulWidget {
 
 class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProviderStateMixin{
   Pokemon model;
-  int currentPage;
+  double opacity = 0;
+  int sliderPageno = 0;
+
   @override
  AnimationController _controller;
 
@@ -31,6 +34,95 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
     _controller = AnimationController(vsync: this,duration: Duration(milliseconds: 4000));
     _controller.repeat();
     super.initState();
+  }
+
+  Widget _pokemonCategoryChip(String type){
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+      height: 30,
+      decoration: BoxDecoration(color: setSecondaryColor(type),borderRadius: BorderRadius.circular(20)),
+      child: Text(type,style: TextStyle(color: Colors.white,fontSize: 16),),
+    );
+  }
+
+  Widget aboutSection(){
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+       Text('Balbasaur can be seen in napping in bright sunlight. There is a seed on its back. By soaking up the sun\'s rays, the seed grows progressively larger.'),
+       Container(
+         height: 70,
+         margin: EdgeInsets.symmetric(vertical: 30),
+         decoration: BoxDecoration(
+           color: Colors.white,
+           borderRadius: BorderRadius.circular(10),
+           boxShadow: <BoxShadow>[ BoxShadow(blurRadius: 20, color: Colors.grey.withOpacity(.2), offset: Offset(0,5),) ]
+         ),
+         padding: EdgeInsets.symmetric(horizontal: 30,vertical: 10),
+         child: Row(
+           mainAxisAlignment: MainAxisAlignment.start,
+           children: <Widget>[
+           Column(
+             crossAxisAlignment: CrossAxisAlignment.start,
+             mainAxisAlignment: MainAxisAlignment.center,
+             children: <Widget>[
+             Text('Weight',style: TextStyle(color: Colors.black87,fontFamily: 'Circular-bold'),),
+             SizedBox(height: 5,),
+             Text('15.2 lbs (6.9 kg)')
+           ],),
+           SizedBox(width: 50,),
+           Column(
+             crossAxisAlignment: CrossAxisAlignment.start,
+             mainAxisAlignment: MainAxisAlignment.center,
+             children: <Widget>[
+             Text('Height',style: TextStyle(color: Colors.black87,fontFamily: 'Circular-bold'),),
+             SizedBox(height: 5,),
+             Text('2\'3.5(0.70 cm"')
+           ],),
+         ],),
+       ),
+       Text('Breeding',style: TextStyle(fontWeight:FontWeight.w600 ),),
+       SizedBox(height: 10,),
+       Row(children: <Widget>[
+         Text('Gender',style:TextStyle(fontSize: 14,color: Colors.black45),),
+         SizedBox(width: 50,),
+         Text('Male 87%',style:TextStyle(fontSize: 14,color: Colors.black87),),
+         SizedBox(width: 50,),
+         Text('Female 13%',style:TextStyle(fontSize: 14,color: Colors.black87),)
+       ],),
+       SizedBox(height: 10,),
+       Row(children: <Widget>[
+         Text('Egg Groups',style:TextStyle(fontSize: 14,color: Colors.black45),),
+         SizedBox(width: 27,),
+         Text('Monster',style:TextStyle(fontSize: 14,color: Colors.black87),),
+       ],),    
+       SizedBox(height: 10,),
+       Row(children: <Widget>[
+         Text('Egg Cycle',style:TextStyle(fontSize: 14,color: Colors.black45),),
+         SizedBox(width: 37,),
+         Text('Grass',style:TextStyle(fontSize: 14,color: Colors.black87),),
+       ],),    
+       SizedBox(height: 10,),
+       Text('Location',style: TextStyle(fontWeight:FontWeight.w600 ),),
+       SizedBox(height:10,),
+       Container(
+         height: 150,
+         decoration: BoxDecoration(
+           borderRadius: BorderRadius.circular(20),color: setprimaryColor(model.type)),
+           ),
+           SizedBox(height:15,),
+            Text('Training',style: TextStyle(fontWeight:FontWeight.w600 ),),
+       SizedBox(height: 10,),
+       Row(children: <Widget>[
+         Text('Base EXP',style:TextStyle(fontSize: 14,color: Colors.black45),),
+         SizedBox(width: 50,),
+         Text('64',style:TextStyle(fontSize: 14,color: Colors.black87),),
+        
+       ],),
+     ],),
+    );
   }
 
   @override
@@ -109,8 +201,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
               // width: MediaQuery.of(context).size.width - 40,
               child:Text('Seed Pokemon',style: TextStyle(color: Colors.white60,fontSize: 18),)
               ),
-            
-             Positioned(
+          Positioned(
               right: 50,
               left: 50,
               top: 320,
@@ -127,54 +218,87 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
                 ),
                 )
               )),
-          AnimatedPositioned(
-           curve: Curves.linear,
-           duration: Duration(milliseconds: 4000),
-           top: 420,
-           height: MediaQuery.of(context).size.height - 220,
-           child: Container(
+          SlidingUpPanel(
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
+            onPanelSlide: (slide){
+             // print(slide.toString());
+              setState(() {
+                opacity = slide;
+              });
+            },
+            onPanelOpened: (){print('panel opened');},
+            onPanelClosed: (){ print('Panel closed');},
+            minHeight: MediaQuery.of(context).size.height - 430,
+            maxHeight: MediaQuery.of(context).size.height - 200,
+            panel: Container(
              width: MediaQuery.of(context).size.width,
-             decoration: BoxDecoration(
+              padding: EdgeInsets.only(top: 20),
+              decoration: BoxDecoration(
                color: Colors.white,
-               borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20))
+               borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
                ),
+               child:  DefaultTabController(
+                  length: 4,
+                  child: Scaffold(
+                    backgroundColor: Colors.white,
+                    appBar: TabBar(
+                      indicatorPadding: EdgeInsets.symmetric(horizontal: 20),
+                        tabs: [
+                          Tab(child: Text('About',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w900),),),
+                          Tab(child: Text('Base State',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w900),),),
+                          Tab(child: Text('Evaluation',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w900),),),
+                          Tab(child: Text('Moves',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w900),),),
+                          
+                        ],
+                      ),
+                    body: TabBarView(
+                      children: [
+                        aboutSection(),
+                        Icon(Icons.directions_transit),
+                        Icon(Icons.directions_bike),
+                        Icon(Icons.bubble_chart),
+                      ],
+                    ),
+                  ),
+                ),
            ),
           ),
            Positioned(
             width: MediaQuery.of(context).size.width,
              top: 260,
-             height: 200,
-             child:  CarouselSlider(
-               initialPage: 0,
-               enlargeCenterPage: true,
-               autoPlay: true,
-               items: <Widget>[
-                 Container(
-                  //  width: 120,
-                    child: Image.asset(model.image),
-                 ),
-                  Container(
-                    // width: 120,
-                    child: Image.asset(model.image),
-                 ), Container(
-                  //  width: 120,
-                    child: Image.asset(model.image),
-                 ),
-               ],
-             ),
+             height: 200 * (1 - opacity),
+             child: Opacity(
+                opacity: 1 - opacity,
+                child:  CarouselSlider(
+                  autoPlayCurve: Curves.easeInOutCirc,
+                  enableInfiniteScroll: false,
+                  onPageChanged: (page){
+                    print(page.toString());
+                    setState(() {
+                      sliderPageno = page;
+                    });
+                  },
+                  viewportFraction: .6,
+                  initialPage: 0,
+                  enlargeCenterPage: true,
+                  autoPlay: false,
+                  items: <Widget>[
+                    Container(
+                       child: 0 == (sliderPageno) ? Hero(tag: model.id ,child: Image.asset(model.image),) :Image.asset(model.image,color: setSecondaryColor(model.type),),
+                    ),
+                     Container(
+                       child: 1 == (sliderPageno) ? Image.asset(model.image):Image.asset(model.image,color: setSecondaryColor(model.type),),
+                    ), 
+                    Container(
+                      child: 2 == (sliderPageno) ? Image.asset(model.image):Image.asset(model.image,color: setSecondaryColor(model.type),),
+                    ),
+                  ],
+                ),)
              
           ) ,
         ],
       ),
       
-    );
-  }
-  Widget _pokemonCategoryChip(String type){
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-      height: 30,
-      decoration: BoxDecoration(color: setSecondaryColor(type),borderRadius: BorderRadius.circular(20)),
-      child: Text(type,style: TextStyle(color: Colors.white,fontSize: 16),),
     );
   }
 }

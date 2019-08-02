@@ -25,26 +25,31 @@ class _HomePageBodyState extends State<HomePageBody> {
             style: TextStyle(color: Colors.white, fontSize: 18),
           ),
         ),
-        Container(
-          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+        Positioned(
+          top: -15,
+          left: -20,
+          child: Container(
+          margin: EdgeInsets.symmetric(vertical: 25, horizontal: 25),
           child: ClipRRect(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20.0),
-              topRight: Radius.circular(20.0),
-              bottomRight: Radius.circular(20.0),
-            ),
+            borderRadius: BorderRadius.only(),
             child: Align(
-                alignment: Alignment.bottomRight,
-                heightFactor: .3,
-                widthFactor: .3,
-                child: Transform.rotate(
-                  angle: 5,
-                  child: Image.asset(
-                    'assets/images/pokeball.png',
+                alignment: Alignment.topLeft,
+                heightFactor: 1,
+                widthFactor: 1,
+                child: Container( height: 30,
+                  width: 30,
+                  decoration: BoxDecoration(
                     color: seondaryColor,
-                  ),
-                )),
+                    borderRadius: BorderRadius.only( 
+                      topLeft: Radius.circular(10.0),
+                      topRight: Radius.circular(0.0),
+                      bottomRight: Radius.circular(40.0),
+                      bottomLeft: Radius.circular(0.0),
+                      ))
+                      ,)
+                ),
           ),
+        ),
         ),
         Container(
           alignment: FractionalOffset.topRight,
@@ -55,7 +60,7 @@ class _HomePageBodyState extends State<HomePageBody> {
                 topRight: Radius.circular(10),
                 bottomRight: Radius.circular(10)),
             child: Align(
-                alignment: Alignment.centerLeft,
+                alignment: FractionalOffset.centerLeft,
                 heightFactor: .87,
                 widthFactor: .7,
                 child: Transform.rotate(
