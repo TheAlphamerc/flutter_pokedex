@@ -86,12 +86,10 @@ class _PokemonListPageState extends State<PokemonListPage>  with TickerProviderS
                                   bottom: 10,
                                   right: 10,
                                   height: 100,
-                                  child: Hero(
-                                    tag: model.id,
-                                    child: Image.asset(
+                                  child: Image.asset(
                                         model.image,
                                         fit: BoxFit.contain,
-                                      ),))
+                                      ),)
                             ],
                           )),
     );
