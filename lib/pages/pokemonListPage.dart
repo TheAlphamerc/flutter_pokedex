@@ -111,13 +111,11 @@ class _PokemonListPageState extends State<PokemonListPage>  with TickerProviderS
                 alignment: Alignment.bottomLeft,
                 child: RotationTransition(
                   turns: Tween(begin: 0.0,end: 1.0).animate(_controller),
-                  child: Hero(
-                  tag: "pokeball",
-                  child:  Image.asset(
+                  child: Image.asset(
                   'assets/images/pokeball.png',
                   color: Color(0xffe3e3e3),
                   height: 250,
-                ),)
+                ),
                 )
               )),
           Positioned(

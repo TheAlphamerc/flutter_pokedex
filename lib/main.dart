@@ -1,4 +1,3 @@
-import 'package:flutte_pokedex/helper/customRoute.dart';
 import 'package:flutte_pokedex/model/pokemon.dart';
 import 'package:flutte_pokedex/pages/homePageBody.dart';
 import 'package:flutte_pokedex/pages/pokemonDetailPage.dart';
@@ -25,6 +24,9 @@ class MyApp extends StatelessWidget {
           // home: MyHomePage(),
           routes: {
             '/': (BuildContext context) => MyHomePage(model: model),
+            '/pokemonList': (BuildContext context) =>
+                PokemonListPage(model: model),
+            '/detail': (BuildContext context) => PokemonDetailPage()
           },
           onGenerateRoute: (RouteSettings settings ){
               final List<String> pathElements = settings.name.split('/');
@@ -34,10 +36,7 @@ class MyApp extends StatelessWidget {
                 if(pathElements[1].contains('detail')){
                   var id  = int.tryParse(pathElements[2]);
                   pokemonModel = model.allPokemon.firstWhere((x) { return x.id == id;});
-                  return CustomRoute<bool>(builder:(BuildContext context)=> PokemonDetailPage(model: pokemonModel,));
-                }
-                else if(pathElements.contains('pokemonList')){
-                  return CustomRoute<bool>(builder:(BuildContext context)=> PokemonListPage(model: model,));
+                  return MaterialPageRoute<bool>(builder:(BuildContext context)=> PokemonDetailPage(model: pokemonModel,));
                 }
           },
         ));
