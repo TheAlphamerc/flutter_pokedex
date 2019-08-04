@@ -116,7 +116,12 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
        Container(
          height: 150,
          decoration: BoxDecoration(
-           borderRadius: BorderRadius.circular(20),color: setprimaryColor(model.type)),
+           borderRadius: BorderRadius.circular(20),color: setprimaryColor(model.type),
+           image: DecorationImage(
+             image: NetworkImage('https://tr4.cbsistatic.com/hub/i/r/2014/07/09/5ddb5529-bdc9-4656-913d-8cc299ea5e15/resize/1200x/b4fddca0887e8fdbdef49b4515c2844a/staticmapgoogle0514.png',),
+             fit: BoxFit.cover
+             )),
+          //  child: Image.network('https://tr4.cbsistatic.com/hub/i/r/2014/07/09/5ddb5529-bdc9-4656-913d-8cc299ea5e15/resize/1200x/b4fddca0887e8fdbdef49b4515c2844a/staticmapgoogle0514.png',fit:BoxFit.cover,),
            ),
            SizedBox(height:15,),
             Text('Training',style: TextStyle(fontWeight:FontWeight.w600 ),),
@@ -133,7 +138,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
 
   Widget _baseStateSection(){
     return  Container(
-      padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+      padding: EdgeInsets.symmetric(horizontal: 30,vertical: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -177,7 +182,46 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
     ],);
   }
   
-  
+  Widget  _evalutionSection(){
+    return Container(
+    padding: EdgeInsets.symmetric(horizontal: 30,vertical: 20),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+      Text("Evaluation Chain",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 14),),
+      SizedBox(height: 20,),
+      _evaluationChainRow('Lvl 15'),
+      SizedBox(height: 20,),
+      _evaluationChainRow('Lvl 16'),
+      SizedBox(height: 20,),
+      _evaluationChainRow('Lvl 17'),SizedBox(height: 20,),
+      _evaluationChainRow('Lvl 18'),SizedBox(height: 20,),
+    ],),
+    );
+  }
+  Widget _evaluationChainRow(String lvl){
+    return Row(children: <Widget>[
+     Expanded(flex: 1, child:  _pokemonEvaluationImage(model.image,'Bulbasaur'),),
+      Expanded(flex: 2,child: Column(children: <Widget>[
+       Icon(Icons.arrow_forward,color: Colors.black26,),
+       Text(lvl,style: TextStyle(fontSize: 12),)
+      ],),),
+      Expanded(flex: 1, child:  _pokemonEvaluationImage(model.image,'Ivysaur'),),
+    ],);
+  }
+  Widget _pokemonEvaluationImage(String img, String name){
+    return Column(children: <Widget>[
+       Stack(
+         alignment: Alignment.center,
+         children: <Widget>[
+         Image.asset('assets/images/pokeball.png',height: 70,color: Color(0xffe3e3e3),),
+         Image.asset(img,height: 60,)
+       ],),
+       SizedBox(height: 10,),
+       Text(name,style: TextStyle(fontSize: 14),)
+    ],);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -295,6 +339,9 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
                   child: Scaffold(
                     backgroundColor: Colors.white,
                     appBar: TabBar(
+                      indicatorColor: setprimaryColor(model.type),
+                      labelColor: Colors.black,
+                      unselectedLabelColor: Colors.black54,
                       indicatorPadding: EdgeInsets.symmetric(horizontal: 20),
                         tabs: [
                           Tab(child: Text('About',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w900),),),
@@ -308,7 +355,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
                       children: [
                         aboutSection(),
                         _baseStateSection(),
-                        Icon(Icons.directions_bike),
+                        _evalutionSection(),
                         Icon(Icons.bubble_chart),
                       ],
                     ),
