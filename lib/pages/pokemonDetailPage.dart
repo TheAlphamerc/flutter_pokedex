@@ -21,10 +21,13 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
 
   @override
  AnimationController _controller;
+ AnimationController _progressController;
+ Animation<double> _progressAnimation;
 
  @override
   void dispose() {
     _controller.dispose();
+    _progressController.dispose();
     super.dispose();
   }
 
@@ -33,6 +36,9 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
     model = widget.model;
     _controller = AnimationController(vsync: this,duration: Duration(milliseconds: 4000));
     _controller.repeat();
+    _progressController = AnimationController(duration: Duration(milliseconds: 4000),vsync: this);
+    _progressAnimation = Tween(begin: 0.0,end: 1.0).animate(_progressController);
+    _progressController.repeat();
     super.initState();
   }
 
@@ -125,6 +131,53 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
     );
   }
 
+  Widget _baseStateSection(){
+    return  Container(
+      padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+        _baseStateProperty('Attack',60,setprimaryColor("Grass")),
+        SizedBox(height: 20,),
+        _baseStateProperty('Defence',48,setprimaryColor("Fire")),
+        SizedBox(height: 20,),
+        _baseStateProperty('Sp. Atk',65,setprimaryColor("Water")),
+        SizedBox(height: 20,),
+        _baseStateProperty('Speed',45,setprimaryColor("Grass")),
+        SizedBox(height: 20,),
+        _baseStateProperty('Total',87,setprimaryColor("Fire")),
+        SizedBox(height: 40,),
+        Text('Type Defence',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
+        SizedBox(height: 20,),
+        Text('Type Defence',style: TextStyle(fontSize: 14,color: Colors.black54),)
+      ],)
+    );
+  }
+
+  Widget _baseStateProperty(String property, double value,Color color){
+    return Row(children: <Widget>[
+      Expanded(
+        flex: 2,
+      child:  Text(property,style:TextStyle(fontSize: 15,color: Colors.black54),),
+    ),
+
+    Expanded(
+      flex: 1,
+      child: Text(value.toString(),style:TextStyle(fontSize: 15,color: Colors.black),),
+    ),
+    Expanded(
+      flex: 4,
+      child: 
+        LinearProgressIndicator(
+        value: _progressAnimation.value,
+        valueColor: AlwaysStoppedAnimation<Color>(color),
+      ),
+     
+    ),
+    ],);
+  }
+  
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -254,7 +307,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
                     body: TabBarView(
                       children: [
                         aboutSection(),
-                        Icon(Icons.directions_transit),
+                        _baseStateSection(),
                         Icon(Icons.directions_bike),
                         Icon(Icons.bubble_chart),
                       ],
