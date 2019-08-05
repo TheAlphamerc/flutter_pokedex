@@ -11,12 +11,13 @@ class PokemonListPage extends StatefulWidget {
   _PokemonListPageState createState() => _PokemonListPageState();
 }
 
-class _PokemonListPageState extends State<PokemonListPage>  with TickerProviderStateMixin{
+class _PokemonListPageState extends State<PokemonListPage>
+    with TickerProviderStateMixin {
   List<Pokemon> list = [];
 
- AnimationController _controller;
+  AnimationController _controller;
 
- @override
+  @override
   void dispose() {
     _controller.dispose();
     super.dispose();
@@ -24,76 +25,78 @@ class _PokemonListPageState extends State<PokemonListPage>  with TickerProviderS
 
   @override
   void initState() {
-    _controller = AnimationController(vsync: this,duration: Duration(milliseconds: 4000));
+    _controller = AnimationController(
+        vsync: this, duration: Duration(milliseconds: 4000));
     _controller.repeat();
     list = widget.model.allPokemon;
     super.initState();
   }
 
-
-  Widget _pokemonCard(Pokemon model){
-    return  InkWell(
-      onTap: (){ Navigator.of(context).pushNamed('/detail/${model.id}');},
+  Widget _pokemonCard(Pokemon model) {
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).pushNamed('/detail/${model.id}');
+      },
       child: Container(
-                     // padding: EdgeInsets.only(left: 20,top:20),
-                     height: 50,
-                     decoration: BoxDecoration(
-                              color: setprimaryColor(model.type),
-                              borderRadius: BorderRadius.circular(20)),
-                     child: Stack(
-                            children: <Widget>[
-                              Positioned(
-                                  bottom: 0,
-                                  right: 0,
-                                  height: 120,
-                                  child: Image.asset(
-                                        'assets/images/pokeball.png',
-                                        color:setprimaryColor(model.type),
-                                        height: 150,
-                                      )
-                                  ),
-                              Positioned(
-                                  top: 20,
-                                  left: 20,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        model.name,
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      Container(
-                                        padding: EdgeInsets.symmetric(vertical: 5,horizontal:5),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(10),
-                                          color:setSecondaryColor(model.type),
-                                          ),
-                                        child: Text(
-                                        model.type,
-                                        style: TextStyle(
-                                            color: Colors.white60,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      )
-                                    ],
-                                  )),
-                              Positioned(
-                                  bottom: 10,
-                                  right: 10,
-                                  height: 100,
-                                  child: Hero(
-                                    tag: model.id,
-                                    child: Image.asset(
-                                        model.image,
-                                        fit: BoxFit.contain,
-                                      ),))
-                            ],
-                          )),
+          // padding: EdgeInsets.only(left: 20,top:20),
+          height: 50,
+          decoration: BoxDecoration(
+              color: setprimaryColor(model.type),
+              borderRadius: BorderRadius.circular(20)),
+          child: Stack(
+            children: <Widget>[
+              Positioned(
+                  bottom: 0,
+                  right: 0,
+                  height: 120,
+                  child: Image.asset(
+                    'assets/images/pokeball.png',
+                    color: setprimaryColor(model.type),
+                    height: 150,
+                  )),
+              Positioned(
+                  top: 20,
+                  left: 20,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        model.name,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      Container(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: setSecondaryColor(model.type),
+                        ),
+                        child: Text(
+                          model.type,
+                          style: TextStyle(
+                              color: Colors.white60,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      )
+                    ],
+                  )),
+              Positioned(
+                  bottom: 10,
+                  right: 10,
+                  height: 100,
+                  child: Hero(
+                    tag: model.id,
+                    child: Image.asset(
+                      model.image,
+                      fit: BoxFit.contain,
+                    ),
+                  ))
+            ],
+          )),
     );
   }
 
@@ -106,20 +109,17 @@ class _PokemonListPageState extends State<PokemonListPage>  with TickerProviderS
               right: 0,
               top: 0,
               child: Align(
-                heightFactor: .75,
-                widthFactor: .7 ,
-                alignment: Alignment.bottomLeft,
-                child: RotationTransition(
-                  turns: Tween(begin: 0.0,end: 1.0).animate(_controller),
-                  child: Hero(
-                  tag: "pokeball",
-                  child:  Image.asset(
-                  'assets/images/pokeball.png',
-                  color: Color(0xffe3e3e3),
-                  height: 250,
-                ),)
-                )
-              )),
+                  heightFactor: .75,
+                  widthFactor: .7,
+                  alignment: Alignment.bottomLeft,
+                  child: RotationTransition(
+                    turns: Tween(begin: 0.0, end: 1.0).animate(_controller),
+                    child: Image.asset(
+                      'assets/images/pokeball.png',
+                      color: Color(0xffe3e3e3),
+                      height: 250,
+                    ),
+                  ))),
           Positioned(
             left: 10,
             top: 40,
@@ -157,7 +157,7 @@ class _PokemonListPageState extends State<PokemonListPage>  with TickerProviderS
                     shrinkWrap: true,
                     children: List.generate(list.length, (index) {
                       return _pokemonCard(list[index]);
-                    },growable: false),
+                    }, growable: false),
                   ),
                 ),
               ],
