@@ -31,7 +31,14 @@ class _PokemonListPageState extends State<PokemonListPage>
     list = widget.model.allPokemon;
     super.initState();
   }
-
+  double _getFontSize(double size){
+   if(MediaQuery.of(context).textScaleFactor < 1){
+      return size;
+   }
+   else{
+     return (size / MediaQuery.of(context).textScaleFactor);
+   }
+  }
   Widget _pokemonCard(Pokemon model) {
     return InkWell(
       onTap: () {
@@ -64,7 +71,7 @@ class _PokemonListPageState extends State<PokemonListPage>
                         model.name,
                         style: TextStyle(
                             color: Colors.white,
-                            fontSize: 20,
+                          fontSize: _getFontSize(20),
                             fontWeight: FontWeight.w600),
                       ),
                       Container(
@@ -78,7 +85,7 @@ class _PokemonListPageState extends State<PokemonListPage>
                           model.type,
                           style: TextStyle(
                               color: Colors.white60,
-                              fontSize: 14,
+                              fontSize: _getFontSize(14),
                               fontWeight: FontWeight.w600),
                         ),
                       )
@@ -102,6 +109,8 @@ class _PokemonListPageState extends State<PokemonListPage>
 
   @override
   Widget build(BuildContext context) {
+    //   print('height');
+    // print(MediaQuery.of(context).size.height.toString());
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -144,7 +153,7 @@ class _PokemonListPageState extends State<PokemonListPage>
               children: <Widget>[
                 Text(
                   'Pokedex',
-                  style: TextStyle(fontSize: 35, fontWeight: FontWeight.w900),
+                  style: TextStyle(fontSize: _getFontSize(35), fontWeight: FontWeight.w900),
                 ),
                 Container(
                   height: MediaQuery.of(context).size.height - 135,

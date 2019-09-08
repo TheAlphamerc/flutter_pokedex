@@ -45,7 +45,14 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
     _progressController.repeat();
     super.initState();
   }
-
+  double _getFontSize(double size){
+   if(MediaQuery.of(context).textScaleFactor < 1){
+      return size;
+   }
+   else{
+     return (size / MediaQuery.of(context).textScaleFactor);
+   }
+  }
   Widget _pokemonCategoryChip(String type) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -55,7 +62,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
           borderRadius: BorderRadius.circular(20)),
       child: Text(
         type,
-        style: TextStyle(color: Colors.white, fontSize: 16),
+        style: TextStyle(color: Colors.white, fontSize: _getFontSize(16)),
       ),
     );
   }
@@ -67,10 +74,11 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-              'Balbasaur can be seen in napping in bright sunlight. There is a seed on its back. By soaking up the sun\'s rays, the seed grows progressively larger.'),
+              'Balbasaur can be seen in napping in bright sunlight. There is a seed on its back. By soaking up the sun\'s rays, the seed grows progressively larger.',
+              style: TextStyle(fontSize: _getFontSize(14) ),),
           Container(
-            height: 70,
-            margin: EdgeInsets.symmetric(vertical: 30),
+            height: _getFontSize(70),
+            margin: EdgeInsets.symmetric(vertical: _getFontSize(20)),
             decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10),
@@ -81,7 +89,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
                     offset: Offset(0, 5),
                   )
                 ]),
-            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+            padding: EdgeInsets.symmetric(horizontal: 30, vertical: _getFontSize(10)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
@@ -92,12 +100,12 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
                     Text(
                       'Weight',
                       style: TextStyle(
-                          color: Colors.black87, fontFamily: 'Circular-bold'),
+                          color: Colors.black87, fontFamily: 'Circular-bold',fontSize: _getFontSize(14)),
                     ),
                     SizedBox(
                       height: 5,
                     ),
-                    Text('15.2 lbs (6.9 kg)')
+                    Text('15.2 lbs (6.9 kg)',style: TextStyle(fontSize: _getFontSize(14)),)
                   ],
                 ),
                 SizedBox(
@@ -110,12 +118,12 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
                     Text(
                       'Height',
                       style: TextStyle(
-                          color: Colors.black87, fontFamily: 'Circular-bold'),
+                          color: Colors.black87, fontFamily: 'Circular-bold',fontSize: _getFontSize(14)),
                     ),
                     SizedBox(
                       height: 5,
                     ),
-                    Text('2\'3.5(0.70 cm"')
+                    Text('2\'3.5(0.70 cm"',style: TextStyle(fontSize: _getFontSize(14)),)
                   ],
                 ),
               ],
@@ -123,7 +131,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
           ),
           Text(
             'Breeding',
-            style: TextStyle(fontWeight: FontWeight.w600),
+            style: TextStyle(fontWeight: FontWeight.w600,fontSize: _getFontSize(14)),
           ),
           SizedBox(
             height: 10,
@@ -132,21 +140,21 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
             children: <Widget>[
               Text(
                 'Gender',
-                style: TextStyle(fontSize: 14, color: Colors.black45),
+                style: TextStyle(fontSize: _getFontSize(14), color: Colors.black45),
               ),
               SizedBox(
                 width: 50,
               ),
               Text(
                 'Male 87%',
-                style: TextStyle(fontSize: 14, color: Colors.black87),
+                style: TextStyle(fontSize: _getFontSize(14), color: Colors.black87),
               ),
               SizedBox(
                 width: 50,
               ),
               Text(
                 'Female 13%',
-                style: TextStyle(fontSize: 14, color: Colors.black87),
+                style: TextStyle(fontSize: _getFontSize(14), color: Colors.black87),
               )
             ],
           ),
@@ -157,14 +165,14 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
             children: <Widget>[
               Text(
                 'Egg Groups',
-                style: TextStyle(fontSize: 14, color: Colors.black45),
+                style: TextStyle(fontSize: _getFontSize(14), color: Colors.black45),
               ),
               SizedBox(
                 width: 27,
               ),
               Text(
                 'Monster',
-                style: TextStyle(fontSize: 14, color: Colors.black87),
+                style: TextStyle(fontSize: _getFontSize(14), color: Colors.black87),
               ),
             ],
           ),
@@ -175,14 +183,14 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
             children: <Widget>[
               Text(
                 'Egg Cycle',
-                style: TextStyle(fontSize: 14, color: Colors.black45),
+                style: TextStyle(fontSize: _getFontSize(14), color: Colors.black45),
               ),
               SizedBox(
                 width: 37,
               ),
               Text(
                 'Grass',
-                style: TextStyle(fontSize: 14, color: Colors.black87),
+                style: TextStyle(fontSize: _getFontSize(14), color: Colors.black87),
               ),
             ],
           ),
@@ -191,13 +199,13 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
           ),
           Text(
             'Location',
-            style: TextStyle(fontWeight: FontWeight.w600),
+            style: TextStyle(fontWeight: FontWeight.w600,fontSize: _getFontSize(14)),
           ),
           SizedBox(
             height: 10,
           ),
           Container(
-            height: 150,
+            height: _getFontSize(150),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: setprimaryColor(model.type),
@@ -206,14 +214,13 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
                       'https://tr4.cbsistatic.com/hub/i/r/2014/07/09/5ddb5529-bdc9-4656-913d-8cc299ea5e15/resize/1200x/b4fddca0887e8fdbdef49b4515c2844a/staticmapgoogle0514.png',
                     ),
                     fit: BoxFit.cover)),
-            //  child: Image.network('https://tr4.cbsistatic.com/hub/i/r/2014/07/09/5ddb5529-bdc9-4656-913d-8cc299ea5e15/resize/1200x/b4fddca0887e8fdbdef49b4515c2844a/staticmapgoogle0514.png',fit:BoxFit.cover,),
           ),
           SizedBox(
-            height: 15,
+            height: 14,
           ),
           Text(
             'Training',
-            style: TextStyle(fontWeight: FontWeight.w600),
+            style: TextStyle(fontWeight: FontWeight.w600,fontSize: _getFontSize(15)),
           ),
           SizedBox(
             height: 10,
@@ -222,14 +229,14 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
             children: <Widget>[
               Text(
                 'Base EXP',
-                style: TextStyle(fontSize: 14, color: Colors.black45),
+                style: TextStyle(fontSize: _getFontSize(14), color: Colors.black45),
               ),
               SizedBox(
                 width: 50,
               ),
               Text(
                 '64',
-                style: TextStyle(fontSize: 14, color: Colors.black87),
+                style: TextStyle(fontSize: _getFontSize(14), color: Colors.black87),
               ),
             ],
           ),
@@ -266,14 +273,14 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
             ),
             Text(
               'Type Defence',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: _getFontSize(16), fontWeight: FontWeight.bold),
             ),
             SizedBox(
               height: 20,
             ),
             Text(
               'Type Defence',
-              style: TextStyle(fontSize: 14, color: Colors.black54),
+              style: TextStyle(fontSize: _getFontSize(14), color: Colors.black54),
             )
           ],
         ));
@@ -286,14 +293,14 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
           flex: 2,
           child: Text(
             property,
-            style: TextStyle(fontSize: 15, color: Colors.black54),
+            style: TextStyle(fontSize: _getFontSize(15), color: Colors.black54),
           ),
         ),
         Expanded(
           flex: 1,
           child: Text(
             value.toString(),
-            style: TextStyle(fontSize: 15, color: Colors.black),
+            style: TextStyle(fontSize: _getFontSize(15), color: Colors.black),
           ),
         ),
         Expanded(
@@ -315,7 +322,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
         children: <Widget>[
           Text(
             "Evaluation Chain",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: _getFontSize(14)),
           ),
           SizedBox(
             height: 10,
@@ -361,7 +368,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
               ),
               Text(
                 lvl,
-                style: TextStyle(fontSize: 12),
+                style: TextStyle(fontSize: _getFontSize(12)),
               )
             ],
           ),
@@ -396,7 +403,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
         ),
         Text(
           name,
-          style: TextStyle(fontSize: 14),
+          style: TextStyle(fontSize: _getFontSize(14)),
         )
       ],
     );
@@ -424,6 +431,8 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
 
   @override
   Widget build(BuildContext context) {
+    // print('height');
+    // print(MediaQuery.of(context).textScaleFactor.toString());
     return Scaffold(
       backgroundColor: setprimaryColor(widget.model.type),
       body: Stack(
@@ -483,14 +492,14 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
                       Text(
                         model.name,
                         style: TextStyle(
-                            fontSize: 30,
+                            fontSize: _getFontSize(30),
                             color: Colors.white,
                             fontWeight: FontWeight.w600),
                       ),
                       Text(
                         '#00${model.id}',
                         style: TextStyle(
-                            fontSize: 20,
+                            fontSize: _getFontSize(20),
                             color: Colors.white,
                             fontWeight: FontWeight.w600),
                       ),
@@ -516,7 +525,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
               // width: MediaQuery.of(context).size.width - 40,
               child: Text(
                 'Seed Pokemon',
-                style: TextStyle(color: Colors.white60, fontSize: 18),
+                style: TextStyle(color: Colors.white60, fontSize: _getFontSize(18)),
               )),
           Positioned(
               right: 50,
@@ -549,7 +558,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
             maxHeight: MediaQuery.of(context).size.height - 200,
             panel: Container(
               width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.only(top: 20),
+              padding: EdgeInsets.only(top: _getFontSize(20)),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -564,34 +573,34 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
                     indicatorColor: setprimaryColor(model.type),
                     labelColor: Colors.black,
                     unselectedLabelColor: Colors.black54,
-                    indicatorPadding: EdgeInsets.symmetric(horizontal: 20),
+                    indicatorPadding: EdgeInsets.symmetric(horizontal: _getFontSize(20),),
                     tabs: [
                       Tab(
                         child: Text(
                           'About',
                           style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.w900),
+                              color: Colors.black, fontWeight: FontWeight.w900,fontSize: _getFontSize(14)),
                         ),
                       ),
                       Tab(
                         child: Text(
                           'Base State',
                           style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.w900),
+                              color: Colors.black, fontWeight: FontWeight.w900,fontSize: _getFontSize(14)),
                         ),
                       ),
                       Tab(
                         child: Text(
                           'Evaluation',
                           style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.w900),
+                              color: Colors.black, fontWeight: FontWeight.w900,fontSize: _getFontSize(14)),
                         ),
                       ),
                       Tab(
                         child: Text(
                           'Moves',
                           style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.w900),
+                              color: Colors.black, fontWeight: FontWeight.w900,fontSize: _getFontSize(14)),
                         ),
                       ),
                     ],

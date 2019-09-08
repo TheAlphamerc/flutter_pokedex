@@ -8,6 +8,14 @@ class _HomePageBodyState extends State<HomePageBody> {
   bool isViewAll = false;
   double viewAllHeight = 0;
   bool isSearchFieldEnable = false;
+  double _getFontSize(double size){
+   if(MediaQuery.of(context).textScaleFactor < 1){
+      return size;
+   }
+   else{
+     return (size / MediaQuery.of(context).textScaleFactor);
+   }
+  }
   Widget _getCategoryCard(String title, Color color, Color seondaryColor) {
     return InkWell(
       onTap: () {
@@ -24,7 +32,7 @@ class _HomePageBodyState extends State<HomePageBody> {
                 color: color, borderRadius: BorderRadius.circular(10)),
             child: Text(
               title,
-              style: TextStyle(color: Colors.white, fontSize: 18),
+              style: TextStyle(color: Colors.white, fontSize: _getFontSize(18)),
             ),
           ),
           Positioned(
@@ -83,9 +91,9 @@ class _HomePageBodyState extends State<HomePageBody> {
     return ListTile(
         title: Text(
           'Pokemon rumble rush arives soon',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+          style: TextStyle(fontSize: _getFontSize(16), fontWeight: FontWeight.w400),
         ),
-        subtitle: Text('10 May 2019'),
+        subtitle: Text('10 May 2019',style: TextStyle(fontSize: _getFontSize(16)),),
         trailing: Image.asset(
           image,
         ));
@@ -110,7 +118,7 @@ class _HomePageBodyState extends State<HomePageBody> {
               onTap: (){
                 isViewAll = false;
               },
-              decoration: InputDecoration(contentPadding: EdgeInsets.only(left: 30,top: 12), border:InputBorder.none , disabledBorder: InputBorder.none, hintText: 'Search Pokemon, Move, Ability'),
+              decoration: InputDecoration(contentPadding: EdgeInsets.only(left: 30,top:_getFontSize(10)), border:InputBorder.none , disabledBorder: InputBorder.none, hintText: 'Search Pokemon, Move, Ability',hintStyle: TextStyle(fontSize: _getFontSize(14))),
             )
           ],
         ));
@@ -136,12 +144,12 @@ class _HomePageBodyState extends State<HomePageBody> {
                 children: <Widget>[
                   Text(
                     'Pokemon News',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
+                    style: TextStyle(fontSize: _getFontSize(20), fontWeight: FontWeight.w800),
                   ),
                   FlatButton(
                     child: Text(
                       'View All',
-                      style: TextStyle(fontSize: 18, color: Colors.blue),
+                      style: TextStyle(fontSize: _getFontSize(18), color: Colors.blue),
                     ),
                     onPressed: () {
                       setState(() {
@@ -210,12 +218,12 @@ class _HomePageBodyState extends State<HomePageBody> {
                         Text(
                           'What pokemon',
                           style: TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.w600),
+                              fontSize: _getFontSize(30), fontWeight: FontWeight.w600),
                         ),
                         Text(
                           'are you loking for ?',
                           style: TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.w600),
+                              fontSize: _getFontSize(30), fontWeight: FontWeight.w600),
                         ),
                         _searchBox(),
                         AnimatedContainer(
