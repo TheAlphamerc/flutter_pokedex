@@ -19,6 +19,15 @@ class MyApp extends StatelessWidget {
           title: 'Flutter Demo',
           theme: ThemeData(
             primarySwatch: Colors.blue,
+            textTheme: TextTheme(
+              body1: TextStyle(fontSize: 14),
+              body2: TextStyle(fontSize: 16),
+              title: TextStyle(fontSize: 16),
+              subtitle: TextStyle(fontSize: 12),
+              caption: TextStyle(fontSize: 14),
+              subhead: TextStyle(fontSize: 16),
+              headline: TextStyle(fontSize: 16)
+            )
           ),
           // home: MyHomePage(),
           routes: {

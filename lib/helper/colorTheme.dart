@@ -12,3 +12,4 @@ Color setSecondaryColor(String type){
            type.contains('Rock')  ? Color(0xffbbc7d1)  :
             Color(0xfffc6b6d);
   }
+  

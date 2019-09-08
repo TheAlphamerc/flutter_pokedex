@@ -27,6 +27,7 @@ dependencies:
   scoped_model: ^1.0.1
   http: ^0.12.0+2
   carousel_slider: ^1.3.0
+  sliding_up_panel:
 
 dev_dependencies:
   flutter_test:

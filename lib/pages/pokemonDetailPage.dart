@@ -3,6 +3,7 @@ import 'package:flutte_pokedex/helper/colorTheme.dart';
 import 'package:flutte_pokedex/model/pokemon.dart';
 import 'package:flutte_pokedex/scoped_model/connetedModel.dart';
 import 'package:flutter/material.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class PokemonDetailPage extends StatefulWidget {
   PokemonDetailPage({this.model});
@@ -13,32 +14,430 @@ class PokemonDetailPage extends StatefulWidget {
   _PokemonDetailPageState createState() => _PokemonDetailPageState();
 }
 
-class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProviderStateMixin{
+class _PokemonDetailPageState extends State<PokemonDetailPage>
+    with TickerProviderStateMixin {
   Pokemon model;
-  int currentPage;
+  double opacity = 0;
+  int sliderPageno = 0;
+  bool isFavourite = false;
   @override
- AnimationController _controller;
+  AnimationController _controller;
+  AnimationController _progressController;
+  Animation<double> _progressAnimation;
 
- @override
+  @override
   void dispose() {
     _controller.dispose();
+    _progressController.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
     model = widget.model;
-    _controller = AnimationController(vsync: this,duration: Duration(milliseconds: 4000));
+    _controller = AnimationController(
+        vsync: this, duration: Duration(milliseconds: 4000));
     _controller.repeat();
+    _progressController = AnimationController(
+        duration: Duration(milliseconds: 4000), vsync: this);
+    _progressAnimation =
+        Tween(begin: 0.0, end: 1.0).animate(_progressController);
+    _progressController.repeat();
     super.initState();
+  }
+  double _getFontSize(double size){
+   if(MediaQuery.of(context).textScaleFactor < 1){
+      return size;
+   }
+   else{
+     return (size / MediaQuery.of(context).textScaleFactor);
+   }
+  }
+  Widget _pokemonCategoryChip(String type) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      height: 30,
+      decoration: BoxDecoration(
+          color: setSecondaryColor(type),
+          borderRadius: BorderRadius.circular(20)),
+      child: Text(
+        type,
+        style: TextStyle(color: Colors.white, fontSize: _getFontSize(16)),
+      ),
+    );
+  }
+
+  Widget aboutSection() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+              'Balbasaur can be seen in napping in bright sunlight. There is a seed on its back. By soaking up the sun\'s rays, the seed grows progressively larger.',
+              style: TextStyle(fontSize: _getFontSize(14) ),),
+          Container(
+            height: _getFontSize(70),
+            margin: EdgeInsets.symmetric(vertical: _getFontSize(20)),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    blurRadius: 20,
+                    color: Colors.grey.withOpacity(.2),
+                    offset: Offset(0, 5),
+                  )
+                ]),
+            padding: EdgeInsets.symmetric(horizontal: 30, vertical: _getFontSize(10)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      'Weight',
+                      style: TextStyle(
+                          color: Colors.black87, fontFamily: 'Circular-bold',fontSize: _getFontSize(14)),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text('15.2 lbs (6.9 kg)',style: TextStyle(fontSize: _getFontSize(14)),)
+                  ],
+                ),
+                SizedBox(
+                  width: 50,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      'Height',
+                      style: TextStyle(
+                          color: Colors.black87, fontFamily: 'Circular-bold',fontSize: _getFontSize(14)),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text('2\'3.5(0.70 cm"',style: TextStyle(fontSize: _getFontSize(14)),)
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Text(
+            'Breeding',
+            style: TextStyle(fontWeight: FontWeight.w600,fontSize: _getFontSize(14)),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Row(
+            children: <Widget>[
+              Text(
+                'Gender',
+                style: TextStyle(fontSize: _getFontSize(14), color: Colors.black45),
+              ),
+              SizedBox(
+                width: 50,
+              ),
+              Text(
+                'Male 87%',
+                style: TextStyle(fontSize: _getFontSize(14), color: Colors.black87),
+              ),
+              SizedBox(
+                width: 50,
+              ),
+              Text(
+                'Female 13%',
+                style: TextStyle(fontSize: _getFontSize(14), color: Colors.black87),
+              )
+            ],
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Row(
+            children: <Widget>[
+              Text(
+                'Egg Groups',
+                style: TextStyle(fontSize: _getFontSize(14), color: Colors.black45),
+              ),
+              SizedBox(
+                width: 27,
+              ),
+              Text(
+                'Monster',
+                style: TextStyle(fontSize: _getFontSize(14), color: Colors.black87),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Row(
+            children: <Widget>[
+              Text(
+                'Egg Cycle',
+                style: TextStyle(fontSize: _getFontSize(14), color: Colors.black45),
+              ),
+              SizedBox(
+                width: 37,
+              ),
+              Text(
+                'Grass',
+                style: TextStyle(fontSize: _getFontSize(14), color: Colors.black87),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Text(
+            'Location',
+            style: TextStyle(fontWeight: FontWeight.w600,fontSize: _getFontSize(14)),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Container(
+            height: _getFontSize(150),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: setprimaryColor(model.type),
+                image: DecorationImage(
+                    image: NetworkImage(
+                      'https://tr4.cbsistatic.com/hub/i/r/2014/07/09/5ddb5529-bdc9-4656-913d-8cc299ea5e15/resize/1200x/b4fddca0887e8fdbdef49b4515c2844a/staticmapgoogle0514.png',
+                    ),
+                    fit: BoxFit.cover)),
+          ),
+          SizedBox(
+            height: 14,
+          ),
+          Text(
+            'Training',
+            style: TextStyle(fontWeight: FontWeight.w600,fontSize: _getFontSize(15)),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Row(
+            children: <Widget>[
+              Text(
+                'Base EXP',
+                style: TextStyle(fontSize: _getFontSize(14), color: Colors.black45),
+              ),
+              SizedBox(
+                width: 50,
+              ),
+              Text(
+                '64',
+                style: TextStyle(fontSize: _getFontSize(14), color: Colors.black87),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _baseStateSection() {
+    return Container(
+        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            _baseStateProperty('Attack', 60, setprimaryColor("Grass")),
+            SizedBox(
+              height: 20,
+            ),
+            _baseStateProperty('Defence', 48, setprimaryColor("Fire")),
+            SizedBox(
+              height: 20,
+            ),
+            _baseStateProperty('Sp. Atk', 65, setprimaryColor("Water")),
+            SizedBox(
+              height: 20,
+            ),
+            _baseStateProperty('Speed', 45, setprimaryColor("Grass")),
+            SizedBox(
+              height: 20,
+            ),
+            _baseStateProperty('Total', 87, setprimaryColor("Fire")),
+            SizedBox(
+              height: 40,
+            ),
+            Text(
+              'Type Defence',
+              style: TextStyle(fontSize: _getFontSize(16), fontWeight: FontWeight.bold),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              'Type Defence',
+              style: TextStyle(fontSize: _getFontSize(14), color: Colors.black54),
+            )
+          ],
+        ));
+  }
+
+  Widget _baseStateProperty(String property, double value, Color color) {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          flex: 2,
+          child: Text(
+            property,
+            style: TextStyle(fontSize: _getFontSize(15), color: Colors.black54),
+          ),
+        ),
+        Expanded(
+          flex: 1,
+          child: Text(
+            value.toString(),
+            style: TextStyle(fontSize: _getFontSize(15), color: Colors.black),
+          ),
+        ),
+        Expanded(
+          flex: 4,
+          child: LinearProgressIndicator(
+            value: _progressAnimation.value,
+            valueColor: AlwaysStoppedAnimation<Color>(color),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _evalutionSection() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            "Evaluation Chain",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: _getFontSize(14)),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          _evaluationChainRow('Lvl 15'),
+         Divider(),
+          SizedBox(
+            height: 5,
+          ),
+          _evaluationChainRow('Lvl 16'),
+          Divider(),
+          SizedBox(
+            height: 5,
+          ),
+          _evaluationChainRow('Lvl 17'),
+         Divider(),
+          SizedBox(
+            height: 5,
+          ),
+          _evaluationChainRow('Lvl 18'),
+          SizedBox(
+            height: 20,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _evaluationChainRow(String lvl) {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          flex: 1,
+          child: _pokemonEvaluationImage(model.image, 'Bulbasaur'),
+        ),
+        Expanded(
+          flex: 2,
+          child: Column(
+            children: <Widget>[
+              Icon(
+                Icons.arrow_forward,
+                color: Colors.black26,
+              ),
+              Text(
+                lvl,
+                style: TextStyle(fontSize: _getFontSize(12)),
+              )
+            ],
+          ),
+        ),
+        Expanded(
+          flex: 1,
+          child: _pokemonEvaluationImage(model.image, 'Ivysaur'),
+        ),
+      ],
+    );
+  }
+
+  Widget _pokemonEvaluationImage(String img, String name) {
+    return Column(
+      children: <Widget>[
+        Stack(
+          alignment: Alignment.center,
+          children: <Widget>[
+            Image.asset(
+              'assets/images/pokeball.png',
+              height: 70,
+              color: Color(0xffe3e3e3),
+            ),
+            Image.asset(
+              img,
+              height: 60,
+            )
+          ],
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          name,
+          style: TextStyle(fontSize: _getFontSize(14)),
+        )
+      ],
+    );
+  }
+
+  Widget _topRightPokeball() {
+    return Positioned(
+        right: 0,
+        top: 0,
+        child: Align(
+            heightFactor: .75,
+            widthFactor: .7,
+            alignment: Alignment.bottomLeft,
+            child: RotationTransition(
+                turns: Tween(begin: 0.0, end: 1.0).animate(_controller),
+                child: Opacity(
+                  opacity: opacity,
+                  child: Image.asset(
+                    'assets/images/pokeball.png',
+                    color: setSecondaryColor(model.type),
+                    height: 250,
+                  ),
+                ))));
   }
 
   @override
   Widget build(BuildContext context) {
+    // print('height');
+    // print(MediaQuery.of(context).textScaleFactor.toString());
     return Scaffold(
       backgroundColor: setprimaryColor(widget.model.type),
       body: Stack(
         children: <Widget>[
+          _topRightPokeball(),
           Positioned(
               top: -20,
               left: -45,
@@ -54,19 +453,30 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
                 ),
               )),
           Positioned(
-            top: MediaQuery.of(context).padding.top,
-            right: 20,
-            width: MediaQuery.of(context).size.width - 20,
+            left: 10,
+            top: 40,
+            right: 25,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 BackButton(
                   color: Colors.white60,
                 ),
-                Icon(
-                  Icons.favorite_border,
-                  color: Colors.white60,
-                ),
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      isFavourite = !isFavourite;
+                    });
+                  },
+                  iconSize: 40,
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.all(0),
+                  icon: Icon(
+                    isFavourite ? Icons.favorite : Icons.favorite_border,
+                    size: 30,
+                    color: Colors.white60,
+                  ),
+                )
               ],
             ),
           ),
@@ -82,99 +492,183 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> with TickerProvid
                       Text(
                         model.name,
                         style: TextStyle(
-                            fontSize: 30,
+                            fontSize: _getFontSize(30),
                             color: Colors.white,
                             fontWeight: FontWeight.w600),
                       ),
                       Text(
                         '#00${model.id}',
                         style: TextStyle(
-                            fontSize: 20,
+                            fontSize: _getFontSize(20),
                             color: Colors.white,
                             fontWeight: FontWeight.w600),
                       ),
                     ],
                   ),
-                  SizedBox(height: 10,),
-                  Row(children: <Widget>[
-                     _pokemonCategoryChip(model.type),
-                     SizedBox(width: 10,),
-                     _pokemonCategoryChip(model.type),
-                  ],)
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: <Widget>[
+                      _pokemonCategoryChip(model.type),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      _pokemonCategoryChip(model.type),
+                    ],
+                  )
                 ],
               )),
           Positioned(
               top: 160,
               right: 20,
               // width: MediaQuery.of(context).size.width - 40,
-              child:Text('Seed Pokemon',style: TextStyle(color: Colors.white60,fontSize: 18),)
-              ),
-            
-             Positioned(
+              child: Text(
+                'Seed Pokemon',
+                style: TextStyle(color: Colors.white60, fontSize: _getFontSize(18)),
+              )),
+          Positioned(
               right: 50,
               left: 50,
               top: 320,
               child: Align(
-                heightFactor: .75,
-                widthFactor: .7 ,
-                alignment: Alignment.center,
-                child: RotationTransition(
-                  turns: Tween(begin: 0.0,end: 1.0).animate(_controller),
-                  child: Image.asset(
-                  'assets/images/pokeball.png',
-                  color: setSecondaryColor(model.type),
-                  height: 250,
+                  heightFactor: .75,
+                  widthFactor: .7,
+                  alignment: Alignment.center,
+                  child: RotationTransition(
+                    turns: Tween(begin: 0.0, end: 1.0).animate(_controller),
+                    child: Image.asset(
+                      'assets/images/pokeball.png',
+                      color: setSecondaryColor(model.type),
+                      height: 250,
+                    ),
+                  ))),
+          SlidingUpPanel(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+            onPanelSlide: (slide) {
+              // print(slide.toString());
+              setState(() {
+                opacity = slide;
+              });
+            },
+            onPanelOpened: () {},
+            onPanelClosed: () {},
+            minHeight: MediaQuery.of(context).size.height - 430,
+            maxHeight: MediaQuery.of(context).size.height - 200,
+            panel: Container(
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.only(top: _getFontSize(20)),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20)),
+              ),
+              child: DefaultTabController(
+                length: 4,
+                child: Scaffold(
+                  backgroundColor: Colors.white,
+                  appBar: TabBar(
+                    indicatorColor: setprimaryColor(model.type),
+                    labelColor: Colors.black,
+                    unselectedLabelColor: Colors.black54,
+                    indicatorPadding: EdgeInsets.symmetric(horizontal: _getFontSize(20),),
+                    tabs: [
+                      Tab(
+                        child: Text(
+                          'About',
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.w900,fontSize: _getFontSize(14)),
+                        ),
+                      ),
+                      Tab(
+                        child: Text(
+                          'Base State',
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.w900,fontSize: _getFontSize(14)),
+                        ),
+                      ),
+                      Tab(
+                        child: Text(
+                          'Evaluation',
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.w900,fontSize: _getFontSize(14)),
+                        ),
+                      ),
+                      Tab(
+                        child: Text(
+                          'Moves',
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.w900,fontSize: _getFontSize(14)),
+                        ),
+                      ),
+                    ],
+                  ),
+                  body: TabBarView(
+                    children: [
+                      aboutSection(),
+                      _baseStateSection(),
+                      _evalutionSection(),
+                      Icon(Icons.bubble_chart),
+                    ],
+                  ),
                 ),
-                )
-              )),
-          AnimatedPositioned(
-           curve: Curves.linear,
-           duration: Duration(milliseconds: 4000),
-           top: 420,
-           height: MediaQuery.of(context).size.height - 220,
-           child: Container(
-             width: MediaQuery.of(context).size.width,
-             decoration: BoxDecoration(
-               color: Colors.white,
-               borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20))
-               ),
-           ),
+              ),
+            ),
           ),
-           Positioned(
-            width: MediaQuery.of(context).size.width,
-             top: 260,
-             height: 200,
-             child:  CarouselSlider(
-               initialPage: 0,
-               enlargeCenterPage: true,
-               autoPlay: true,
-               items: <Widget>[
-                 Container(
-                  //  width: 120,
-                    child: Image.asset(model.image),
-                 ),
-                  Container(
-                    // width: 120,
-                    child: Image.asset(model.image),
-                 ), Container(
-                  //  width: 120,
-                    child: Image.asset(model.image),
-                 ),
-               ],
-             ),
-             
-          ) ,
+          Positioned(
+              width: MediaQuery.of(context).size.width,
+              top: 260,
+              height: 200 * (1 - opacity),
+              child: Opacity(
+                opacity: 1 - opacity,
+                child: CarouselSlider(
+                  autoPlayCurve: Curves.easeInOutCirc,
+                  enableInfiniteScroll: false,
+                  onPageChanged: (page) {
+                    print(page.toString());
+                    setState(() {
+                      sliderPageno = page;
+                    });
+                  },
+                  viewportFraction: .6,
+                  initialPage: 0,
+                  enlargeCenterPage: true,
+                  autoPlay: false,
+                  items: <Widget>[
+                    Container(
+                      child: 0 == (sliderPageno)
+                          ? Hero(
+                              tag: model.id,
+                              child: Image.asset(model.image),
+                            )
+                          : Image.asset(
+                              model.image,
+                              color: setSecondaryColor(model.type),
+                            ),
+                    ),
+                    Container(
+                      child: 1 == (sliderPageno)
+                          ? Image.asset(model.image)
+                          : Image.asset(
+                              model.image,
+                              color: setSecondaryColor(model.type),
+                            ),
+                    ),
+                    Container(
+                      child: 2 == (sliderPageno)
+                          ? Image.asset(model.image)
+                          : Image.asset(
+                              model.image,
+                              color: setSecondaryColor(model.type),
+                            ),
+                    ),
+                  ],
+                ),
+              )),
         ],
       ),
-      
-    );
-  }
-  Widget _pokemonCategoryChip(String type){
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-      height: 30,
-      decoration: BoxDecoration(color: setSecondaryColor(type),borderRadius: BorderRadius.circular(20)),
-      child: Text(type,style: TextStyle(color: Colors.white,fontSize: 16),),
     );
   }
 }
