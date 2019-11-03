@@ -4,18 +4,24 @@ import 'package:flutte_pokedex/pages/pokemonDetailPage.dart';
 import 'package:flutte_pokedex/pages/pokemonListPage.dart';
 import 'package:flutte_pokedex/scoped_model/connetedModel.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:scoped_model/scoped_model.dart';
+
+import 'scoped_model/pokemonState.dart';
+
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  MainModel model = new MainModel();
   Pokemon pokemonModel;
+  PokemonState _pokemonState = PokemonState();
   @override
   Widget build(BuildContext context) {
-    return ScopedModel<MainModel>(
-        model: model,
-        child: MaterialApp(
+    return MultiProvider(
+      providers: [
+         ChangeNotifierProvider<PokemonState>(builder: (context) => _pokemonState),
+      ],
+      child:   MaterialApp(
           title: 'Flutter Demo',
           theme: ThemeData(
             primarySwatch: Colors.blue,
@@ -31,9 +37,9 @@ class MyApp extends StatelessWidget {
           ),
           // home: MyHomePage(),
           routes: {
-            '/': (BuildContext context) => MyHomePage(model: model),
+            '/': (BuildContext context) => MyHomePage(),
             '/pokemonList': (BuildContext context) =>
-                PokemonListPage(model: model),
+                PokemonListPage(),
             '/detail': (BuildContext context) => PokemonDetailPage()
           },
           onGenerateRoute: (RouteSettings settings ){
@@ -43,17 +49,17 @@ class MyApp extends StatelessWidget {
                 }
                 if(pathElements[1].contains('detail')){
                   var id  = int.tryParse(pathElements[2]);
-                  pokemonModel = model.allPokemon.firstWhere((x) { return x.id == id;});
-                  return MaterialPageRoute<bool>(builder:(BuildContext context)=> PokemonDetailPage(model: pokemonModel,));
+                  return MaterialPageRoute<bool>(builder:(BuildContext context)=> PokemonDetailPage(id: id,));
                 }
           },
-        ));
+        )
+    );
+   
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  final MainModel model;
-  const MyHomePage({this.model});
+  // final MainModel model;
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }

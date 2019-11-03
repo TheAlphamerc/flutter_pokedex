@@ -1,22 +1,23 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutte_pokedex/helper/colorTheme.dart';
 import 'package:flutte_pokedex/model/pokemon.dart';
+import 'package:flutte_pokedex/model/pokemonList.dart';
 import 'package:flutte_pokedex/scoped_model/connetedModel.dart';
+import 'package:flutte_pokedex/scoped_model/pokemonState.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class PokemonDetailPage extends StatefulWidget {
-  PokemonDetailPage({this.model});
-
+  PokemonDetailPage({this.id});
+  final int id;
   // MainModel model;
-  Pokemon model;
-
   _PokemonDetailPageState createState() => _PokemonDetailPageState();
 }
 
 class _PokemonDetailPageState extends State<PokemonDetailPage>
     with TickerProviderStateMixin {
-  Pokemon model;
+  PokemonListModel model;
   double opacity = 0;
   int sliderPageno = 0;
   bool isFavourite = false;
@@ -34,7 +35,8 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
 
   @override
   void initState() {
-    model = widget.model;
+    final state = Provider.of<PokemonState>(context,listen: false);
+    model = state.pokemonList.firstWhere((x)=> x.orderId == widget.id);
     _controller = AnimationController(
         vsync: this, duration: Duration(milliseconds: 4000));
     _controller.repeat();
@@ -208,7 +210,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
             height: _getFontSize(150),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: setprimaryColor(model.type),
+                color: setprimaryColor(model.type1),
                 image: DecorationImage(
                     image: NetworkImage(
                       'https://tr4.cbsistatic.com/hub/i/r/2014/07/09/5ddb5529-bdc9-4656-913d-8cc299ea5e15/resize/1200x/b4fddca0887e8fdbdef49b4515c2844a/staticmapgoogle0514.png',
@@ -423,7 +425,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
                   opacity: opacity,
                   child: Image.asset(
                     'assets/images/pokeball.png',
-                    color: setSecondaryColor(model.type),
+                    color: setSecondaryColor(model.type1),
                     height: 250,
                   ),
                 ))));
@@ -434,7 +436,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
     // print('height');
     // print(MediaQuery.of(context).textScaleFactor.toString());
     return Scaffold(
-      backgroundColor: setprimaryColor(widget.model.type),
+      backgroundColor: setprimaryColor(model.type1),
       body: Stack(
         children: <Widget>[
           _topRightPokeball(),
@@ -448,7 +450,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
                   width: 140,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: setSecondaryColor(widget.model.type),
+                    color: setSecondaryColor(model.type1),
                   ),
                 ),
               )),
@@ -497,7 +499,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
                             fontWeight: FontWeight.w600),
                       ),
                       Text(
-                        '#00${model.id}',
+                        '#00${model.orderId}',
                         style: TextStyle(
                             fontSize: _getFontSize(20),
                             color: Colors.white,
@@ -510,11 +512,11 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
                   ),
                   Row(
                     children: <Widget>[
-                      _pokemonCategoryChip(model.type),
+                      _pokemonCategoryChip(model.type1),
                       SizedBox(
                         width: 10,
                       ),
-                      _pokemonCategoryChip(model.type),
+                      _pokemonCategoryChip(model.type1),
                     ],
                   )
                 ],
@@ -539,7 +541,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
                     turns: Tween(begin: 0.0, end: 1.0).animate(_controller),
                     child: Image.asset(
                       'assets/images/pokeball.png',
-                      color: setSecondaryColor(model.type),
+                      color: setSecondaryColor(model.type1),
                       height: 250,
                     ),
                   ))),
@@ -570,7 +572,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
                 child: Scaffold(
                   backgroundColor: Colors.white,
                   appBar: TabBar(
-                    indicatorColor: setprimaryColor(model.type),
+                    indicatorColor: setprimaryColor(model.type1),
                     labelColor: Colors.black,
                     unselectedLabelColor: Colors.black54,
                     indicatorPadding: EdgeInsets.symmetric(horizontal: _getFontSize(20),),
@@ -640,29 +642,20 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
                     Container(
                       child: 0 == (sliderPageno)
                           ? Hero(
-                              tag: model.id,
-                              child: Image.asset(model.image),
-                            )
-                          : Image.asset(
-                              model.image,
-                              color: setSecondaryColor(model.type),
-                            ),
+                              tag: model.orderId,
+                               child: Image( image: NetworkImage(model.image,),fit: BoxFit.contain,),
+                                      )
+                          : Image(image: NetworkImage(model.image),color: setSecondaryColor(model.type1),),
                     ),
                     Container(
                       child: 1 == (sliderPageno)
-                          ? Image.asset(model.image)
-                          : Image.asset(
-                              model.image,
-                              color: setSecondaryColor(model.type),
-                            ),
+                          ?Image( image: NetworkImage(model.image,),fit: BoxFit.contain,)
+                          : Image(image: NetworkImage(model.image),color: setSecondaryColor(model.type1),),
                     ),
                     Container(
                       child: 2 == (sliderPageno)
-                          ? Image.asset(model.image)
-                          : Image.asset(
-                              model.image,
-                              color: setSecondaryColor(model.type),
-                            ),
+                          ? Image( image: NetworkImage(model.image,),fit: BoxFit.contain,)
+                          : Image(image: NetworkImage(model.image),color: setSecondaryColor(model.type1),),
                     ),
                   ],
                 ),
