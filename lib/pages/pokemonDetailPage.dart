@@ -4,13 +4,19 @@ import 'package:flutte_pokedex/model/pokemon.dart';
 import 'package:flutte_pokedex/model/pokemonList.dart';
 import 'package:flutte_pokedex/scoped_model/connetedModel.dart';
 import 'package:flutte_pokedex/scoped_model/pokemonState.dart';
+import 'package:flutte_pokedex/widgets/customWidget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
+import 'pokemonDetails/about.dart';
+import 'pokemonDetails/baseState.dart';
+import 'pokemonDetails/moves.dart';
+
 class PokemonDetailPage extends StatefulWidget {
-  PokemonDetailPage({this.id});
-  final int id;
+  PokemonDetailPage({this.name});
+  final String name;
   // MainModel model;
   _PokemonDetailPageState createState() => _PokemonDetailPageState();
 }
@@ -21,6 +27,8 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
   double opacity = 0;
   int sliderPageno = 0;
   bool isFavourite = false;
+  FlutterTts flutterTts ;
+   List<dynamic> languages ;
   @override
   AnimationController _controller;
   AnimationController _progressController;
@@ -29,14 +37,23 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
   @override
   void dispose() {
     _controller.dispose();
+    _stop();
     _progressController.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
+    flutterTts = new FlutterTts();
+     
     final state = Provider.of<PokemonState>(context,listen: false);
-    model = state.pokemonList.firstWhere((x)=> x.orderId == widget.id);
+    model = state.pokemonList.firstWhere((x)=> x.name == widget.name);
+    state.getPokemonSpeciesAsync(widget.name.toLowerCase().split(' ')[0]).then((val){
+       _startSpeak();
+    });
+    state.getPokemonDetaiAsync(widget.name.toLowerCase().split(' ')[0]);
+    // state.getPokemonMovesAsync(widget.name.toLowerCase().split(' ')[0]);
+   
     _controller = AnimationController(
         vsync: this, duration: Duration(milliseconds: 4000));
     _controller.repeat();
@@ -47,6 +64,51 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
     _progressController.repeat();
     super.initState();
   }
+  Future _speak(String name,String type, String description) async{
+    print('voice start' + type);
+    await flutterTts.speak(name + '\n \n' + type + '\n \n' + description);
+}
+ Future _startSpeak()async{
+  final state = Provider.of<PokemonState>(context,listen: false);
+   var list  = state.pokemonSpecies.flavorTextEntries.where((x)=> x.language.name == 'en').toSet().toList();
+      list = list.toSet().toList();
+      list.forEach((x)=> x.flavorText..replaceAll("\n", " "));
+      String desc = '';
+      StringBuffer description = new StringBuffer();
+      
+      for(int i= 0; i< list.length ;i++){
+        var it = list[i].flavorText.replaceAll("\n", " ");
+        if(!desc.toString().toLowerCase().contains(it.toLowerCase())){
+          description.write(it + ' ');
+          desc += it+ ' ';
+        }
+      }
+      String  voice;
+      languages = await flutterTts.getLanguages;
+      //  await flutterTts.getVoices.then((val){
+      //        voice = val[0];
+      //        print(voice);
+      //  });
+
+      await flutterTts.setLanguage("en-US");
+      // await flutterTts.setVoice("es-us-x-sfb#male_1-loca");
+      await flutterTts.setVoice("en-us-x-sfg#male_2-local");
+      await flutterTts.setSpeechRate(1.0);
+      
+      await flutterTts.setVolume(1);
+      
+      await flutterTts.setPitch(.8);
+      await flutterTts.isLanguageAvailable("en-US");
+      var list2 =  description.toString().split('.');
+       var des = list2.length > 3 ? (list2[0] +'\n\n' + list2[1])  +'\n\n' + list2[2] : list2.length > 2 ? (list2[0]  +'\n\n' + list2[1])  : list2[0];
+      _speak(model.name.split(' ')[0],state.pokemonSpecies.genera.firstWhere((x)=>x.language.name == 'en').genus, des);
+  }
+  Future _stop() async{
+  
+     await flutterTts.stop();
+   
+ }
+  
   double _getFontSize(double size){
    if(MediaQuery.of(context).textScaleFactor < 1){
       return size;
@@ -56,6 +118,9 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
    }
   }
   Widget _pokemonCategoryChip(String type) {
+    if(type == null || type.isEmpty){
+      return Container();
+    }
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       height: 30,
@@ -66,253 +131,6 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
         type,
         style: TextStyle(color: Colors.white, fontSize: _getFontSize(16)),
       ),
-    );
-  }
-
-  Widget aboutSection() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-              'Balbasaur can be seen in napping in bright sunlight. There is a seed on its back. By soaking up the sun\'s rays, the seed grows progressively larger.',
-              style: TextStyle(fontSize: _getFontSize(14) ),),
-          Container(
-            height: _getFontSize(70),
-            margin: EdgeInsets.symmetric(vertical: _getFontSize(20)),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: <BoxShadow>[
-                  BoxShadow(
-                    blurRadius: 20,
-                    color: Colors.grey.withOpacity(.2),
-                    offset: Offset(0, 5),
-                  )
-                ]),
-            padding: EdgeInsets.symmetric(horizontal: 30, vertical: _getFontSize(10)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      'Weight',
-                      style: TextStyle(
-                          color: Colors.black87, fontFamily: 'Circular-bold',fontSize: _getFontSize(14)),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text('15.2 lbs (6.9 kg)',style: TextStyle(fontSize: _getFontSize(14)),)
-                  ],
-                ),
-                SizedBox(
-                  width: 50,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      'Height',
-                      style: TextStyle(
-                          color: Colors.black87, fontFamily: 'Circular-bold',fontSize: _getFontSize(14)),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text('2\'3.5(0.70 cm"',style: TextStyle(fontSize: _getFontSize(14)),)
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Text(
-            'Breeding',
-            style: TextStyle(fontWeight: FontWeight.w600,fontSize: _getFontSize(14)),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Row(
-            children: <Widget>[
-              Text(
-                'Gender',
-                style: TextStyle(fontSize: _getFontSize(14), color: Colors.black45),
-              ),
-              SizedBox(
-                width: 50,
-              ),
-              Text(
-                'Male 87%',
-                style: TextStyle(fontSize: _getFontSize(14), color: Colors.black87),
-              ),
-              SizedBox(
-                width: 50,
-              ),
-              Text(
-                'Female 13%',
-                style: TextStyle(fontSize: _getFontSize(14), color: Colors.black87),
-              )
-            ],
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Row(
-            children: <Widget>[
-              Text(
-                'Egg Groups',
-                style: TextStyle(fontSize: _getFontSize(14), color: Colors.black45),
-              ),
-              SizedBox(
-                width: 27,
-              ),
-              Text(
-                'Monster',
-                style: TextStyle(fontSize: _getFontSize(14), color: Colors.black87),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Row(
-            children: <Widget>[
-              Text(
-                'Egg Cycle',
-                style: TextStyle(fontSize: _getFontSize(14), color: Colors.black45),
-              ),
-              SizedBox(
-                width: 37,
-              ),
-              Text(
-                'Grass',
-                style: TextStyle(fontSize: _getFontSize(14), color: Colors.black87),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Text(
-            'Location',
-            style: TextStyle(fontWeight: FontWeight.w600,fontSize: _getFontSize(14)),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Container(
-            height: _getFontSize(150),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: setprimaryColor(model.type1),
-                image: DecorationImage(
-                    image: NetworkImage(
-                      'https://tr4.cbsistatic.com/hub/i/r/2014/07/09/5ddb5529-bdc9-4656-913d-8cc299ea5e15/resize/1200x/b4fddca0887e8fdbdef49b4515c2844a/staticmapgoogle0514.png',
-                    ),
-                    fit: BoxFit.cover)),
-          ),
-          SizedBox(
-            height: 14,
-          ),
-          Text(
-            'Training',
-            style: TextStyle(fontWeight: FontWeight.w600,fontSize: _getFontSize(15)),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Row(
-            children: <Widget>[
-              Text(
-                'Base EXP',
-                style: TextStyle(fontSize: _getFontSize(14), color: Colors.black45),
-              ),
-              SizedBox(
-                width: 50,
-              ),
-              Text(
-                '64',
-                style: TextStyle(fontSize: _getFontSize(14), color: Colors.black87),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _baseStateSection() {
-    return Container(
-        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            _baseStateProperty('Attack', 60, setprimaryColor("Grass")),
-            SizedBox(
-              height: 20,
-            ),
-            _baseStateProperty('Defence', 48, setprimaryColor("Fire")),
-            SizedBox(
-              height: 20,
-            ),
-            _baseStateProperty('Sp. Atk', 65, setprimaryColor("Water")),
-            SizedBox(
-              height: 20,
-            ),
-            _baseStateProperty('Speed', 45, setprimaryColor("Grass")),
-            SizedBox(
-              height: 20,
-            ),
-            _baseStateProperty('Total', 87, setprimaryColor("Fire")),
-            SizedBox(
-              height: 40,
-            ),
-            Text(
-              'Type Defence',
-              style: TextStyle(fontSize: _getFontSize(16), fontWeight: FontWeight.bold),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Text(
-              'Type Defence',
-              style: TextStyle(fontSize: _getFontSize(14), color: Colors.black54),
-            )
-          ],
-        ));
-  }
-
-  Widget _baseStateProperty(String property, double value, Color color) {
-    return Row(
-      children: <Widget>[
-        Expanded(
-          flex: 2,
-          child: Text(
-            property,
-            style: TextStyle(fontSize: _getFontSize(15), color: Colors.black54),
-          ),
-        ),
-        Expanded(
-          flex: 1,
-          child: Text(
-            value.toString(),
-            style: TextStyle(fontSize: _getFontSize(15), color: Colors.black),
-          ),
-        ),
-        Expanded(
-          flex: 4,
-          child: LinearProgressIndicator(
-            value: _progressAnimation.value,
-            valueColor: AlwaysStoppedAnimation<Color>(color),
-          ),
-        ),
-      ],
     );
   }
 
@@ -394,7 +212,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
               height: 70,
               color: Color(0xffe3e3e3),
             ),
-            Image.asset(
+            Image.network(
               img,
               height: 60,
             )
@@ -430,11 +248,20 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
                   ),
                 ))));
   }
-
+  Widget _pokemonType(){
+      final state = Provider.of<PokemonState>(context);
+      if(state.pokemonSpecies != null && state.pokemonSpecies.genera != null && state.pokemonSpecies.genera.length > 0){
+         var type = state.pokemonSpecies.genera.firstWhere((x)=>x.language.name == 'en').genus;
+         return customText(type,
+                style: TextStyle(color: Colors.white60, fontSize: _getFontSize(18)),
+              );
+      }
+      else{
+        return Container();
+      }
+  }
   @override
   Widget build(BuildContext context) {
-    // print('height');
-    // print(MediaQuery.of(context).textScaleFactor.toString());
     return Scaffold(
       backgroundColor: setprimaryColor(model.type1),
       body: Stack(
@@ -454,6 +281,15 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
                   ),
                 ),
               )),
+          Positioned(
+            left:fullWidth(context) / 2 + 10,
+            top: 5,
+            child:  Image.asset(
+                      'assets/images/dotted.png',
+                      color: setSecondaryColor(model.type1),
+                      height: 50,
+                    ),
+          ),
           Positioned(
             left: 10,
             top: 40,
@@ -491,32 +327,26 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text(
-                        model.name,
-                        style: TextStyle(
-                            fontSize: _getFontSize(30),
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600),
+                      Container(
+                        constraints: BoxConstraints(maxWidth: fullWidth(context) - 80),
+                        child: Text(
+                          model.name,
+                          style: TextStyle(
+                              fontSize: _getFontSize(30),
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600),
+                              overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                      Text(
-                        '#00${model.orderId}',
-                        style: TextStyle(
-                            fontSize: _getFontSize(20),
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600),
-                      ),
+                      customText('#' + (model.orderId.toString().length == 1  ? '00' + model.orderId.toString() : model.orderId.toString().length == 2 ? '0'+model.orderId.toString() : model.orderId.toString()),style: TextStyle(fontSize: _getFontSize(20),color: Colors.white,fontWeight: FontWeight.w600),),
                     ],
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
+                  SizedBox(height: 10,),
                   Row(
                     children: <Widget>[
                       _pokemonCategoryChip(model.type1),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      _pokemonCategoryChip(model.type1),
+                      SizedBox(width: 10,),
+                      _pokemonCategoryChip(model.type2),
                     ],
                   )
                 ],
@@ -525,10 +355,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
               top: 160,
               right: 20,
               // width: MediaQuery.of(context).size.width - 40,
-              child: Text(
-                'Seed Pokemon',
-                style: TextStyle(color: Colors.white60, fontSize: _getFontSize(18)),
-              )),
+              child: _pokemonType()),
           Positioned(
               right: 50,
               left: 50,
@@ -577,42 +404,18 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
                     unselectedLabelColor: Colors.black54,
                     indicatorPadding: EdgeInsets.symmetric(horizontal: _getFontSize(20),),
                     tabs: [
-                      Tab(
-                        child: Text(
-                          'About',
-                          style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.w900,fontSize: _getFontSize(14)),
-                        ),
-                      ),
-                      Tab(
-                        child: Text(
-                          'Base State',
-                          style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.w900,fontSize: _getFontSize(14)),
-                        ),
-                      ),
-                      Tab(
-                        child: Text(
-                          'Evaluation',
-                          style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.w900,fontSize: _getFontSize(14)),
-                        ),
-                      ),
-                      Tab(
-                        child: Text(
-                          'Moves',
-                          style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.w900,fontSize: _getFontSize(14)),
-                        ),
-                      ),
+                      Tab( child: Text('About',style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900,fontSize: _getFontSize(14)),),),
+                      Tab(child: Text('Base State',style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900,fontSize: _getFontSize(14)),),),
+                      Tab(child: Text('Evaluation',style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900,fontSize: _getFontSize(14)),),),
+                      Tab(child: Text('Moves',style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900,fontSize: _getFontSize(14)),),),
                     ],
                   ),
                   body: TabBarView(
                     children: [
-                      aboutSection(),
-                      _baseStateSection(),
+                      About(model: model,),
+                      BaseState(),
                       _evalutionSection(),
-                      Icon(Icons.bubble_chart),
+                      Moves(),
                     ],
                   ),
                 ),
@@ -639,23 +442,29 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
                   enlargeCenterPage: true,
                   autoPlay: false,
                   items: <Widget>[
-                    Container(
+                    AnimatedContainer(
+                      constraints: BoxConstraints( maxHeight: 100),
+                      duration: Duration(milliseconds: 500),
                       child: 0 == (sliderPageno)
                           ? Hero(
                               tag: model.orderId,
-                               child: Image( image: NetworkImage(model.image,),fit: BoxFit.contain,),
+                               child: Image( image: customAdvanceNetworkImage(model.image,),fit: BoxFit.contain,),
                                       )
-                          : Image(image: NetworkImage(model.image),color: setSecondaryColor(model.type1),),
+                          : Image(image: customAdvanceNetworkImage(model.image),color: setSecondaryColor(model.type1),),
                     ),
-                    Container(
+                   AnimatedContainer(
+                      constraints: BoxConstraints( maxHeight: 1 == (sliderPageno) ? 200 : 180),
+                      duration: Duration(milliseconds: 500),
                       child: 1 == (sliderPageno)
-                          ?Image( image: NetworkImage(model.image,),fit: BoxFit.contain,)
-                          : Image(image: NetworkImage(model.image),color: setSecondaryColor(model.type1),),
+                          ?Image( image: customAdvanceNetworkImage(model.image,),fit: BoxFit.contain,)
+                          : Image(image: customAdvanceNetworkImage(model.image),color: setSecondaryColor(model.type1),),
                     ),
-                    Container(
+                  AnimatedContainer(
+                     constraints: BoxConstraints( maxHeight: 2 == (sliderPageno) ? 200 : 150),
+                      duration: Duration(milliseconds: 500),
                       child: 2 == (sliderPageno)
-                          ? Image( image: NetworkImage(model.image,),fit: BoxFit.contain,)
-                          : Image(image: NetworkImage(model.image),color: setSecondaryColor(model.type1),),
+                          ? Image( image: customAdvanceNetworkImage(model.image,),fit: BoxFit.contain,)
+                          : Image(image: customAdvanceNetworkImage(model.image),color: setSecondaryColor(model.type1),),
                     ),
                   ],
                 ),

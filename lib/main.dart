@@ -48,8 +48,9 @@ class MyApp extends StatelessWidget {
                   return null;
                 }
                 if(pathElements[1].contains('detail')){
-                  var id  = int.tryParse(pathElements[2]);
-                  return MaterialPageRoute<bool>(builder:(BuildContext context)=> PokemonDetailPage(id: id,));
+                  // var id  = int.tryParse(pathElements[2]);
+                  var name = pathElements[2];
+                  return MaterialPageRoute<bool>(builder:(BuildContext context)=> PokemonDetailPage(name:name,));
                 }
           },
         )

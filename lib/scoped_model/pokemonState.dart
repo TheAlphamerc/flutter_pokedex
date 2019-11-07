@@ -1,7 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutte_pokedex/helper/constants.dart';
+import 'package:flutte_pokedex/model/pokemonDetail.dart';
 import 'package:flutte_pokedex/model/pokemonList.dart';
+import 'package:flutte_pokedex/model/pokemonMoves.dart';
+import 'package:flutte_pokedex/model/pokemonSpecies.dart';
 import 'package:flutte_pokedex/scoped_model/appState.dart';
 
 class PokemonState extends AppState {
@@ -10,6 +13,12 @@ class PokemonState extends AppState {
   
   bool _isBusy = false;
   bool get isBusy => _isBusy;
+  PokemonSpecies _pokemonSpecies;
+  PokemonSpecies get pokemonSpecies => _pokemonSpecies;
+  PokemonDetail _pokemonDetail;
+  PokemonDetail get pokemonDetail => _pokemonDetail;
+  PokemonMoves _pokemonMoves;
+  PokemonMoves get  pokemonMoves => _pokemonMoves;
   List<PokemonListModel> _pokemonList;
   List<PokemonListModel>  get pokemonList{
       if(_pokemonList != null){
@@ -25,14 +34,44 @@ class PokemonState extends AppState {
 
   Future getPokemonListAsync() async {
     try{
-          apiCall(isReady: true);
+          setApiBusy(true);
+          apiCall(isReady: true,isnotify: true);
           var url = apiPokemonList;
-          print('Get Api Address :- ' + url);
+          var response = await getAsync(url);
+          if(response.statusCode != 200){
+              print('Status code error : ${response.statusCode}');
+          }
+          else{
+             if (response != null) {
+                 print('Api call success');
+                 _pokemonList = pokemonListResponseFromJson(response.body);
+                 if(_pokemonList != null){
+                   apiCall(isReady: false,isnotify: true);
+                 }
+              } else {
+                apiCall(isReady: false,isnotify: true);
+             }
+          }
+         
+    }
+    catch(error){
+      apiCall(isReady: false,isnotify: true,isApiError: true);
+      print('ERROR(getPokemonListAsync) : $error');
+    }
+    
+  }
+  Future getPokemonDetaiAsync(String name) async {
+    try{
+          apiCall(isReady: true,);
+          var url = apiBaseUri + apiPokemonDetail+ name;
           var response = await getAsync(url);
           if (response != null) {
+            if(response.statusCode != 200){
+              print('API Status code error' + response.body);
+            }
             print('Api call success');
-            _pokemonList = pokemonListResponseFromJson(response.body);
-            if(_pokemonList != null){
+             _pokemonDetail = pokemonDetailFromJson(response.body);
+            if(_pokemonDetail != null){
               apiCall(isReady: false,isnotify: true);
             }
           } else {
@@ -41,9 +80,53 @@ class PokemonState extends AppState {
     }
     catch(error){
       apiCall(isReady: false,isnotify: true,isApiError: true);
-      print('ERROR: $error');
+      print('ERROR [getPokemonDetaiAsync]: $error');
     }
-    
   }
-  
+  Future getPokemonSpeciesAsync(String name) async {
+    try{
+          apiCall(isReady: true,);
+          var url = apiBaseUri + apiPokemonSpecies+ name.toString();
+          var response = await getAsync(url);
+          if (response != null) {
+            if(response.statusCode != 200){
+              print('API Status code error' + response.body);
+            }
+            print('Api call success');
+             _pokemonSpecies = pokemonSpeciesFromJson(response.body);
+            if(_pokemonDetail != null){
+              apiCall(isReady: false,isnotify: true);
+            }
+          } else {
+           apiCall(isReady: false,isnotify: true);
+         }
+    }
+    catch(error){
+      apiCall(isReady: false,isnotify: true,isApiError: true);
+      print('ERROR [getPokemonSpeciesAsync]: $error');
+    }
+  }
+  Future getPokemonMovesAsync(String name) async {
+    try{
+          apiCall(isReady: true,);
+          var url = apiBaseUri + apiPokemonMoves+ name.toString();
+          var response = await getAsync(url);
+          if (response != null) {
+            if(response.statusCode != 200){
+              print('API Status code error' + response.body);
+            }
+            print('Api call success');
+             _pokemonMoves = pokemonMovesFromJson(response.body);
+            if(_pokemonMoves != null){
+              apiCall(isReady: false,isnotify: true);
+            }
+          } else {
+           apiCall(isReady: false,isnotify: true);
+         }
+    }
+    catch(error){
+      apiCall(isReady: false,isnotify: true,isApiError: true);
+      print('ERROR [getPokemonMovesAsync]: $error');
+    }
+  }
 }

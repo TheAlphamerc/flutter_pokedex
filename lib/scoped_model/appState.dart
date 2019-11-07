@@ -15,7 +15,7 @@ class AppState extends ChangeNotifier {
 
   Future<Response> getAsync(String uri) async {
     
-     var url = apiBaseUri + uri ;
+     var url =   uri ;
      print('Get Api Address :- ' + url);
     var response = await get(url);
     if (response != null) {

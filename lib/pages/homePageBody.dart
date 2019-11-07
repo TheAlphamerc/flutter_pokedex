@@ -138,6 +138,7 @@ class _HomePageBodyState extends State<HomePageBody> {
         width: MediaQuery.of(context).size.width,
         alignment: Alignment.bottomCenter,
         child: ListView(
+           physics: BouncingScrollPhysics(),
           children: <Widget>[
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
