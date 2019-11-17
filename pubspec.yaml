@@ -55,6 +55,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/json/pokemonJson.txt
     - assets/images/splash_2.jpg
     - assets/images/dotted.png
     - assets/images/pokeball.png
@@ -86,6 +87,24 @@ flutter:
     - assets/images/pokimon_25.png
     - assets/images/pokimon_26.png
     - assets/images/pokimon_27.png
+    - assets/images/types/Bug.png
+    - assets/images/types/Dark.png
+    - assets/images/types/Dragon.png
+    - assets/images/types/Electric.png
+    - assets/images/types/Fairy.png
+    - assets/images/types/Fight.png
+    - assets/images/types/Fire.png
+    - assets/images/types/Flying.png
+    - assets/images/types/Ghost.png
+    - assets/images/types/Grass.png
+    - assets/images/types/Ground.png
+    - assets/images/types/Ice.png
+    - assets/images/types/Normal.png
+    - assets/images/types/Poison.png
+    - assets/images/types/Psychic.png
+    - assets/images/types/Rock.png
+    - assets/images/types/Steel.png
+    - assets/images/types/Water.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

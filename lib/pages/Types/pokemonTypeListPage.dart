@@ -8,15 +8,13 @@ import 'package:flutte_pokedex/widgets/customWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../helper/colorTheme.dart';
-import '../helper/colorTheme.dart';
 
-class PokemonListPage extends StatefulWidget {
-  _PokemonListPageState createState() => _PokemonListPageState();
+class PokemonTypeListPage extends StatefulWidget {
+  _PokemonTypeListPage createState() => _PokemonTypeListPage();
 }
 
-class _PokemonListPageState extends State<PokemonListPage>
-    with TickerProviderStateMixin {
+class _PokemonTypeListPage extends State<PokemonTypeListPage>{
+    
   List<Pokemon> list = [];
   AnimationController _controller;
   bool showFabButton =  false, card1 = true,card2= false, card3 = false;
@@ -28,10 +26,6 @@ class _PokemonListPageState extends State<PokemonListPage>
 
   @override
   void initState() {
-    _controller = AnimationController(
-     vsync: this, duration: Duration(milliseconds: 4000));
-    _controller.repeat();
-    // list = widget.model.allPokemon;
    final state = Provider.of<PokemonState>(context,listen: false);
    state.getPokemonListAsync();
     super.initState();
@@ -129,7 +123,6 @@ class _PokemonListPageState extends State<PokemonListPage>
       onTap: () {
         Navigator.of(context).pushNamed('/detail/${model.name}');
       },
-       onLongPress: (){ openPokemonshortDetail(model);},
       child: Container(
           margin: EdgeInsets.only(left: 5,right: 5, top: 5,bottom: 5),
           decoration: BoxDecoration(

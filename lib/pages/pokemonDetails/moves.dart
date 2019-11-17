@@ -35,7 +35,7 @@ class _MovesState extends State<Moves> with TickerProviderStateMixin<Moves>{
   }
   Widget _moves() {
      final state = Provider.of<PokemonState>(context);
-     if(state.pokemonDetail.moves == null && state.pokemonDetail.moves.length == 0){
+     if(state.pokemonDetail.moves == null || state.pokemonDetail.moves.length == 0){
         return Container(child:Center(child:  Text('No information available'),),);
      }
      List<Widget> moves;
@@ -53,24 +53,14 @@ class _MovesState extends State<Moves> with TickerProviderStateMixin<Moves>{
                  margin: EdgeInsets.symmetric(horizontal: 5,vertical: 5),
                  padding: EdgeInsets.symmetric(horizontal: 5,vertical: 5),
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
+                  color: Colors.black12,
                   borderRadius: BorderRadius.all(Radius.circular(5)),
                   shape:BoxShape.rectangle
                 ),
-               child: Text(state.pokemonDetail.moves[index].move.name,style: TextStyle(fontSize: 15,fontWeight: FontWeight.w400),),
+               child: Text(state.pokemonDetail.moves[index].move.name,style: TextStyle(fontSize: getFontSize(context, 15),color: Colors.black87,fontWeight: FontWeight.w400),),
                ))
       );
-       
-    
-     
-    // return SingleChildScrollView(
-    //   child: Container(
-    //     height: 400,
-    //   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-    //   child: grid
-    //   ),
-    // );
-  }
+ }
   
   Widget _propertyRow(String title,String value){
    return  Row(

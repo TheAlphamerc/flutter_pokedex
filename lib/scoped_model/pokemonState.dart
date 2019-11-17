@@ -6,7 +6,7 @@ import 'package:flutte_pokedex/model/pokemonList.dart';
 import 'package:flutte_pokedex/model/pokemonMoves.dart';
 import 'package:flutte_pokedex/model/pokemonSpecies.dart';
 import 'package:flutte_pokedex/scoped_model/appState.dart';
-
+import 'package:flutter/services.dart' show rootBundle;
 class PokemonState extends AppState {
 
   PokemonState();
@@ -36,22 +36,26 @@ class PokemonState extends AppState {
     try{
           setApiBusy(true);
           apiCall(isReady: true,isnotify: true);
-          var url = apiPokemonList;
-          var response = await getAsync(url);
-          if(response.statusCode != 200){
-              print('Status code error : ${response.statusCode}');
-          }
-          else{
-             if (response != null) {
-                 print('Api call success');
-                 _pokemonList = pokemonListResponseFromJson(response.body);
-                 if(_pokemonList != null){
-                   apiCall(isReady: false,isnotify: true);
-                 }
-              } else {
-                apiCall(isReady: false,isnotify: true);
-             }
-          }
+          
+         _pokemonList = await parseJsonFromAssets('assets/json/pokemonJson.txt');
+         
+          // var url = apiPokemonList;
+          // var response = await getAsync(url);
+          // if(response.statusCode != 200){
+          //     print('Status code error : ${response.statusCode}');
+          // }
+          // else{
+          //    if (response != null) {
+          //        print('Api call success');
+          //        _pokemonList = pokemonListResponseFromJson(response.body);
+          //        if(_pokemonList != null){
+          //          apiCall(isReady: false,isnotify: true);
+          //        }
+          //     } else {
+          //       apiCall(isReady: false,isnotify: true);
+          //    }
+          // }
+            apiCall(isReady: false,isnotify: true);
          
     }
     catch(error){
@@ -63,6 +67,7 @@ class PokemonState extends AppState {
   Future getPokemonDetaiAsync(String name) async {
     try{
           apiCall(isReady: true,);
+          
           var url = apiBaseUri + apiPokemonDetail+ name;
           var response = await getAsync(url);
           if (response != null) {
@@ -128,5 +133,15 @@ class PokemonState extends AppState {
       apiCall(isReady: false,isnotify: true,isApiError: true);
       print('ERROR [getPokemonMovesAsync]: $error');
     }
+  }
+
+dynamic parseJsonFromAssets(String assetsPath) async {
+    print('--- Parse json from: $assetsPath');
+    return rootBundle.loadString(assetsPath)
+        .then((jsonStr) {
+            var data =   jsonEncode(jsonStr);
+            var  de =  pokemonListResponseFromJson(jsonDecode(data));
+             return de;
+        });
   }
 }

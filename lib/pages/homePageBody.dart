@@ -1,3 +1,4 @@
+import 'package:flutte_pokedex/widgets/customWidget.dart';
 import 'package:flutter/material.dart';
 
 class HomePageBody extends StatefulWidget {
@@ -8,14 +9,7 @@ class _HomePageBodyState extends State<HomePageBody> {
   bool isViewAll = false;
   double viewAllHeight = 0;
   bool isSearchFieldEnable = false;
-  double _getFontSize(double size){
-   if(MediaQuery.of(context).textScaleFactor < 1){
-      return size;
-   }
-   else{
-     return (size / MediaQuery.of(context).textScaleFactor);
-   }
-  }
+ 
   Widget _getCategoryCard(String title, Color color, Color seondaryColor) {
     return InkWell(
       onTap: () {
@@ -24,16 +18,16 @@ class _HomePageBodyState extends State<HomePageBody> {
       child: Stack(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.only(left: 20, top: 25, bottom: 20),
+            alignment: Alignment.center,
+            padding: EdgeInsets.only(left: 0, top: getDimention(context,25), bottom: 20),
             margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
             width: MediaQuery.of(context).size.width / 2 - 30,
-            height: 70,
+            height: getDimention(context,70),
             decoration: BoxDecoration(
                 color: color, borderRadius: BorderRadius.circular(10)),
-            child: Text(
-              title,
-              style: TextStyle(color: Colors.white, fontSize: _getFontSize(18)),
-            ),
+            child: Padding(
+              padding: EdgeInsets.only(right: 30),
+              child: Text( title,style: TextStyle(color: Colors.white, fontSize: getFontSize(context,18)),),)
           ),
           Positioned(
             top: -15,
@@ -62,8 +56,10 @@ class _HomePageBodyState extends State<HomePageBody> {
             ),
           ),
           Container(
-            alignment: FractionalOffset.topRight,
-            width: 165,
+            alignment: Alignment.topRight,
+            // FractionalOffset.topRight,
+             width: (fullWidth(context) / 2) - 30,
+            // color: Colors.blue,
             margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
             child: ClipRRect(
               borderRadius: BorderRadius.only(
@@ -91,12 +87,12 @@ class _HomePageBodyState extends State<HomePageBody> {
     return ListTile(
         title: Text(
           'Pokemon rumble rush arives soon',
-          style: TextStyle(fontSize: _getFontSize(16), fontWeight: FontWeight.w400),
+          style: TextStyle(fontSize: getFontSize(context,16), fontWeight: FontWeight.w400),
         ),
-        subtitle: Text('10 May 2019',style: TextStyle(fontSize: _getFontSize(16)),),
+        subtitle: Text('10 May 2019',style: TextStyle(fontSize: getFontSize(context,16)),),
         trailing: Image.asset(
           image,
-        ));
+    ));
   }
 
   Widget _searchBox() {
@@ -118,23 +114,17 @@ class _HomePageBodyState extends State<HomePageBody> {
               onTap: (){
                 isViewAll = false;
               },
-              decoration: InputDecoration(contentPadding: EdgeInsets.only(left: 30,top:_getFontSize(10)), border:InputBorder.none , disabledBorder: InputBorder.none, hintText: 'Search Pokemon, Move, Ability',hintStyle: TextStyle(fontSize: _getFontSize(14))),
+              decoration: InputDecoration(contentPadding: EdgeInsets.only(left: 30,top:getFontSize(context,10)), border:InputBorder.none , disabledBorder: InputBorder.none, hintText: 'Search Pokemon, Move, Ability',hintStyle: TextStyle(fontSize: getFontSize(context,14))),
             )
           ],
         ));
   }
 
   Widget _pokemonNews() {
-    return AnimatedPositioned(
-      curve: Curves.linear,
-      bottom: isViewAll ? 0 : 10 + viewAllHeight,
-      left: 20,
-      right: 20,
-      duration: Duration(milliseconds: 400),
-      child: AnimatedContainer(
+    return AnimatedContainer(
         curve: Curves.linearToEaseOut,
         duration: Duration(milliseconds: 300),
-        height: isViewAll ? MediaQuery.of(context).size.height - 300 : 200,
+        height: isViewAll ? MediaQuery.of(context).size.height - getDimention(context, 300) : getDimention(context, 200) ,
         width: MediaQuery.of(context).size.width,
         alignment: Alignment.bottomCenter,
         child: ListView(
@@ -143,19 +133,22 @@ class _HomePageBodyState extends State<HomePageBody> {
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(
+                 Padding(
+                   padding: EdgeInsets.only(left: 20,),
+                   child:  Text(
                     'Pokemon News',
-                    style: TextStyle(fontSize: _getFontSize(20), fontWeight: FontWeight.w800),
+                    style: TextStyle(fontSize: getFontSize(context,20), fontWeight: FontWeight.w800),
                   ),
+                 ),
                   FlatButton(
                     child: Text(
                       'View All',
-                      style: TextStyle(fontSize: _getFontSize(18), color: Colors.blue),
+                      style: TextStyle(fontSize: getFontSize(context,18), color: Colors.blue),
                     ),
                     onPressed: () {
                       setState(() {
                         isViewAll = !isViewAll;
-                        viewAllHeight = isViewAll ? 290 : 0;
+                        viewAllHeight = isViewAll ?  getDimention(context, 290) : 0;
                       });
                     },
                   ),
@@ -171,30 +164,33 @@ class _HomePageBodyState extends State<HomePageBody> {
             _getNewsTile('assets/images/pokimon_5.png'),
           ],
         ),
-      ),
-    );
+      );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: Stack(children: <Widget>[
-          Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(30),
-                      bottomRight: Radius.circular(30))),
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.fromLTRB(20, 0, 0, 20),
-              child: Stack(
-                children: <Widget>[
-                  Positioned(
-                      right: 0,
-                      top: 0,
-                      child: Align(
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverList(
+          key: Key('list'),
+          delegate: SliverChildListDelegate.fixed([
+           Column(
+             children: <Widget>[
+               Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(30),
+                          bottomRight: Radius.circular(30))),
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.fromLTRB(20, 0, 0, 20),
+                  child: Stack(
+                    children: <Widget>[
+                      Positioned(
+                          right: 0,
+                          top: 0,
+                          child:
+                           Align(
                           heightFactor: .75,
                           widthFactor: .7,
                           alignment: Alignment.bottomLeft,
@@ -203,75 +199,66 @@ class _HomePageBodyState extends State<HomePageBody> {
                             child: Image.asset(
                               'assets/images/pokeball.png',
                               color: Color(0xffe3e3e3),
-                              height: 250,
+                              height: getDimention(context,250),
                             ),
                           ))),
-                  Container(
-                    padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).padding.top),
-                    margin: EdgeInsets.only(
-                        top: MediaQuery.of(context).padding.top + 50),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          'What pokemon',
-                          style: TextStyle(
-                              fontSize: _getFontSize(30), fontWeight: FontWeight.w600),
-                        ),
-                        Text(
-                          'are you loking for ?',
-                          style: TextStyle(
-                              fontSize: _getFontSize(30), fontWeight: FontWeight.w600),
-                        ),
-                        _searchBox(),
-                        AnimatedContainer(
-                          curve: Curves.linear,
-                          duration: Duration(milliseconds: 300),
-                          height: isViewAll ? 0 : 100,
-                          child: Row(
+                      Container(
+                          padding: EdgeInsets.only(
+                              top: MediaQuery.of(context).padding.top),
+                          margin: EdgeInsets.only(
+                              top: MediaQuery.of(context).padding.top + 50),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              _getCategoryCard('Pokedex', Color(0xff4dc2a6),
-                                  Color(0xff65d4bc)),
-                              _getCategoryCard(
-                                  'Moves', Color(0xfff77769), Color(0xfff88a7d))
+                              Text('What pokemon',style: TextStyle(fontSize: getFontSize(context,30), fontWeight: FontWeight.w600),),
+                              Text('are you loking for ?',style: TextStyle(fontSize: getFontSize(context,30), fontWeight: FontWeight.w600),),
+                              _searchBox(),
+                              AnimatedContainer(
+                                curve: Curves.linear,
+                                duration: Duration(milliseconds: 300),
+                                height: isViewAll ? 0 : getDimention(context,100),
+                                child: Row(
+                                  children: <Widget>[
+                                    _getCategoryCard('Pokedex', Color(0xff4dc2a6),Color(0xff65d4bc)),
+                                    _getCategoryCard('Moves', Color(0xfff77769), Color(0xfff88a7d))],
+                                ),
+                              ),
+                              AnimatedContainer(
+                                curve: Curves.linear,
+                                duration: Duration(milliseconds: 300),
+                                height: isViewAll ? 0 : getDimention(context,100),
+                                child: Row(
+                                  children: <Widget>[
+                                    _getCategoryCard('Abilities', Color(0xff59a9f4),Color(0xff6fc1f9)),
+                                    _getCategoryCard('Item', Color(0xffffce4a), Color(0xffffd858))
+                                  ],
+                                ),
+                              ),
+                              AnimatedContainer(
+                                curve: Curves.linear,
+                                duration: Duration(milliseconds: 300),
+                                height: isViewAll ? 0 : getDimention(context,100),
+                                child: Row(
+                                  children: <Widget>[
+                                    _getCategoryCard('Location', Color(0xff7b528c),Color(0xff9569a5)),
+                                    _getCategoryCard('Type Charts', Color(0xffb1726c),Color(0xffc1877e))
+                                  ],
+                                ),
+                              ),
+                              // _pokemonNews()
                             ],
                           ),
                         ),
-                        AnimatedContainer(
-                          curve: Curves.linear,
-                          duration: Duration(milliseconds: 300),
-                          height: isViewAll ? 0 : 100,
-                          child: Row(
-                            children: <Widget>[
-                              _getCategoryCard('Abilities', Color(0xff59a9f4),
-                                  Color(0xff6fc1f9)),
-                              _getCategoryCard(
-                                  'Item', Color(0xffffce4a), Color(0xffffd858))
-                            ],
-                          ),
-                        ),
-                        AnimatedContainer(
-                          curve: Curves.linear,
-                          duration: Duration(milliseconds: 300),
-                          height: isViewAll ? 0 : 100,
-                          child: Row(
-                            children: <Widget>[
-                              _getCategoryCard('Location', Color(0xff7b528c),
-                                  Color(0xff9569a5)),
-                              _getCategoryCard('Type Charts', Color(0xffb1726c),
-                                  Color(0xffc1877e))
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              )),
-          _pokemonNews()
-        ]));
+                    ],
+                  )),
+                  _pokemonNews()
+             ],
+           )
+         ])
+        )
+      ],
+    );
   }
 }

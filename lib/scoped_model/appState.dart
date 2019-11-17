@@ -16,8 +16,9 @@ class AppState extends ChangeNotifier {
   Future<Response> getAsync(String uri) async {
     
      var url =   uri ;
+     var header = { "User-Agent":"BastionDiscordBot (https://bastionbot.org, v6.3)"};
      print('Get Api Address :- ' + url);
-    var response = await get(url);
+    var response = await get(url,headers: header);
     if (response != null) {
       return response;
     } else {

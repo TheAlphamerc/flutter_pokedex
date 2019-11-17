@@ -109,14 +109,14 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
    
  }
   
-  double _getFontSize(double size){
-   if(MediaQuery.of(context).textScaleFactor < 1){
-      return size;
-   }
-   else{
-     return (size / MediaQuery.of(context).textScaleFactor);
-   }
-  }
+  // double getFontSize(context,1(double size){
+  //  if(MediaQuery.of(context).textScaleFactor < 1){
+  //     return size;
+  //  }
+  //  else{
+  //    return (size / MediaQuery.of(context).textScaleFactor);
+  //  }
+  // }
   Widget _pokemonCategoryChip(String type) {
     if(type == null || type.isEmpty){
       return Container();
@@ -127,46 +127,48 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
       decoration: BoxDecoration(
           color: setSecondaryColor(type),
           borderRadius: BorderRadius.circular(20)),
-      child: Text(
-        type,
-        style: TextStyle(color: Colors.white, fontSize: _getFontSize(16)),
-      ),
+      child: Row(children: <Widget>[
+        Text(type,style: TextStyle(color: Colors.white, fontSize: getFontSize(context,16)),),
+        Image.asset(getTypeImage(type))
+      ],)
     );
   }
 
   Widget _evalutionSection() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            "Evaluation Chain",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: _getFontSize(14)),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          _evaluationChainRow('Lvl 15'),
-         Divider(),
-          SizedBox(
-            height: 5,
-          ),
-          _evaluationChainRow('Lvl 16'),
-          Divider(),
-          SizedBox(
-            height: 5,
-          ),
-          _evaluationChainRow('Lvl 17'),
-         Divider(),
-          SizedBox(
-            height: 5,
-          ),
-          _evaluationChainRow('Lvl 18'),
-          SizedBox(
-            height: 20,
-          ),
-        ],
+    return SingleChildScrollView(
+      child:  Container(
+        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              "Evaluation Chain",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: getFontSize(context,(14))),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            _evaluationChainRow('Lvl 15'),
+           Divider(),
+            SizedBox(
+              height: 5,
+            ),
+            _evaluationChainRow('Lvl 16'),
+            Divider(),
+            SizedBox(
+              height: 5,
+            ),
+            _evaluationChainRow('Lvl 17'),
+           Divider(),
+            SizedBox(
+              height: 5,
+            ),
+            _evaluationChainRow('Lvl 18'),
+            SizedBox(
+              height: 20,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -188,7 +190,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
               ),
               Text(
                 lvl,
-                style: TextStyle(fontSize: _getFontSize(12)),
+                style: TextStyle(fontSize: getFontSize(context,12)),
               )
             ],
           ),
@@ -223,7 +225,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
         ),
         Text(
           name,
-          style: TextStyle(fontSize: _getFontSize(14)),
+          style: TextStyle(fontSize: getFontSize(context,14)),
         )
       ],
     );
@@ -234,8 +236,8 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
         right: 0,
         top: 0,
         child: Align(
-            heightFactor: .75,
-            widthFactor: .7,
+            heightFactor: fullWidth(context) <= 360 ?  getDimention(context, 1.03) : .75,
+            widthFactor:  fullWidth(context) <= 360 ?  getDimention(context,.98) : .7,
             alignment: Alignment.bottomLeft,
             child: RotationTransition(
                 turns: Tween(begin: 0.0, end: 1.0).animate(_controller),
@@ -244,16 +246,17 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
                   child: Image.asset(
                     'assets/images/pokeball.png',
                     color: setSecondaryColor(model.type1),
-                    height: 250,
+                    height: getDimention(context, 250),
                   ),
                 ))));
   }
+  
   Widget _pokemonType(){
       final state = Provider.of<PokemonState>(context);
       if(state.pokemonSpecies != null && state.pokemonSpecies.genera != null && state.pokemonSpecies.genera.length > 0){
          var type = state.pokemonSpecies.genera.firstWhere((x)=>x.language.name == 'en').genus;
          return customText(type,
-                style: TextStyle(color: Colors.white60, fontSize: _getFontSize(18)),
+                style: TextStyle(color: Colors.white60, fontSize: getFontSize(context,18)),
               );
       }
       else{
@@ -268,13 +271,13 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
         children: <Widget>[
           _topRightPokeball(),
           Positioned(
-              top: -20,
-              left: -45,
+              top: -getDimention(context,20),
+              left: -getDimention(context,45),
               child: Transform.rotate(
                 angle: 7.6,
                 child: Container(
-                  height: 140,
-                  width: 140,
+                  height: getDimention(context,140),
+                  width: getDimention(context,140),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: setSecondaryColor(model.type1),
@@ -287,12 +290,12 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
             child:  Image.asset(
                       'assets/images/dotted.png',
                       color: setSecondaryColor(model.type1),
-                      height: 50,
+                      height: getDimention(context,50),
                     ),
           ),
           Positioned(
             left: 10,
-            top: 40,
+            top: getDimention(context,40),
             right: 25,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -332,13 +335,13 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
                         child: Text(
                           model.name,
                           style: TextStyle(
-                              fontSize: _getFontSize(30),
+                              fontSize: getFontSize(context,30),
                               color: Colors.white,
                               fontWeight: FontWeight.w600),
                               overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      customText('#' + (model.orderId.toString().length == 1  ? '00' + model.orderId.toString() : model.orderId.toString().length == 2 ? '0'+model.orderId.toString() : model.orderId.toString()),style: TextStyle(fontSize: _getFontSize(20),color: Colors.white,fontWeight: FontWeight.w600),),
+                      customText('#' + (model.orderId.toString().length == 1  ? '00' + model.orderId.toString() : model.orderId.toString().length == 2 ? '0'+model.orderId.toString() : model.orderId.toString()),style: TextStyle(fontSize: getFontSize(context,20),color: Colors.white,fontWeight: FontWeight.w600),),
                     ],
                   ),
                   SizedBox(height: 10,),
@@ -359,9 +362,9 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
           Positioned(
               right: 50,
               left: 50,
-              top: 320,
+              top: getDimention(context,300),
               child: Align(
-                  heightFactor: .75,
+                  heightFactor: getDimention(context,0.75),
                   widthFactor: .7,
                   alignment: Alignment.center,
                   child: RotationTransition(
@@ -369,7 +372,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
                     child: Image.asset(
                       'assets/images/pokeball.png',
                       color: setSecondaryColor(model.type1),
-                      height: 250,
+                      height: getDimention(context,250),
                     ),
                   ))),
           SlidingUpPanel(
@@ -383,11 +386,11 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
             },
             onPanelOpened: () {},
             onPanelClosed: () {},
-            minHeight: MediaQuery.of(context).size.height - 430,
-            maxHeight: MediaQuery.of(context).size.height - 200,
+            minHeight: MediaQuery.of(context).size.height - getDimention(context,430),
+            maxHeight: MediaQuery.of(context).size.height - getDimention(context,200),
             panel: Container(
               width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.only(top: _getFontSize(20)),
+              padding: EdgeInsets.only(top: getFontSize(context,(20))),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -402,12 +405,12 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
                     indicatorColor: setprimaryColor(model.type1),
                     labelColor: Colors.black,
                     unselectedLabelColor: Colors.black54,
-                    indicatorPadding: EdgeInsets.symmetric(horizontal: _getFontSize(20),),
+                    indicatorPadding: EdgeInsets.symmetric(horizontal: getFontSize(context,20,)),
                     tabs: [
-                      Tab( child: Text('About',style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900,fontSize: _getFontSize(14)),),),
-                      Tab(child: Text('Base State',style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900,fontSize: _getFontSize(14)),),),
-                      Tab(child: Text('Evaluation',style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900,fontSize: _getFontSize(14)),),),
-                      Tab(child: Text('Moves',style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900,fontSize: _getFontSize(14)),),),
+                      Tab( child: Text('About',style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900,fontSize: getFontSize(context,14)),),),
+                      Tab(child: Text('Base State',style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900,fontSize: getFontSize(context,14)),),),
+                      Tab(child: Text('Evaluation',style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900,fontSize: getFontSize(context,14)),),),
+                      Tab(child: Text('Moves',style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900,fontSize: getFontSize(context,14),)),),
                     ],
                   ),
                   body: TabBarView(
@@ -424,8 +427,8 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
           ),
           Positioned(
               width: MediaQuery.of(context).size.width,
-              top: 260,
-              height: 200 * (1 - opacity),
+              top: getDimention(context,260),
+              height: getDimention(context,200 * (1 - opacity)),
               child: Opacity(
                 opacity: 1 - opacity,
                 child: CarouselSlider(

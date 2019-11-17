@@ -39,7 +39,7 @@ class _AboutState extends State<About> with TickerProviderStateMixin<About>{
      final state = Provider.of<PokemonState>(context);
     return SingleChildScrollView(
       child: Container(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      padding: EdgeInsets.only(left: 20, right: 20,bottom: 20,top: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -198,7 +198,7 @@ class _AboutState extends State<About> with TickerProviderStateMixin<About>{
           child: new ConstrainedBox(
               constraints: isExpanded
                   ? new BoxConstraints()
-                  : new BoxConstraints(maxHeight: 100.0),
+                  : new BoxConstraints(maxHeight: 58.0),
               child: new Text(
                description.toString().replaceAll("\n", " "),
                 softWrap: true,
