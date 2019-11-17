@@ -35,7 +35,7 @@ class _MovesState extends State<Moves> with TickerProviderStateMixin<Moves>{
   }
   Widget _moves() {
      final state = Provider.of<PokemonState>(context);
-     if(state.pokemonDetail.moves == null || state.pokemonDetail.moves.length == 0){
+     if(state.pokemonDetail == null || state.pokemonDetail.moves == null || state.pokemonDetail.moves.length == 0){
         return Container(child:Center(child:  Text('No information available'),),);
      }
      List<Widget> moves;
