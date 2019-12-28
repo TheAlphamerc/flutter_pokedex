@@ -11,14 +11,11 @@ This sample is based on [Pokedex App](https://dribbble.com/shots/6545819-Pokedex
 
 Screenshots               |  Screenshots  |  Screenshots
 :-------------------------:|:-------------------------:|:-------------------------:
-![](https://github.com/TheAlphamerc/flutter_pokedex/blob/master/screenshots/screenshot_1.jpg?raw=true)  |  ![](https://github.com/TheAlphamerc/flutter_pokedex/blob/master/screenshots/screenshot_2.jpg?raw=true)  | ![](https://github.com/TheAlphamerc/flutter_pokedex/blob/master/screenshots/screenshot_3.jpg?raw=true)  | ![](https://github.com/TheAlphamerc/flutter_pokedex/blob/master/screenshots/screenshot_4.jpg?raw=true)  | 
-![](https://github.com/TheAlphamerc/flutter_pokedex/blob/master/screenshots/screenshot_5.jpg?raw=true)  | ![](https://github.com/TheAlphamerc/flutter_pokedex/blob/master/screenshots/screenshot_6.jpg?raw=true)  | ![](https://github.com/TheAlphamerc/flutter_pokedex/blob/master/screenshots/screenshot_7.jpg?raw=true)  |
-![](https://github.com/TheAlphamerc/flutter_pokedex/blob/master/screenshots/screenshot_8.jpg?raw=true)  | ![](https://github.com/TheAlphamerc/flutter_pokedex/blob/master/screenshots/screenshot_12.jpg?raw=true) | ![](https://github.com/TheAlphamerc/flutter_pokedex/blob/master/screenshots/screenshot_13.jpg?raw=true) | 
-![](https://github.com/TheAlphamerc/flutter_pokedex/blob/master/screenshots/screenshot_14.jpg?raw=true) | ![](https://github.com/TheAlphamerc/flutter_pokedex/blob/master/screenshots/screenshot_9.jpg?raw=true)  | ![](https://github.com/TheAlphamerc/flutter_pokedex/blob/master/screenshots/screenshot_10.jpg?raw=true) |
-![](https://github.com/TheAlphamerc/flutter_pokedex/blob/master/screenshots/screenshot_11.jpg?raw=true) |
- 
- 
-
+![](https://github.com/TheAlphamerc/flutter_pokedex/blob/master/screenshots/screen.gif?raw=true)|![](https://github.com/TheAlphamerc/flutter_pokedex/blob/master/screenshots/screenshot_1.jpg?raw=true)|![](https://github.com/TheAlphamerc/flutter_pokedex/blob/master/screenshots/screenshot_2.jpg?raw=true) |
+![](https://github.com/TheAlphamerc/flutter_pokedex/blob/master/screenshots/screenshot_3.jpg?raw=true)|![](https://github.com/TheAlphamerc/flutter_pokedex/blob/master/screenshots/screenshot_4.jpg?raw=true)|![](https://github.com/TheAlphamerc/flutter_pokedex/blob/master/screenshots/screenshot_5.jpg?raw=true)|
+![](https://github.com/TheAlphamerc/flutter_pokedex/blob/master/screenshots/screenshot_6.jpg?raw=true)|![](https://github.com/TheAlphamerc/flutter_pokedex/blob/master/screenshots/screenshot_7.jpg?raw=true)|![](https://github.com/TheAlphamerc/flutter_pokedex/blob/master/screenshots/screenshot_11.jpg?raw=true)|
+![](https://github.com/TheAlphamerc/flutter_pokedex/blob/master/screenshots/screenshot_13.jpg?raw=true)|![](https://github.com/TheAlphamerc/flutter_pokedex/blob/master/screenshots/screenshot_14.jpg?raw=true)|![](https://github.com/TheAlphamerc/flutter_pokedex/blob/master/screenshots/screenshot_8.jpg?raw=true)|
+![](https://github.com/TheAlphamerc/flutter_pokedex/blob/master/screenshots/screenshot_12.jpg?raw=true)|![](https://github.com/TheAlphamerc/flutter_pokedex/blob/master/screenshots/screenshot_10.jpg?raw=true)|![](https://github.com/TheAlphamerc/flutter_pokedex/blob/master/screenshots/screenshot_9.jpg?raw=true)|
 
 
 ## Getting Started
