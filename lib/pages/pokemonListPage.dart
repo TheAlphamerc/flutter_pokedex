@@ -32,8 +32,7 @@ class _PokemonListPageState extends State<PokemonListPage>
      vsync: this, duration: Duration(milliseconds: 4000));
     _controller.repeat();
     // list = widget.model.allPokemon;
-   final state = Provider.of<PokemonState>(context,listen: false);
-   state.getPokemonListAsync();
+  
     super.initState();
   }
   Widget _pokemonCard(PokemonListModel model) {
@@ -258,7 +257,7 @@ class _PokemonListPageState extends State<PokemonListPage>
           onPressed: ()async{
                var result = await showSearch(
                  context: context,
-                 delegate: SpeakerSearch(state.pokemonList));
+                 delegate: PokemonSearch(state.pokemonList));
              },
           icon: Icon(Icons.search,color: Colors.black87,),
         )
@@ -277,12 +276,12 @@ class _PokemonListPageState extends State<PokemonListPage>
           child: Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.blue
+              color: card1 ? Colors.blue : Colors.grey
             ),
             child: IconButton(
                onPressed: (){
                 setState(() {
-                    card1 = true;
+                   card1 = true;
                    card2 = false;
                    card3 = false;
                 });
@@ -300,7 +299,7 @@ class _PokemonListPageState extends State<PokemonListPage>
         child:  Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Colors.blue
+            color: card2 ? Colors.blue : Colors.grey
           ),
           child: IconButton(
              onPressed: (){
@@ -324,7 +323,7 @@ class _PokemonListPageState extends State<PokemonListPage>
       child:  Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Colors.blue
+            color: card3 ? Colors.blue : Colors.grey
           ),
           child: IconButton(
             onPressed: (){
@@ -482,10 +481,10 @@ class _PokemonListPageState extends State<PokemonListPage>
   }
 }
 
-class SpeakerSearch extends SearchDelegate<PokemonListModel>{
+class PokemonSearch extends SearchDelegate<PokemonListModel>{
    final List<PokemonListModel> list;
     List<PokemonListModel> templist;
-  SpeakerSearch(this.list);
+  PokemonSearch(this.list);
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -522,7 +521,11 @@ class SpeakerSearch extends SearchDelegate<PokemonListModel>{
             padding: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
-              color: Theme.of(context).cardColor
+              color: Theme.of(context).cardColor,
+               boxShadow: <BoxShadow>[
+                  BoxShadow(blurRadius: 15,offset: Offset(5, 5),color: setSecondaryColor(templist[index].type1).withAlpha(150),spreadRadius:10),
+                  BoxShadow(blurRadius: 8,offset: Offset(5,-5),color: Color(0xffffffff),spreadRadius:5)
+               ],
             ),
             child: ListTile(
               leading:   Image( image: customAdvanceNetworkImage(
@@ -532,24 +535,23 @@ class SpeakerSearch extends SearchDelegate<PokemonListModel>{
                     ),
             trailing:  Container(
               width: 85,
-                        padding:
-                            EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: setSecondaryColor(templist[index].type1),
-                        ),
-                        child:
-                        Row(children: <Widget>[
-                         Expanded(child:  Text(
-                         templist[index].type1,
-                          style: TextStyle(
-                              color: Colors.white60,
-                              fontSize: getFontSize(context,14),
-                              fontWeight: FontWeight.w600),
-                        ),),
-                          Image.asset(getTypeImage(templist[index].type1),fit: BoxFit.cover,width: 30,)
-                        ],) 
-                      ),
+                  padding:EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: setSecondaryColor(templist[index].type1),
+                  ),
+                  child:
+                  Row(children: <Widget>[
+                   Expanded(child:  Text(
+                   templist[index].type1,
+                    style: TextStyle(
+                        color: Colors.white60,
+                        fontSize: getFontSize(context,14),
+                        fontWeight: FontWeight.w600),
+                  ),),
+                    Image.asset(getTypeImage(templist[index].type1),fit: BoxFit.cover,width: 30,)
+                  ],) 
+                ),
             title: Text(templist[index].name),
             onTap: (){
               Navigator.of(context).pushNamed('/detail/${templist[index].name}');

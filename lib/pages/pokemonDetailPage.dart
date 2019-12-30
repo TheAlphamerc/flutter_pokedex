@@ -135,6 +135,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
   }
 
   Widget _evalutionSection() {
+     final state = Provider.of<PokemonState>(context);
     return SingleChildScrollView(
       child:  Container(
         padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
@@ -148,22 +149,22 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
             SizedBox(
               height: 10,
             ),
-            _evaluationChainRow('Lvl 15'),
+            _evaluationChainRow('Lvl 15',state?.pokemonDetail?.name),
            Divider(),
             SizedBox(
               height: 5,
             ),
-            _evaluationChainRow('Lvl 16'),
+            _evaluationChainRow('Lvl 16',state?.pokemonDetail?.name),
             Divider(),
             SizedBox(
               height: 5,
             ),
-            _evaluationChainRow('Lvl 17'),
+            _evaluationChainRow('Lvl 17',state?.pokemonDetail?.name),
            Divider(),
             SizedBox(
               height: 5,
             ),
-            _evaluationChainRow('Lvl 18'),
+            _evaluationChainRow('Lvl 18',state?.pokemonDetail?.name),
             SizedBox(
               height: 20,
             ),
@@ -173,12 +174,12 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
     );
   }
 
-  Widget _evaluationChainRow(String lvl) {
+  Widget _evaluationChainRow(String lvl,String name) {
     return Row(
       children: <Widget>[
         Expanded(
           flex: 1,
-          child: _pokemonEvaluationImage(model.image, 'Bulbasaur'),
+          child: _pokemonEvaluationImage(model.image, name),
         ),
         Expanded(
           flex: 2,
@@ -197,7 +198,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
         ),
         Expanded(
           flex: 1,
-          child: _pokemonEvaluationImage(model.image, 'Ivysaur'),
+          child: _pokemonEvaluationImage(model.image, name),
         ),
       ],
     );
@@ -223,7 +224,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
         SizedBox(
           height: 10,
         ),
-        Text(
+        customText(
           name,
           style: TextStyle(fontSize: getFontSize(context,14)),
         )

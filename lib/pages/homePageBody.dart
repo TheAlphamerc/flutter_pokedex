@@ -1,5 +1,9 @@
+import 'package:flutte_pokedex/scoped_model/pokemonState.dart';
 import 'package:flutte_pokedex/widgets/customWidget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'Types/pokemonTypeListPage.dart';
 
 class HomePageBody extends StatefulWidget {
   _HomePageBodyState createState() => _HomePageBodyState();
@@ -9,7 +13,12 @@ class _HomePageBodyState extends State<HomePageBody> {
   bool isViewAll = false;
   double viewAllHeight = 0;
   bool isSearchFieldEnable = false;
- 
+  @override
+  void initState() { 
+     super.initState();
+     final state = Provider.of<PokemonState>(context,listen: false);
+     state.getPokemonListAsync();
+  }
   Widget _getCategoryCard(String title, Color color, Color seondaryColor) {
     return InkWell(
       onTap: () {
@@ -20,11 +29,27 @@ class _HomePageBodyState extends State<HomePageBody> {
           Container(
             alignment: Alignment.center,
             padding: EdgeInsets.only(left: 0, top: getDimention(context,25), bottom: 20),
+            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            width: MediaQuery.of(context).size.width / 2 - 50,
+            height: getDimention(context,70),
+            decoration: BoxDecoration(
+                color: color, borderRadius: BorderRadius.circular(10),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(blurRadius: 15,offset: Offset(5, 5),color: color.withAlpha(150),spreadRadius:0),
+                  BoxShadow(blurRadius: 8,offset: Offset(5,-5),color: Color(0xffffffff),spreadRadius:5)
+               ],
+            ),
+           
+          ),
+          Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.only(left: 0, top: getDimention(context,25), bottom: 20),
             margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
             width: MediaQuery.of(context).size.width / 2 - 30,
             height: getDimention(context,70),
             decoration: BoxDecoration(
-                color: color, borderRadius: BorderRadius.circular(10)),
+                color: color, borderRadius: BorderRadius.circular(10),
+            ),
             child: Padding(
               padding: EdgeInsets.only(right: 30),
               child: Text( title,style: TextStyle(color: Colors.white, fontSize: getFontSize(context,18)),),)
@@ -94,9 +119,15 @@ class _HomePageBodyState extends State<HomePageBody> {
           image,
     ));
   }
-
   Widget _searchBox() {
-    return Container(
+    final state = Provider.of<PokemonState>(context,);
+    return InkWell(
+      onTap: ()async{
+          var result = await showSearch(
+                 context: context,
+                 delegate: PokemonSearch(state.pokemonList));
+        },
+      child: Container(
         height: 40,
         padding: EdgeInsets.symmetric(horizontal: 15),
         margin: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
@@ -111,13 +142,15 @@ class _HomePageBodyState extends State<HomePageBody> {
               ),
             ),
             TextField(
+              enabled: false,
               onTap: (){
                 isViewAll = false;
               },
               decoration: InputDecoration(contentPadding: EdgeInsets.only(left: 30,top:getFontSize(context,10)), border:InputBorder.none , disabledBorder: InputBorder.none, hintText: 'Search Pokemon, Move, Ability',hintStyle: TextStyle(fontSize: getFontSize(context,14))),
             )
           ],
-        ));
+        )),
+    );
   }
 
   Widget _pokemonNews() {

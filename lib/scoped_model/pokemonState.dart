@@ -35,7 +35,7 @@ class PokemonState extends AppState {
   Future getPokemonListAsync() async {
     try{
           setApiBusy(true);
-          apiCall(isReady: true,isnotify: true);
+          apiCall(isReady: true,isnotify: false);
           
          _pokemonList = await parseJsonFromAssets('assets/json/pokemonJson.txt');
          
@@ -55,7 +55,7 @@ class PokemonState extends AppState {
           //       apiCall(isReady: false,isnotify: true);
           //    }
           // }
-            apiCall(isReady: false,isnotify: true);
+            apiCall(isReady: false,isnotify: false);
          
     }
     catch(error){

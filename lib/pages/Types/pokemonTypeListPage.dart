@@ -251,7 +251,7 @@ class _PokemonTypeListPage extends State<PokemonTypeListPage>{
           onPressed: ()async{
                var result = await showSearch(
                  context: context,
-                 delegate: SpeakerSearch(state.pokemonList));
+                 delegate: PokemonSearch(state.pokemonList));
              },
           icon: Icon(Icons.search,color: Colors.black87,),
         )
@@ -475,10 +475,10 @@ class _PokemonTypeListPage extends State<PokemonTypeListPage>{
   }
 }
 
-class SpeakerSearch extends SearchDelegate<PokemonListModel>{
+class PokemonSearch extends SearchDelegate<PokemonListModel>{
    final List<PokemonListModel> list;
     List<PokemonListModel> templist;
-  SpeakerSearch(this.list);
+  PokemonSearch(this.list);
   @override
   List<Widget> buildActions(BuildContext context) {
     return [

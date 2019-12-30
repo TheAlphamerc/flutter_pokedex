@@ -53,11 +53,11 @@ class _MovesState extends State<Moves> with TickerProviderStateMixin<Moves>{
                  margin: EdgeInsets.symmetric(horizontal: 5,vertical: 5),
                  padding: EdgeInsets.symmetric(horizontal: 5,vertical: 5),
                 decoration: BoxDecoration(
-                  color: Colors.black12,
+                  color: setSecondaryColor(state.pokemonDetail.types[0].type.name).withAlpha(20),
                   borderRadius: BorderRadius.all(Radius.circular(5)),
                   shape:BoxShape.rectangle
                 ),
-               child: Text(state.pokemonDetail.moves[index].move.name,style: TextStyle(fontSize: getFontSize(context, 15),color: Colors.black87,fontWeight: FontWeight.w400),),
+               child: Text(state.pokemonDetail.moves[index].move.name,style: TextStyle(fontSize: getFontSize(context, 15),color: setSecondaryColor(state.pokemonDetail.types[0].type.name),fontWeight: FontWeight.w400),),
                ))
       );
  }
