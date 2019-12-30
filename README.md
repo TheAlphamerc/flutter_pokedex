@@ -7,6 +7,8 @@ This sample is based on [Pokedex App](https://dribbble.com/shots/6545819-Pokedex
 
 ## Download App ![GitHub All Releases](https://img.shields.io/github/downloads/Thealphamerc/flutter_pokedex/total?color=green)
 <a href="https://github.com/TheAlphamerc/flutter_pokedex/releases/download/v.1.0.2/app-arm64-v8a-release.apk"><img src="https://playerzon.com/asset/download.png" width="200"></img></a>
+## Video Url
+Youtube link :- [Pokedex Flutter App](https://youtu.be/jfXT94BnxXk)
 ## Screenshots
 
 Screenshots               |  Screenshots  |  Screenshots

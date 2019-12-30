@@ -340,7 +340,7 @@ class _PokemonListPageState extends State<PokemonListPage>
   }
   void openPokemonshortDetail(PokemonListModel model)async{
     print(model.name);
-    var _panelHeight = 300.0;
+    var _panelHeight = getFontSize(context, 300);
     await showModalBottomSheet(
       backgroundColor: Colors.transparent,
         context: context,
@@ -355,16 +355,17 @@ class _PokemonListPageState extends State<PokemonListPage>
                    width: fullWidth(context),
                    height: _panelHeight,
                    alignment: Alignment.bottomCenter,
-                   margin: EdgeInsets.only(top: 40),
-                   padding: EdgeInsets.only(bottom:10,left: 20,right: 20,top: 40),
+                   margin: EdgeInsets.only(top: getFontSize(context, 30)),
+                   padding: EdgeInsets.only(bottom:10,left: 20,right: 20,top:getFontSize(context, 30)),
                    decoration: BoxDecoration(
                      color: setSecondaryColor(model.type1),
                      borderRadius: BorderRadius.only(topLeft: Radius.circular(25),topRight: Radius.circular(25))
                    ),
                    child: Column(
+                     crossAxisAlignment: CrossAxisAlignment.start,
                      children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.only(bottom: 20),
+                          padding: EdgeInsets.only(bottom: getFontSize(context, 10),left:20),
                           child: Text(
                           model.name,
                           style: TextStyle(
@@ -384,15 +385,15 @@ class _PokemonListPageState extends State<PokemonListPage>
                    )
                )
             ),
-          InkWell(
-              onTap: () {
-               Navigator.of(context).pushNamed('/detail/${model.name}');
-            },
-            child:   Align(
+           Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
                 padding: EdgeInsets.only(bottom: getDimention(context, _panelHeight-30),),
-                child: Hero(
+                child:InkWell(
+                   onTap: () {
+                    Navigator.of(context).pushNamed('/detail/${model.name}');
+                 },
+                 child:  Hero(
                       tag: model.orderId,
                       child:  Image( image: customAdvanceNetworkImage(
                         model.image,),
@@ -522,10 +523,7 @@ class PokemonSearch extends SearchDelegate<PokemonListModel>{
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
               color: Theme.of(context).cardColor,
-               boxShadow: <BoxShadow>[
-                  BoxShadow(blurRadius: 15,offset: Offset(5, 5),color: setSecondaryColor(templist[index].type1).withAlpha(150),spreadRadius:10),
-                  BoxShadow(blurRadius: 8,offset: Offset(5,-5),color: Color(0xffffffff),spreadRadius:5)
-               ],
+               
             ),
             child: ListTile(
               leading:   Image( image: customAdvanceNetworkImage(
@@ -534,10 +532,15 @@ class PokemonSearch extends SearchDelegate<PokemonListModel>{
                       height: getDimention(context, 40),
                     ),
             trailing:  Container(
+              
               width: 85,
                   padding:EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
+                    boxShadow: <BoxShadow>[
+                            BoxShadow(blurRadius: 5,offset: Offset(3, 3),color: setSecondaryColor(templist[index].type1).withAlpha(150),spreadRadius:0),
+                            BoxShadow(blurRadius: 8,offset: Offset(5,-5),color: Color(0xffffffff),spreadRadius:5)
+                          ],
                     color: setSecondaryColor(templist[index].type1),
                   ),
                   child:
@@ -552,7 +555,7 @@ class PokemonSearch extends SearchDelegate<PokemonListModel>{
                     Image.asset(getTypeImage(templist[index].type1),fit: BoxFit.cover,width: 30,)
                   ],) 
                 ),
-            title: Text(templist[index].name),
+            title: customText(templist[index].name,style: TextStyle(fontSize: 18,fontWeight: FontWeight.w400,),textAlign: TextAlign.start, context:context),
             onTap: (){
               Navigator.of(context).pushNamed('/detail/${templist[index].name}');
             },

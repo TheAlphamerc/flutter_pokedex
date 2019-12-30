@@ -408,10 +408,10 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
                     unselectedLabelColor: Colors.black54,
                     indicatorPadding: EdgeInsets.symmetric(horizontal: getFontSize(context,20,)),
                     tabs: [
-                      Tab( child: Text('About',style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900,fontSize: getFontSize(context,14)),),),
-                      Tab(child: Text('Base State',style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900,fontSize: getFontSize(context,14)),),),
-                      Tab(child: Text('Evaluation',style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900,fontSize: getFontSize(context,14)),),),
-                      Tab(child: Text('Moves',style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900,fontSize: getFontSize(context,14),)),),
+                      Tab( child: Text('About',style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900,fontSize: getFontSize(context,13)),),),
+                      Tab(child: Text('Base State',style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900,fontSize: getFontSize(context,13)),),),
+                      Tab(child: Text('Evaluation',style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900,fontSize: getFontSize(context,13)),),),
+                      Tab(child: Text('Moves',style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900,fontSize: getFontSize(context,13),)),),
                     ],
                   ),
                   body: TabBarView(
@@ -419,7 +419,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
                       About(model: model,),
                       BaseState(),
                       _evalutionSection(),
-                      Moves(),
+                      Moves(type:model.type1),
                     ],
                   ),
                 ),

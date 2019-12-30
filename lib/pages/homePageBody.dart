@@ -1,9 +1,8 @@
+import 'package:flutte_pokedex/pages/pokemonListPage.dart';
 import 'package:flutte_pokedex/scoped_model/pokemonState.dart';
 import 'package:flutte_pokedex/widgets/customWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'Types/pokemonTypeListPage.dart';
 
 class HomePageBody extends StatefulWidget {
   _HomePageBodyState createState() => _HomePageBodyState();

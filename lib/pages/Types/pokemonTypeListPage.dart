@@ -515,7 +515,11 @@ class PokemonSearch extends SearchDelegate<PokemonListModel>{
             padding: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
-              color: Theme.of(context).cardColor
+              color:Theme.of(context).cardColor,
+              boxShadow: <BoxShadow>[
+                  // BoxShadow(blurRadius: 15,offset: Offset(5, 5),color: setSecondaryColor(templist[index].type1).withAlpha(150),spreadRadius:0),
+                  // BoxShadow(blurRadius: 5,offset: Offset(5,-5),color: Color(0xffffffff),spreadRadius:5)
+                ]
             ),
             child: ListTile(
               leading:   Image( image: customAdvanceNetworkImage(
@@ -528,6 +532,10 @@ class PokemonSearch extends SearchDelegate<PokemonListModel>{
                         padding:
                             EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                         decoration: BoxDecoration(
+                          boxShadow: <BoxShadow>[
+                            BoxShadow(blurRadius: 5,offset: Offset(3, 3),color: setSecondaryColor(templist[index].type1).withAlpha(150),spreadRadius:0),
+                            BoxShadow(blurRadius: 8,offset: Offset(5,-5),color: Color(0xffffffff),spreadRadius:5)
+                          ],
                           borderRadius: BorderRadius.circular(10),
                           color: setSecondaryColor(templist[index].type1),
                         ),
@@ -543,7 +551,7 @@ class PokemonSearch extends SearchDelegate<PokemonListModel>{
                           Image.asset(getTypeImage(templist[index].type1),fit: BoxFit.cover,width: 30,)
                         ],) 
                       ),
-            title: Text(templist[index].name),
+            title: customText(templist[index].name,style: TextStyle(fontSize: 18,fontWeight: FontWeight.w400,),textAlign: TextAlign.start, context:context),
             onTap: (){
               Navigator.of(context).pushNamed('/detail/${templist[index].name}');
             },

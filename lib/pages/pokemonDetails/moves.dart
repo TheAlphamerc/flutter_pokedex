@@ -8,8 +8,8 @@ import 'package:provider/provider.dart';
 
 class Moves extends StatefulWidget {
   final PokemonListModel model;
-
-  const Moves({this.model});
+  final  String type;
+  const Moves({this.model, this.type});
   _MovesState createState() => _MovesState();
 }
 
@@ -53,11 +53,18 @@ class _MovesState extends State<Moves> with TickerProviderStateMixin<Moves>{
                  margin: EdgeInsets.symmetric(horizontal: 5,vertical: 5),
                  padding: EdgeInsets.symmetric(horizontal: 5,vertical: 5),
                 decoration: BoxDecoration(
-                  color: setSecondaryColor(state.pokemonDetail.types[0].type.name).withAlpha(20),
+                  color: setSecondaryColor(widget.type),
                   borderRadius: BorderRadius.all(Radius.circular(5)),
-                  shape:BoxShape.rectangle
+                  shape:BoxShape.rectangle,
+                   boxShadow: <BoxShadow>[
+                      BoxShadow(blurRadius: 5,offset: Offset(0, 3),color: setprimaryColor(widget.type).withAlpha(150),spreadRadius:0),
+                      // BoxShadow(blurRadius: 8,offset: Offset(5,-5),color: Color(0xffffffff),spreadRadius:5)
+                    ],
                 ),
-               child: Text(state.pokemonDetail.moves[index].move.name,style: TextStyle(fontSize: getFontSize(context, 15),color: setSecondaryColor(state.pokemonDetail.types[0].type.name),fontWeight: FontWeight.w400),),
+               child: Text(state.pokemonDetail.moves[index].move.name,
+                      style: TextStyle(fontSize: getFontSize(context, 15),
+                      color: Colors.white,
+                      fontWeight: FontWeight.w400),),
                ))
       );
  }
