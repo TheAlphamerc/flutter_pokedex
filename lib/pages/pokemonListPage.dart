@@ -1,14 +1,11 @@
 import 'package:flutte_pokedex/helper/colorTheme.dart';
 import 'package:flutte_pokedex/model/pokemon.dart';
 import 'package:flutte_pokedex/model/pokemonList.dart';
-import 'package:flutte_pokedex/scoped_model/connetedModel.dart';
 import 'package:flutte_pokedex/scoped_model/pokemonState.dart';
-import 'package:flutte_pokedex/widgets/HalfPainter.dart';
 import 'package:flutte_pokedex/widgets/customWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../helper/colorTheme.dart';
 import '../helper/colorTheme.dart';
 import '../widgets/customWidget.dart';
 
