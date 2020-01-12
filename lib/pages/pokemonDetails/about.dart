@@ -16,14 +16,9 @@ class About extends StatefulWidget {
 class _AboutState extends State<About> with TickerProviderStateMixin<About>{
   PokemonListModel model;
   bool isExpanded = false;
-  // FlutterTts flutterTts ;
-  //  List<dynamic> languages ;
   @override
   void initState() {
     model = widget.model;
-    //  flutterTts = new FlutterTts();
-    //  languages = await flutterTts.getLanguages;
-     
     super.initState();
   }
   double _getFontSize(double size){
@@ -74,7 +69,7 @@ class _AboutState extends State<About> with TickerProviderStateMixin<About>{
                     SizedBox(
                       height: 5,
                     ),
-                    customText('15.2 lbs (${state?.pokemonDetail?.weight} kg)',style: TextStyle(fontSize: _getFontSize(14)),)
+                    customText('${state?.pokemonDetail?.weight} kg',style: TextStyle(fontSize: _getFontSize(14)),)
                   ],
                 ),
                 SizedBox(
@@ -92,7 +87,7 @@ class _AboutState extends State<About> with TickerProviderStateMixin<About>{
                     SizedBox(
                       height: 5,
                     ),
-                    Text('2\'3.5 (${state?.pokemonDetail?.height} cm)',style: TextStyle(fontSize: _getFontSize(14)),)
+                    Text('${state?.pokemonDetail?.height} cm',style: TextStyle(fontSize: _getFontSize(14)),)
                   ],
                 ),
               ],
@@ -100,28 +95,12 @@ class _AboutState extends State<About> with TickerProviderStateMixin<About>{
           ),
           Text('Breeding',style: TextStyle(fontWeight: FontWeight.w600,fontSize: _getFontSize(14)),),
           SizedBox(height: 10,),
-          Row(
-            children: <Widget>[
-              Text('Gender',style: TextStyle(fontSize: _getFontSize(14), color: Colors.black45),),
-              SizedBox(width: 50,),
-              Text('Male 87%',style: TextStyle(fontSize: _getFontSize(14), color: Colors.black87),),
-              SizedBox(width: 50,),
-              Text('Female 13%',style: TextStyle(fontSize: _getFontSize(14), color: Colors.black87),),
-            ],
-          ),
+          _gender(),
           SizedBox(height: 10,),
           _eggGroup(),
-          SizedBox(
-            height: 10,
-          ),
-          Row(
-            children: <Widget>[
-              Text('Egg Cycle',style: TextStyle(fontSize: _getFontSize(14), color: Colors.black45),),
-              SizedBox(width: 37,),
-              customText(model.type1,style: TextStyle(fontSize: _getFontSize(14), color: Colors.black87),),
-            ],
-          ),
+          _propertyRow('Egge Cycle',model.type1),
           SizedBox(height: 10,),
+         
           Text('Location',style: TextStyle(fontWeight: FontWeight.w600,fontSize: _getFontSize(14)),),
           SizedBox(height: 10,),
           Container(
@@ -152,24 +131,7 @@ class _AboutState extends State<About> with TickerProviderStateMixin<About>{
     ),
     );
   }
-  Widget _eggGroup(){
-    var title =  Text('Egg Groups',style: TextStyle(fontSize: _getFontSize(14), color: Colors.black45),);
-    final state = Provider.of<PokemonState>(context);
-    if(state.pokemonSpecies == null || state.pokemonSpecies.eggGroups == null || state.pokemonSpecies.eggGroups.length == 0){
-      return Container();
-    }
-    var list  = state.pokemonSpecies.eggGroups;
-      List<Widget> rowList = [];
-      rowList.add(title);
-      rowList.add(SizedBox(width: 27,));
-      rowList.addAll(list.map((x)=> Padding(
-        padding: EdgeInsets.only(right: 25),
-        child: Text(x.name,style: TextStyle(fontSize: _getFontSize(14), color: Colors.black87),),
-      )).toList());
-    return Row(
-      children:rowList
-    ,);
-  }
+ 
   Widget _description(){
     final state = Provider.of<PokemonState>(context);
     if(state.pokemonSpecies == null || state.pokemonSpecies.flavorTextEntries == null || state.pokemonSpecies.flavorTextEntries.length == 0){
@@ -213,56 +175,69 @@ class _AboutState extends State<About> with TickerProviderStateMixin<About>{
     
     return wid;
   }
-  Widget _propertyRow(String title,String value){
-    
-   
-   return  Row(
-              children: <Widget>[
-              Text(title,style: TextStyle(fontWeight: FontWeight.w600,fontSize: _getFontSize(14)),),
-              SizedBox(width: 50,),
-              Text(value,style: TextStyle(fontSize: _getFontSize(14), color: Colors.black87),)
-            ],);
+  Widget _gender(){
+    return Row(
+            children: <Widget>[
+             Expanded(
+               child:  Text('Gender',style: TextStyle(fontSize: _getFontSize(14), color: Colors.black45),),
+             ),
+             Expanded(
+               flex: 2,
+               child:  Wrap(
+                children: <Widget>[
+                 Text('Male 87%',style: TextStyle(fontSize: _getFontSize(14), color: Colors.black87),),
+                 SizedBox(width: 10,),
+                 Text('Female 13%',style: TextStyle(fontSize: _getFontSize(14), color: Colors.black87),),
+                ],
+              ),
+             )
+            ],
+          );
   }
-  
-//   Future _speak(String text) async{
-//     var result = await flutterTts.speak(text);
-//     if (result == 1) setState(() {
-//       //  var state = TtsState.playing;
-//        });
-// }
-// Future _startSpeak()async{
-//   final state = Provider.of<PokemonState>(context,listen: false);
-//    var list  = state.pokemonSpecies.flavorTextEntries.where((x)=> x.language.name == 'en').toSet().toList();
-//       list = list.toSet().toList();
-//       list.forEach((x)=> x.flavorText..replaceAll("\n", " "));
-//       String desc = '';
-//       StringBuffer description = new StringBuffer();
-      
-//       for(int i= 0; i< list.length ;i++){
-//         var it = list[i].flavorText.replaceAll("\n", " ");
-//         if(!desc.toString().toLowerCase().contains(it.toLowerCase())){
-//           description.write(it + ' ');
-//           desc += it+ ' ';
-//         }
-//       }
-//    await flutterTts.setLanguage("en-US");
-      
-//       await flutterTts.setSpeechRate(1.0);
-      
-//       await flutterTts.setVolume(1.0);
-      
-//       await flutterTts.setPitch(1);
-      
-//       await flutterTts.isLanguageAvailable("en-US");
-//       _speak(description.toString());
-// }
-// Future _stop() async{
-  
-//     var result = await flutterTts.stop();
-//     if (result == 1) setState(() {
-//       // var ttsState = TtsState.stopped;
-//       });
-// }
+  Widget _eggGroup(){
+     final state = Provider.of<PokemonState>(context);
+    if(state.pokemonSpecies == null || state.pokemonSpecies.eggGroups == null || state.pokemonSpecies.eggGroups.length == 0){
+      return Container();
+    }
+     var list  = state.pokemonSpecies.eggGroups;
+    return Container(
+      width: fullWidth(context),
+      child: Row(
+        children: <Widget>[
+         Expanded(
+           flex: 1,
+           child: Text('Egg Groups',style: TextStyle(fontSize: _getFontSize(14), color: Colors.black45)),),
+         Expanded(
+           flex: 2,
+           child:  Wrap(
+             children:list.map((x){
+               return Container(
+                 child:Padding(
+                   padding: EdgeInsets.only(right: 10),
+                   child: customText(x.name,style:  TextStyle(fontSize: _getFontSize(14), color: Colors.black87))
+                 )
+               );
+             }).toList(),
+           ),
+         )
+      ],)
+    );
+  }
+  Widget _propertyRow(String title,String value){
+   return Padding(
+     padding: EdgeInsets.only(top: 10),
+     child:  Row(
+              children: <Widget>[
+              Expanded(
+                flex: 1,
+                child: Text(title,style: TextStyle(fontSize: _getFontSize(14), color: Colors.black45)),
+              ),
+              Expanded(flex: 2,
+                child: Text(value,style: TextStyle(fontSize: _getFontSize(14), color: Colors.black87),)
+              )
+            ],),);
+  }
+
   
   @override
   Widget build(BuildContext context) {

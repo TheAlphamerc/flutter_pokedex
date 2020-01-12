@@ -72,3 +72,5 @@
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 ios/Flutter/flutter_export_environment.sh
 android/key.jks
+.flutter-plugins-dependencies
+android/app/key.jks

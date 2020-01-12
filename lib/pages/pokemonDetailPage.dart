@@ -1,8 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutte_pokedex/helper/colorTheme.dart';
-import 'package:flutte_pokedex/model/pokemon.dart';
 import 'package:flutte_pokedex/model/pokemonList.dart';
-import 'package:flutte_pokedex/scoped_model/connetedModel.dart';
 import 'package:flutte_pokedex/scoped_model/pokemonState.dart';
 import 'package:flutte_pokedex/widgets/customWidget.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +50,6 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
        _startSpeak();
     });
     state.getPokemonDetaiAsync(widget.name.toLowerCase().split(' ')[0]);
-    // state.getPokemonMovesAsync(widget.name.toLowerCase().split(' ')[0]);
    
     _controller = AnimationController(
         vsync: this, duration: Duration(milliseconds: 4000));
@@ -64,7 +61,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
     _progressController.repeat();
     super.initState();
   }
-  Future _speak(String name,String type, String description) async{
+ Future _speak(String name,String type, String description) async{
     print('voice start' + type);
     await flutterTts.speak(name + '\n \n' + type + '\n \n' + description);
 }
@@ -104,19 +101,45 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
       _speak(model.name.split(' ')[0],state.pokemonSpecies.genera.firstWhere((x)=>x.language.name == 'en').genus, des);
   }
   Future _stop() async{
-  
      await flutterTts.stop();
-   
  }
   
-  // double getFontSize(context,1(double size){
-  //  if(MediaQuery.of(context).textScaleFactor < 1){
-  //     return size;
-  //  }
-  //  else{
-  //    return (size / MediaQuery.of(context).textScaleFactor);
-  //  }
-  // }
+  Widget  _pokemonInfo(){
+    return  Column(
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+           Expanded(
+             flex: 3,
+             child:  Text(
+                model.name,
+                style: TextStyle(
+                    fontSize: getFontSize(context,30),
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600),
+                    // overflow: TextOverflow.ellipsis, 
+              ),
+           ),
+           Padding(
+             padding: EdgeInsets.only(top: 10),
+             child:  customText('#' + (model.orderId.toString().length == 1  ? '00' + model.orderId.toString() : model.orderId.toString().length == 2 ? '0'+model.orderId.toString() : model.orderId.toString()),style: TextStyle(fontSize: getFontSize(context,20),color: Colors.white,fontWeight: FontWeight.w600),),
+           )
+          ],
+        ),
+        SizedBox(height: 10,),
+        Row(
+          children: <Widget>[
+            _pokemonCategoryChip(model.type1),
+            SizedBox(width: 10,),
+            _pokemonCategoryChip(model.type2),
+          ],
+        )
+      ],
+    );
+  }
+
   Widget _pokemonCategoryChip(String type) {
     if(type == null || type.isEmpty){
       return Container();
@@ -326,35 +349,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage>
               top: 120,
               left: 20,
               width: MediaQuery.of(context).size.width - 40,
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        constraints: BoxConstraints(maxWidth: fullWidth(context) - 80),
-                        child: Text(
-                          model.name,
-                          style: TextStyle(
-                              fontSize: getFontSize(context,30),
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600),
-                              overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      customText('#' + (model.orderId.toString().length == 1  ? '00' + model.orderId.toString() : model.orderId.toString().length == 2 ? '0'+model.orderId.toString() : model.orderId.toString()),style: TextStyle(fontSize: getFontSize(context,20),color: Colors.white,fontWeight: FontWeight.w600),),
-                    ],
-                  ),
-                  SizedBox(height: 10,),
-                  Row(
-                    children: <Widget>[
-                      _pokemonCategoryChip(model.type1),
-                      SizedBox(width: 10,),
-                      _pokemonCategoryChip(model.type2),
-                    ],
-                  )
-                ],
-              )),
+              child:_pokemonInfo()),
           Positioned(
               top: 160,
               right: 20,

@@ -23,11 +23,12 @@ if (flutterVersionName == null) {
 
 apply plugin: 'com.android.application'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
-// def keystoreProperties = new Properties()
-//    def keystorePropertiesFile = rootProject.file('key.properties')
-//    if (keystorePropertiesFile.exists()) {
-//        keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-//    }
+/// Comment below for debug mode
+def keystoreProperties = new Properties()
+   def keystorePropertiesFile = rootProject.file('key.properties')
+   if (keystorePropertiesFile.exists()) {
+       keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+   }
 android {
     compileSdkVersion 28
 
@@ -37,7 +38,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.flutte_pokedex"
+        applicationId "com.thealphamerc.flutte_pokedex"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
@@ -45,13 +46,30 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
-    buildTypes {
-        release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
-        }
-    }
+    /// UnComment it for debug mode
+    // buildTypes {
+    //     release {
+    //         // TODO: Add your own signing config for the release build.
+    //         // Signing with the debug keys for now, so `flutter run --release` works.
+    //         signingConfig signingConfigs.debug
+    //     }
+    // }
+    /// Comment below for debug mode
+     signingConfigs {
+       release {
+           keyAlias keystoreProperties['keyAlias']
+           keyPassword keystoreProperties['keyPassword']
+           storeFile file(keystoreProperties['storeFile'])
+           storePassword keystoreProperties['storePassword']
+       }
+   }
+   /// Comment below for debug mode
+   buildTypes {
+       release {
+        //    minifyEnabled true
+           signingConfig signingConfigs.release
+       }
+   }
 }
 
 flutter {

@@ -227,7 +227,7 @@ class _PokemonListPageState extends State<PokemonListPage>
     }
      
   }
-   Widget _topRightPokeball() {
+  Widget _topRightPokeball() {
     return Positioned(
         right: 0,
         top: 0,
@@ -243,7 +243,7 @@ class _PokemonListPageState extends State<PokemonListPage>
                     height: getDimention(context, 250),
      ),)));
   }
-   Widget _rightTopSearchIcon(){
+  Widget _rightTopSearchIcon(){
     final state = Provider.of<PokemonState>(context,);
     if(state.pokemonList == null || state.pokemonList.length == 0){
       return Container();
@@ -338,6 +338,26 @@ class _PokemonListPageState extends State<PokemonListPage>
     ),
     ],);
   }
+  Widget _panelRow(String title,String value){
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 10,horizontal: 20),
+      child:   Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+      Expanded(
+        flex: 2,
+        child: Align(alignment: Alignment.centerLeft,child:  Text(title,style: TextStyle(color: Colors.white,fontSize: getFontSize(context,14),fontWeight: FontWeight.w600),),)
+      ),
+       Expanded(
+         flex: 4,
+         child: Align(alignment: Alignment.centerLeft,child:  Text(value,style: TextStyle(color: Colors.white,fontSize: getFontSize(context,14),fontWeight: FontWeight.w600),),)
+       )
+    ],),
+    );
+  }
+  String getId(String id){
+     return '#' + (id.toString().length == 1  ? '00' + id.toString() : id.toString().length == 2 ? '0'+id.toString() : id.toString());
+  }
   void openPokemonshortDetail(PokemonListModel model)async{
     print(model.name);
     var _panelHeight = getFontSize(context, 300);
@@ -409,26 +429,7 @@ class _PokemonListPageState extends State<PokemonListPage>
        )
     );
   }
-  Widget _panelRow(String title,String value){
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10,horizontal: 20),
-      child:   Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-      Expanded(
-        flex: 2,
-        child: Align(alignment: Alignment.centerLeft,child:  Text(title,style: TextStyle(color: Colors.white,fontSize: getFontSize(context,14),fontWeight: FontWeight.w600),),)
-      ),
-       Expanded(
-         flex: 4,
-         child: Align(alignment: Alignment.centerLeft,child:  Text(value,style: TextStyle(color: Colors.white,fontSize: getFontSize(context,14),fontWeight: FontWeight.w600),),)
-       )
-    ],),
-    );
-  }
-  String getId(String id){
-     return '#' + (id.toString().length == 1  ? '00' + id.toString() : id.toString().length == 2 ? '0'+id.toString() : id.toString());
-  }
+
   @override
   Widget build(BuildContext context) {
     final state = Provider.of<PokemonState>(context,);
@@ -440,7 +441,7 @@ class _PokemonListPageState extends State<PokemonListPage>
                  showFabButton = !showFabButton;
                });
              },
-              child: Icon(Icons.edit),
+              child: Icon(showFabButton ? Icons.close : Icons.layers),
         ),
       body: Stack(
         children: <Widget>[

@@ -6,6 +6,8 @@ import 'package:flutte_pokedex/widgets/customWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../widgets/customWidget.dart';
+
 class BaseState extends StatefulWidget {
   _BaseStateState createState() => _BaseStateState();
 }
@@ -53,15 +55,9 @@ class _BaseStateState extends State<BaseState>
     }
     var stats = state.pokemonDetail.stats;
     var listStates = stats.map((x) => _statesRow(x)).toList();
-    var abilitiesTitle = Text('Abilities',style: TextStyle(fontWeight: FontWeight.w600,fontSize: _getFontSize(14)),);
     var space =   SizedBox(height: 20,);
-    List<Widget> abilityList = [];
-    abilityList.add(abilitiesTitle);
-    abilityList.addAll(state.pokemonDetail.abilities.map((x) => _abilities(x)).toList());
-     
-    var _ability =  Row(crossAxisAlignment: CrossAxisAlignment.start, children: abilityList);
     listStates.add(space);
-    listStates.add(_ability);
+    listStates.add( _abilities(state.pokemonDetail.abilities));
     listStates.add(_habitat());
     listStates.add(_shape());
     listStates.add(_seenAt());
@@ -83,38 +79,55 @@ class _BaseStateState extends State<BaseState>
    );
   }
   Widget _baseStateProperty(String property, double value, Color color) {
-    return Row(
-      children: <Widget>[
-        Expanded(
-          flex: 2,
-          child: Text(
-            property,
-            style: TextStyle(fontSize: _getFontSize(15), color: Colors.black54),
+    return Column(
+      children:<Widget>[
+        Row(
+        children: <Widget>[
+          Expanded(
+            flex: 3,
+            child: Text(
+              property,
+              style: TextStyle(fontSize: _getFontSize(15), color: Colors.black54),
+            ),
           ),
-        ),
-        Expanded(
-          flex: 1,
-          child: Text(
-            value.toString(),
-            style: TextStyle(fontSize: _getFontSize(15), color: Colors.black),
-          ),
-        ),
-        Expanded(
-          flex: 4,
-          child: LinearProgressIndicator(
+          Text(
+              value.toString(),
+              style: TextStyle(fontSize: _getFontSize(15), color: Colors.black),
+            ),
+          
+        ],
+      ),
+      LinearProgressIndicator(
             value: value / 100,
+            backgroundColor: Colors.grey.shade200,
             valueColor: AlwaysStoppedAnimation<Color>(color),
           ),
-        ),
-      ],
-    );
+        
+      ]
+  );
   }
-  Widget _abilities(Ability ability){
-    return Expanded(
-      child: Container(
-      padding: EdgeInsets.only(left: 35,top: 0),
-      child:customText(ability.ability.name,style:  TextStyle(fontSize: _getFontSize(14), color: Colors.black54)),
-      ),
+  Widget _abilities(List<Ability> abilityList){
+    return Container(
+      width: fullWidth(context),
+      child: Row(
+        children: <Widget>[
+         Expanded(
+           flex: 1,
+           child: Text('Abilities',style: TextStyle(fontWeight: FontWeight.w600,fontSize: _getFontSize(14)),),),
+         Expanded(
+           flex: 2,
+           child:  Wrap(
+             children:abilityList.map((x){
+               return Container(
+                 child:Padding(
+                   padding: EdgeInsets.only(right: 10),
+                   child: customText(x.ability.name,style:  TextStyle(fontSize: _getFontSize(14), color: Colors.black87))
+                 )
+               );
+             }).toList(),
+           ),
+         )
+      ],)
     );
   }
 
@@ -166,8 +179,6 @@ class _BaseStateState extends State<BaseState>
   }
   
   Widget _propertyRow(String title,String value){
-    
-   
    return Padding(
      padding: EdgeInsets.only(top: 10),
      child:  Row(
@@ -176,7 +187,6 @@ class _BaseStateState extends State<BaseState>
                 flex: 1,
                 child: Text(title,style: TextStyle(fontWeight: FontWeight.w600,fontSize: _getFontSize(14)),),
               ),
-              // SizedBox(width: 50,),
               Expanded(flex: 2,
                 child: Text(value,style: TextStyle(fontSize: _getFontSize(14), color: Colors.black87),)
               )
@@ -185,6 +195,8 @@ class _BaseStateState extends State<BaseState>
   
   @override
   Widget build(BuildContext context) {
-    return   _baseStateSection();
+    return  SingleChildScrollView(
+      child:  _baseStateSection(),
+    );
   }
 }

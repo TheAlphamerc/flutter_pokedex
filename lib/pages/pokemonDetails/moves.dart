@@ -3,7 +3,6 @@ import 'package:flutte_pokedex/model/pokemonList.dart';
 import 'package:flutte_pokedex/scoped_model/pokemonState.dart';
 import 'package:flutte_pokedex/widgets/customWidget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 import 'package:provider/provider.dart';
 
 class Moves extends StatefulWidget {
@@ -19,65 +18,36 @@ class _MovesState extends State<Moves> with TickerProviderStateMixin<Moves>{
   @override
   void initState() {
     model = widget.model;
-    //  flutterTts = new FlutterTts();
-    //  languages = await flutterTts.getLanguages;
-     
     super.initState();
-  }
-  double _getFontSize(double size){
-   if(MediaQuery.of(context).textScaleFactor < 1){
-      return size;
-   }
-   else{
-     return (size / MediaQuery.of(context).textScaleFactor);
-   }
-
   }
   Widget _moves() {
      final state = Provider.of<PokemonState>(context);
      if(state.pokemonDetail == null || state.pokemonDetail.moves == null || state.pokemonDetail.moves.length == 0){
         return Container(child:Center(child:  Text('No information available'),),);
      }
-     List<Widget> moves;
-         moves = state.pokemonDetail.moves.map((f)=> Text(f.move.name)).toList();
-      return  Padding(
+     List<Widget> moves = state.pokemonDetail.moves.map((f)=> Container(
+        margin: EdgeInsets.symmetric(horizontal: 5,vertical: 5),
+        padding: EdgeInsets.symmetric(horizontal: 5,vertical: 5),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+          color:  setprimaryColor(widget.type).withAlpha(150),
+          boxShadow: <BoxShadow>[
+                  BoxShadow(blurRadius: 5,offset: Offset(0, 2),color: setprimaryColor(widget.type).withAlpha(150),spreadRadius:0),
+                ],
+        ),
+       child: Text(f.move.name, style: TextStyle(fontSize: getFontSize(context, 15),color: Colors.white,fontWeight: FontWeight.w400),),
+     )).toList();
+     
+      return SingleChildScrollView(
+        child:  Padding(
         padding: EdgeInsets.symmetric(horizontal: 30,vertical: 10),
-        child: GridView.builder(
-             gridDelegate:SliverGridDelegateWithFixedCrossAxisCount(childAspectRatio: 2,
-              crossAxisCount: 3) ,
-              shrinkWrap: true,
-              physics: BouncingScrollPhysics(),
-            itemCount: moves.length,
-            itemBuilder: (context,index) => Container(
-                 alignment: Alignment.center,
-                 margin: EdgeInsets.symmetric(horizontal: 5,vertical: 5),
-                 padding: EdgeInsets.symmetric(horizontal: 5,vertical: 5),
-                decoration: BoxDecoration(
-                  color: setSecondaryColor(widget.type),
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                  shape:BoxShape.rectangle,
-                   boxShadow: <BoxShadow>[
-                      BoxShadow(blurRadius: 5,offset: Offset(0, 3),color: setprimaryColor(widget.type).withAlpha(150),spreadRadius:0),
-                      // BoxShadow(blurRadius: 8,offset: Offset(5,-5),color: Color(0xffffffff),spreadRadius:5)
-                    ],
-                ),
-               child: Text(state.pokemonDetail.moves[index].move.name,
-                      style: TextStyle(fontSize: getFontSize(context, 15),
-                      color: Colors.white,
-                      fontWeight: FontWeight.w400),),
-               ))
+        child: Wrap(
+          alignment: WrapAlignment.spaceBetween,
+          children: moves
+        )
+       ),
       );
  }
-  
-  Widget _propertyRow(String title,String value){
-   return  Row(
-              children: <Widget>[
-              Text(title,style: TextStyle(fontWeight: FontWeight.w600,fontSize: _getFontSize(14)),),
-              SizedBox(width: 50,),
-              Text(value,style: TextStyle(fontSize: _getFontSize(14), color: Colors.black87),)
-            ],);
-  }
-  
   @override
   Widget build(BuildContext context) {
     return   _moves();

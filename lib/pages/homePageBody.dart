@@ -122,7 +122,7 @@ class _HomePageBodyState extends State<HomePageBody> {
     final state = Provider.of<PokemonState>(context,);
     return InkWell(
       onTap: ()async{
-          var result = await showSearch(
+           await showSearch(
                  context: context,
                  delegate: PokemonSearch(state.pokemonList));
         },
@@ -132,26 +132,54 @@ class _HomePageBodyState extends State<HomePageBody> {
         margin: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
         decoration: BoxDecoration(
             color: Color(0xfff6f6f6), borderRadius: BorderRadius.circular(50)),
-        child: Stack(
+        child: Row(
           children: <Widget>[
-            Positioned(
-              top: 10,
-              child: Icon(
-                Icons.search,
-              ),
-            ),
-            TextField(
-              enabled: false,
-              onTap: (){
-                isViewAll = false;
-              },
-              decoration: InputDecoration(contentPadding: EdgeInsets.only(left: 30,top:getFontSize(context,10)), border:InputBorder.none , disabledBorder: InputBorder.none, hintText: 'Search Pokemon, Move, Ability',hintStyle: TextStyle(fontSize: getFontSize(context,14))),
-            )
+            Icon(Icons.search,color: Colors.grey.shade600),
+            SizedBox(width: 10,),
+            Text('Search Pokemon, Move, Ability',style: TextStyle(color: Colors.grey.shade600, fontSize: getFontSize(context,14)))
           ],
-        )),
+        )
+      ),
     );
   }
-
+  Widget _pokedexControlButtons(){
+    return Column(
+      children: <Widget>[
+        AnimatedContainer(
+          curve: Curves.linear,
+          duration: Duration(milliseconds: 300),
+          height: isViewAll ? 0 : getDimention(context,100),
+          child: Row(
+            children: <Widget>[
+              _getCategoryCard('Pokedex', Color(0xff4dc2a6),Color(0xff65d4bc)),
+              _getCategoryCard('Moves', Color(0xfff77769), Color(0xfff88a7d))],
+          ),
+        ),
+        AnimatedContainer(
+          curve: Curves.linear,
+          duration: Duration(milliseconds: 300),
+          height: isViewAll ? 0 : getDimention(context,100),
+          child: Row(
+            children: <Widget>[
+              _getCategoryCard('Abilities', Color(0xff59a9f4),Color(0xff6fc1f9)),
+              _getCategoryCard('Item', Color(0xffffce4a), Color(0xffffd858))
+            ],
+          ),
+        ),
+        AnimatedContainer(
+          curve: Curves.linear,
+          duration: Duration(milliseconds: 300),
+          height: isViewAll ? 0 : getDimention(context,100),
+          child: Row(
+            children: <Widget>[
+              _getCategoryCard('Location', Color(0xff7b528c),Color(0xff9569a5)),
+              _getCategoryCard('Type Charts', Color(0xffb1726c),Color(0xffc1877e))
+            ],
+          ),
+        ),
+      ],
+    );
+  }
   Widget _pokemonNews() {
     return AnimatedContainer(
         curve: Curves.linearToEaseOut,
@@ -247,38 +275,7 @@ class _HomePageBodyState extends State<HomePageBody> {
                               Text('What pokemon',style: TextStyle(fontSize: getFontSize(context,30), fontWeight: FontWeight.w600),),
                               Text('are you loking for ?',style: TextStyle(fontSize: getFontSize(context,30), fontWeight: FontWeight.w600),),
                               _searchBox(),
-                              AnimatedContainer(
-                                curve: Curves.linear,
-                                duration: Duration(milliseconds: 300),
-                                height: isViewAll ? 0 : getDimention(context,100),
-                                child: Row(
-                                  children: <Widget>[
-                                    _getCategoryCard('Pokedex', Color(0xff4dc2a6),Color(0xff65d4bc)),
-                                    _getCategoryCard('Moves', Color(0xfff77769), Color(0xfff88a7d))],
-                                ),
-                              ),
-                              AnimatedContainer(
-                                curve: Curves.linear,
-                                duration: Duration(milliseconds: 300),
-                                height: isViewAll ? 0 : getDimention(context,100),
-                                child: Row(
-                                  children: <Widget>[
-                                    _getCategoryCard('Abilities', Color(0xff59a9f4),Color(0xff6fc1f9)),
-                                    _getCategoryCard('Item', Color(0xffffce4a), Color(0xffffd858))
-                                  ],
-                                ),
-                              ),
-                              AnimatedContainer(
-                                curve: Curves.linear,
-                                duration: Duration(milliseconds: 300),
-                                height: isViewAll ? 0 : getDimention(context,100),
-                                child: Row(
-                                  children: <Widget>[
-                                    _getCategoryCard('Location', Color(0xff7b528c),Color(0xff9569a5)),
-                                    _getCategoryCard('Type Charts', Color(0xffb1726c),Color(0xffc1877e))
-                                  ],
-                                ),
-                              ),
+                              _pokedexControlButtons()
                               // _pokemonNews()
                             ],
                           ),
