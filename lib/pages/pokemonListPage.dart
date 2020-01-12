@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 
 import '../helper/colorTheme.dart';
 import '../helper/colorTheme.dart';
+import '../widgets/customWidget.dart';
 
 class PokemonListPage extends StatefulWidget {
   _PokemonListPageState createState() => _PokemonListPageState();
@@ -74,7 +75,7 @@ class _PokemonListPageState extends State<PokemonListPage>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                        // width: fullHeight(context) / 4.5,
+                        width: fullWidth(context) * .6 ,
                         // constraints: BoxConstraints(minWidth: 50,maxWidth:(fullHeight(context) - 300)/2),
                         // color: Colors.blue,
                         child: customText(
@@ -84,7 +85,7 @@ class _PokemonListPageState extends State<PokemonListPage>
                               color: Colors.white,
                               fontSize: getFontSize(context,20),
                               fontWeight: FontWeight.w600,),
-                              overflow: TextOverflow.clip,
+                              overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.start
                         ),
                       ),

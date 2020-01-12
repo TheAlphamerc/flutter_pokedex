@@ -18,6 +18,66 @@ class _HomePageBodyState extends State<HomePageBody> {
      final state = Provider.of<PokemonState>(context,listen: false);
      state.getPokemonListAsync();
   }
+  
+
+  Widget _getNewsTile(String image) {
+    return ListTile(
+      onTap: (){},
+        title: Text(
+          'Pokemon rumble rush arives soon',
+          style: TextStyle(fontSize: getFontSize(context,16), fontWeight: FontWeight.w400),
+        ),
+        subtitle: Text('10 May 2019',style: TextStyle(fontSize: getFontSize(context,16)),),
+        trailing: Image.asset(
+          image,
+    ));
+  }
+  Widget _searchBox() {
+    final state = Provider.of<PokemonState>(context,);
+    return InkWell(
+      onTap: ()async{
+           await showSearch(
+                 context: context,
+                 delegate: PokemonSearch(state.pokemonList));
+        },
+      child: Container(
+        height: 40,
+        padding: EdgeInsets.symmetric(horizontal: 15),
+        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
+        decoration: BoxDecoration(
+            color: Color(0xfff6f6f6), borderRadius: BorderRadius.circular(50)),
+        child: Row(
+          children: <Widget>[
+            Icon(Icons.search,color: Colors.grey.shade600),
+            SizedBox(width: 10,),
+            Text('Search Pokemon, Move, Ability',style: TextStyle(color: Colors.grey.shade600, fontSize: getFontSize(context,14)))
+          ],
+        )
+      ),
+    );
+  }
+  Widget _pokedexControlButtons(){
+    return Column(
+      children: <Widget>[
+        _buttonRow('Pokedex','Moves',primary1:Color(0xff4dc2a6),secondary1: Color(0xff65d4bc),primary2:Color(0xfff77769),secondary2: Color(0xfff88a7d) ),
+        _buttonRow('Abilities','Item',primary1:Color(0xff59a9f4),secondary1: Color(0xff6fc1f9),primary2:Color(0xffffce4a),secondary2: Color(0xffffd858) ),
+        _buttonRow('Location','Types',primary1:Color(0xff7b528c),secondary1: Color(0xff9569a5),primary2:Color(0xffb1726c),secondary2: Color(0xffc1877e) ),
+      ],
+    );
+  }
+  Widget _buttonRow(String text1, String text2,{Color primary1,Color secondary1,Color primary2,Color secondary2}){
+    return  AnimatedContainer(
+          curve: Curves.linear,
+          duration: Duration(milliseconds: 300),
+          height: isViewAll ? 0 : getDimention(context,100),
+          child: Row(
+            children: <Widget>[
+              _getCategoryCard(text1,primary1,secondary1),
+              _getCategoryCard(text2, primary2,secondary2)
+            ],
+          ),
+        );
+  }
   Widget _getCategoryCard(String title, Color color, Color seondaryColor) {
     return InkWell(
       onTap: () {
@@ -81,9 +141,7 @@ class _HomePageBodyState extends State<HomePageBody> {
           ),
           Container(
             alignment: Alignment.topRight,
-            // FractionalOffset.topRight,
-             width: (fullWidth(context) / 2) - 30,
-            // color: Colors.blue,
+            width: (fullWidth(context) / 2) - 30,
             margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
             child: ClipRRect(
               borderRadius: BorderRadius.only(
@@ -104,80 +162,6 @@ class _HomePageBodyState extends State<HomePageBody> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _getNewsTile(String image) {
-    return ListTile(
-        title: Text(
-          'Pokemon rumble rush arives soon',
-          style: TextStyle(fontSize: getFontSize(context,16), fontWeight: FontWeight.w400),
-        ),
-        subtitle: Text('10 May 2019',style: TextStyle(fontSize: getFontSize(context,16)),),
-        trailing: Image.asset(
-          image,
-    ));
-  }
-  Widget _searchBox() {
-    final state = Provider.of<PokemonState>(context,);
-    return InkWell(
-      onTap: ()async{
-           await showSearch(
-                 context: context,
-                 delegate: PokemonSearch(state.pokemonList));
-        },
-      child: Container(
-        height: 40,
-        padding: EdgeInsets.symmetric(horizontal: 15),
-        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
-        decoration: BoxDecoration(
-            color: Color(0xfff6f6f6), borderRadius: BorderRadius.circular(50)),
-        child: Row(
-          children: <Widget>[
-            Icon(Icons.search,color: Colors.grey.shade600),
-            SizedBox(width: 10,),
-            Text('Search Pokemon, Move, Ability',style: TextStyle(color: Colors.grey.shade600, fontSize: getFontSize(context,14)))
-          ],
-        )
-      ),
-    );
-  }
-  Widget _pokedexControlButtons(){
-    return Column(
-      children: <Widget>[
-        AnimatedContainer(
-          curve: Curves.linear,
-          duration: Duration(milliseconds: 300),
-          height: isViewAll ? 0 : getDimention(context,100),
-          child: Row(
-            children: <Widget>[
-              _getCategoryCard('Pokedex', Color(0xff4dc2a6),Color(0xff65d4bc)),
-              _getCategoryCard('Moves', Color(0xfff77769), Color(0xfff88a7d))],
-          ),
-        ),
-        AnimatedContainer(
-          curve: Curves.linear,
-          duration: Duration(milliseconds: 300),
-          height: isViewAll ? 0 : getDimention(context,100),
-          child: Row(
-            children: <Widget>[
-              _getCategoryCard('Abilities', Color(0xff59a9f4),Color(0xff6fc1f9)),
-              _getCategoryCard('Item', Color(0xffffce4a), Color(0xffffd858))
-            ],
-          ),
-        ),
-        AnimatedContainer(
-          curve: Curves.linear,
-          duration: Duration(milliseconds: 300),
-          height: isViewAll ? 0 : getDimention(context,100),
-          child: Row(
-            children: <Widget>[
-              _getCategoryCard('Location', Color(0xff7b528c),Color(0xff9569a5)),
-              _getCategoryCard('Type Charts', Color(0xffb1726c),Color(0xffc1877e))
-            ],
-          ),
-        ),
-      ],
     );
   }
   Widget _pokemonNews() {
@@ -231,61 +215,57 @@ class _HomePageBodyState extends State<HomePageBody> {
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: <Widget>[
-        SliverList(
+        SliverToBoxAdapter(
           key: Key('list'),
-          delegate: SliverChildListDelegate.fixed([
-           Column(
-             children: <Widget>[
-               Container(
-                  decoration: BoxDecoration(
+          child: Container(
+            decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(30),
                           bottomRight: Radius.circular(30))),
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.fromLTRB(20, 0, 0, 20),
-                  child: Stack(
-                    children: <Widget>[
-                      Positioned(
-                          right: 0,
-                          top: 0,
-                          child:
-                           Align(
-                          heightFactor: .75,
-                          widthFactor: .7,
-                          alignment: Alignment.bottomLeft,
-                          child: Hero(
-                            tag: "pokeball",
-                            child: Image.asset(
-                              'assets/images/pokeball.png',
-                              color: Color(0xffe3e3e3),
-                              height: getDimention(context,250),
-                            ),
-                          ))),
-                      Container(
-                          padding: EdgeInsets.only(
-                              top: MediaQuery.of(context).padding.top),
-                          margin: EdgeInsets.only(
-                              top: MediaQuery.of(context).padding.top + 50),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text('What pokemon',style: TextStyle(fontSize: getFontSize(context,30), fontWeight: FontWeight.w600),),
-                              Text('are you loking for ?',style: TextStyle(fontSize: getFontSize(context,30), fontWeight: FontWeight.w600),),
-                              _searchBox(),
-                              _pokedexControlButtons()
-                              // _pokemonNews()
-                            ],
-                          ),
-                        ),
-                    ],
-                  )),
-                  _pokemonNews()
-             ],
-           )
-         ])
+            width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.fromLTRB(20, 0, 0, 20),
+            child: Stack(
+              children: <Widget>[
+                Positioned(
+                    right: 0,
+                    top: 0,
+                    child:
+                     Align(
+                        heightFactor: .75,
+                        widthFactor: .7,
+                        alignment: Alignment.bottomLeft,
+                        child: Hero(
+                         tag: "pokeball",
+                         child: Image.asset(
+                           'assets/images/pokeball.png',
+                           color: Color(0xffe3e3e3),
+                           height: getDimention(context,250),
+                      ),
+                    )
+                  )
+                ),
+                Container(
+                    padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                    margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 50),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text('What pokemon',style: TextStyle(fontSize: getFontSize(context,30), fontWeight: FontWeight.w600),),
+                        Text('are you loking for ?',style: TextStyle(fontSize: getFontSize(context,30), fontWeight: FontWeight.w600),),
+                        _searchBox(),
+                        _pokedexControlButtons()
+                        // _pokemonNews()
+                      ],
+                    ),
+                  ),
+              ],
+            )),
+        ),
+        SliverToBoxAdapter(
+          child:   _pokemonNews(),
         )
       ],
     );
