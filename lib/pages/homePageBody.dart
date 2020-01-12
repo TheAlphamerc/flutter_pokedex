@@ -1,8 +1,12 @@
+import 'package:flutte_pokedex/helper/enum.dart';
 import 'package:flutte_pokedex/pages/pokemonListPage.dart';
 import 'package:flutte_pokedex/scoped_model/pokemonState.dart';
 import 'package:flutte_pokedex/widgets/customWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../model/pokemon.dart';
+import 'Types/pokemonMovesPage.dart';
 
 class HomePageBody extends StatefulWidget {
   _HomePageBodyState createState() => _HomePageBodyState();
@@ -61,7 +65,7 @@ class _HomePageBodyState extends State<HomePageBody> {
       children: <Widget>[
         _buttonRow('Pokedex','Moves',primary1:Color(0xff4dc2a6),secondary1: Color(0xff65d4bc),primary2:Color(0xfff77769),secondary2: Color(0xfff88a7d) ),
         _buttonRow('Abilities','Item',primary1:Color(0xff59a9f4),secondary1: Color(0xff6fc1f9),primary2:Color(0xffffce4a),secondary2: Color(0xffffd858) ),
-        _buttonRow('Location','Types',primary1:Color(0xff7b528c),secondary1: Color(0xff9569a5),primary2:Color(0xffb1726c),secondary2: Color(0xffc1877e) ),
+        _buttonRow('Berries','Habitats',primary1:Color(0xff7b528c),secondary1: Color(0xff9569a5),primary2:Color(0xffb1726c),secondary2: Color(0xffc1877e) ),
       ],
     );
   }
@@ -78,10 +82,25 @@ class _HomePageBodyState extends State<HomePageBody> {
           ),
         );
   }
+  _openPage(HomePageButtonEnum pageType){
+     Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => PokemonMovesPage(pagetype: pageType,)
+            )
+          );
+  }
   Widget _getCategoryCard(String title, Color color, Color seondaryColor) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).pushNamed('/pokemonList');
+        switch(title){
+          case 'Moves' :  _openPage(HomePageButtonEnum.Move); return;
+          case 'Abilities' : _openPage(HomePageButtonEnum.Abilitie); return;
+          case 'Item' : _openPage(HomePageButtonEnum.Item); return;
+          case 'Habitats' : _openPage(HomePageButtonEnum.Habitats); return;
+          case 'Berries' : _openPage(HomePageButtonEnum.Berries); return;
+          default:  Navigator.of(context).pushNamed('/pokemonList');
+        }
+       
       },
       child: Stack(
         children: <Widget>[

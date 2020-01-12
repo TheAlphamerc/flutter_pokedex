@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 Color setSecondaryColor(String type){
@@ -45,5 +47,25 @@ Color setSecondaryColor(String type){
            type.contains('fighting')  ? Color(0xff72ab22)  :
            type.contains('ghost')  ? Color(0xff42206e)  :
             Color(0xfffc6b6d);
+  }
+  
+   Color getRendomColor(int index){
+    List<Color> list = [
+            Color(0xff75bffc)  
+           , Color(0xffbbc7d1)  
+          //  , Color(0xff4bcfb2) 
+          // ,  Color(0xff68c724)  
+          //  , Color(0xff9AB8AC)  
+          //  , Color(0xffe8dd09)  
+          //  , Color(0xffcf9b48)  
+           , Color(0xff1bcfe3)  
+          //  , Color(0xff9bbfbf)  
+          //  , Color(0xffbc6ee0)  
+          //  , Color(0xff72ab22)  
+            ];
+           var no =index == 0 ? 0 :  index % 3 ;
+          //  var  index = Random().nextInt(14);
+           return list[no];
+            
   }
   

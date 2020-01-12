@@ -3,10 +3,12 @@ import 'package:flutte_pokedex/pages/homePageBody.dart';
 import 'package:flutte_pokedex/pages/pokemonDetailPage.dart';
 import 'package:flutte_pokedex/pages/pokemonListPage.dart';
 import 'package:flutte_pokedex/scoped_model/connetedModel.dart';
+import 'package:flutte_pokedex/scoped_model/moveState.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scoped_model/scoped_model.dart';
 
+import 'pages/Types/pokemonMovesPage.dart';
 import 'scoped_model/pokemonState.dart';
 
 
@@ -20,6 +22,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
          ChangeNotifierProvider<PokemonState>(builder: (context) => _pokemonState),
+         ChangeNotifierProvider<MoveState>(builder: (context) => MoveState()),
       ],
       child:   MaterialApp(
           title: 'Flutter Demo',
@@ -48,9 +51,11 @@ class MyApp extends StatelessWidget {
                   return null;
                 }
                 if(pathElements[1].contains('detail')){
-                  // var id  = int.tryParse(pathElements[2]);
                   var name = pathElements[2];
                   return MaterialPageRoute<bool>(builder:(BuildContext context)=> PokemonDetailPage(name:name,));
+                }
+                if(pathElements[1].contains('moves')){
+                  return MaterialPageRoute<bool>(builder:(BuildContext context)=> PokemonMovesPage());
                 }
           },
         )
