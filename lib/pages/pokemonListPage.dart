@@ -33,6 +33,7 @@ class _PokemonListPageState extends State<PokemonListPage>
   
     super.initState();
   }
+ 
   Widget _pokemonCard(PokemonListModel model) {
     return InkWell(
       onTap: () {
@@ -40,69 +41,59 @@ class _PokemonListPageState extends State<PokemonListPage>
       },
       onLongPress: (){ openPokemonshortDetail(model);},
       child: Container(
-          margin: EdgeInsets.only(left: 5,right: 5, top: 5,bottom: 5),
+          margin: EdgeInsets.only(left: 0,right: 0, top: 0,bottom: 0),
           decoration: BoxDecoration(
               color: setprimaryColor(model.type1),
               borderRadius: BorderRadius.circular(10)),
           child: Stack(
             children: <Widget>[
+              ///[Pokemon ID]
               Positioned(
                 bottom: getDimention(context, 10),
                 left: getDimention(context, 10),
                 child: customText(getId(model.orderId.toString()),
                   style:  TextStyle(
                             color: setSecondaryColor(model.type1),
-                             fontSize: getFontSize(context,20),
+                             fontSize: getFontSize(context,12),
                             fontWeight: FontWeight.w600),
                             overflow: TextOverflow.ellipsis),
               ),
+              ///[Pokeball]
               Positioned(
                   bottom: 0,
                   right: 0,
-                  height: getDimention(context, 120),
+                  height: getDimention(context, 80),
                   child: Image.asset(
                     'assets/images/pokeball.png',
                     color: setSecondaryColor('#' + model.type1),
                     height: getDimention(context, 150),
                   )),
+              /// [Name, Type]    
               Positioned(
-                  top: getDimention(context, 10),
+                  top: getDimention(context, 20),
                   left:getDimention(context, 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                        width: fullWidth(context) * .6 ,
-                        // constraints: BoxConstraints(minWidth: 50,maxWidth:(fullHeight(context) - 300)/2),
-                        // color: Colors.blue,
+                        width: fullWidth(context) * .3 ,
                         child: customText(
                           model.name,
                           context: context,
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: getFontSize(context,20),
+                              fontSize: getFontSize(context,14),
                               fontWeight: FontWeight.w600,),
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.start
                         ),
                       ),
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: setSecondaryColor(model.type1),
-                        ),
-                        child: Text(
-                          model.type1,
-                          style: TextStyle(
-                              color: Colors.white60,
-                              fontSize: getFontSize(context,14),
-                              fontWeight: FontWeight.w600),
-                        ),
-                      )
+                      _pokemonTypeWidget(model.type1,setSecondaryColor(model.type1)),
+                      SizedBox(height: 5,),
+                      _pokemonTypeWidget(model.type2,setSecondaryColor(model.type1)),
                     ],
                   )),
+             /// [Image]
               Positioned(
                   bottom: 10,
                   right: 10,
@@ -112,7 +103,7 @@ class _PokemonListPageState extends State<PokemonListPage>
                     child:  Image( image: customAdvanceNetworkImage(
                       model.image,),
                       fit: BoxFit.contain,
-                      height: getDimention(context, 100),
+                      height: getDimention(context, 70),
                     ),
                   )
                   )
@@ -120,6 +111,29 @@ class _PokemonListPageState extends State<PokemonListPage>
           )),
     );
   }
+ 
+  Widget _pokemonTypeWidget(String type, Color color){
+    if(type == null || type.isEmpty){
+      return SizedBox();
+    }
+    else{
+      return Container(
+          padding: EdgeInsets.symmetric(vertical: 1, horizontal: 5),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: color,
+          ),
+          child: Text(
+            type,
+            style: TextStyle(
+                color: Colors.white60,
+                fontSize: getFontSize(context,10),
+                fontWeight: FontWeight.w600),
+          ),
+        );
+    }
+  }
+
   Widget _pokemonCard_2(PokemonListModel model){
 
     return  InkWell(
@@ -128,7 +142,6 @@ class _PokemonListPageState extends State<PokemonListPage>
       },
        onLongPress: (){ openPokemonshortDetail(model);},
       child: Container(
-          margin: EdgeInsets.only(left: 5,right: 5, top: 5,bottom: 5),
           decoration: BoxDecoration(
               color: setprimaryColor(model.type1),
               borderRadius: BorderRadius.circular(10)),
@@ -137,11 +150,10 @@ class _PokemonListPageState extends State<PokemonListPage>
               Positioned(
                   bottom: 0,
                   right: 0,
-                  height: getDimention(context, 120),
+                  height: getDimention(context, 110),
                   child: Image.asset(
                     'assets/images/pokeball.png',
                     color: setSecondaryColor('#' + model.type1),
-                    height: getDimention(context, 150),
                   )),
               Positioned(
                   bottom: 10,
@@ -161,6 +173,7 @@ class _PokemonListPageState extends State<PokemonListPage>
           )),
     );
   }
+ 
   Widget _pokemonCard3(PokemonListModel model) {
     return InkWell(
       onTap: () {
@@ -169,7 +182,6 @@ class _PokemonListPageState extends State<PokemonListPage>
       onLongPress: (){ openPokemonshortDetail(model);},
       child: Container(
         height: 40,
-          margin: EdgeInsets.only(left: 5,right: 5, top: 5,bottom: 5),
           decoration: BoxDecoration(
               color: setprimaryColor(model.type1),
               borderRadius: BorderRadius.circular(10)),
@@ -211,10 +223,10 @@ class _PokemonListPageState extends State<PokemonListPage>
     }
     else{
       return   SliverGrid.count(
-                
                 crossAxisCount: card1 ? 2 : card2 ? 3 :  4 ,
-                crossAxisSpacing: 0,
-                mainAxisSpacing: 0,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                childAspectRatio: card1 ? 1.4 : card2 ? 1 : 1,
                 children: state.pokemonList == null ? [] : 
                 card1 ?
                 state.pokemonList.map((x)=> _pokemonCard(x)).toList() :
@@ -225,6 +237,7 @@ class _PokemonListPageState extends State<PokemonListPage>
     }
      
   }
+ 
   Widget _topRightPokeball() {
     return Positioned(
         right: 0,
@@ -237,17 +250,18 @@ class _PokemonListPageState extends State<PokemonListPage>
                 turns: Tween(begin: 0.0, end: 1.0).animate(_controller),
                 child:Image.asset(
                     'assets/images/pokeball.png',
-                    color: Color(0xffe3e3e3),
+                    color: Color(0xffe3e3e3).withAlpha(100),
                     height: getDimention(context, 250),
      ),)));
   }
+ 
   Widget _rightTopSearchIcon(){
     final state = Provider.of<PokemonState>(context,);
     if(state.pokemonList == null || state.pokemonList.length == 0){
       return Container();
     }
     return  Padding(
-        padding: EdgeInsets.only(right: 19),
+        padding: EdgeInsets.only(right: 0),
         child: IconButton(
           iconSize: getDimention(context,30),
           alignment: Alignment.center,
@@ -261,6 +275,7 @@ class _PokemonListPageState extends State<PokemonListPage>
         )
       );
   }
+ 
   Widget _floatingActionButton(){
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -336,6 +351,7 @@ class _PokemonListPageState extends State<PokemonListPage>
     ),
     ],);
   }
+ 
   Widget _panelRow(String title,String value){
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10,horizontal: 20),
@@ -353,9 +369,11 @@ class _PokemonListPageState extends State<PokemonListPage>
     ],),
     );
   }
+ 
   String getId(String id){
      return '#' + (id.toString().length == 1  ? '00' + id.toString() : id.toString().length == 2 ? '0'+id.toString() : id.toString());
   }
+ 
   void openPokemonshortDetail(PokemonListModel model)async{
     print(model.name);
     var _panelHeight = getFontSize(context, 300);
@@ -439,32 +457,42 @@ class _PokemonListPageState extends State<PokemonListPage>
                  showFabButton = !showFabButton;
                });
              },
+             backgroundColor: Color(0xff6c79dc),
               child: Icon(showFabButton ? Icons.close : Icons.layers),
         ),
       body: Stack(
         children: <Widget>[
           _topRightPokeball(),
-           CustomScrollView(
-            slivers: <Widget>[
-              SliverAppBar(
-                automaticallyImplyLeading: true,
-                leading: BackButton(color: Colors.black,),
-                backgroundColor: Colors.transparent,
-                brightness: Brightness.dark,
-                floating: false,
-                actions: <Widget>[
-                  _rightTopSearchIcon()
-                ],
-                flexibleSpace: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 50,vertical: 10),
-                  alignment: Alignment.bottomLeft,
-                  child: Text('Pokedex', style: TextStyle(fontSize: getFontSize(context,35), fontWeight: FontWeight.w900),),
-                ),
-                expandedHeight: getDimention(context, 130),
-              ),
-              _pokemonList()
-            ],
+          /// [Back Button]
+          Positioned(
+            left: 10,
+            top: 35,
+            child: BackButton(color: Colors.black,),
           ),
+           Container(
+             padding: EdgeInsets.symmetric(horizontal: 25),
+              child: CustomScrollView(
+                slivers: <Widget>[
+                  SliverAppBar(
+                    automaticallyImplyLeading: true,
+                    leading: null,
+                    backgroundColor: Colors.transparent,
+                    brightness: Brightness.dark,
+                    floating: false,
+                    actions: <Widget>[
+                      _rightTopSearchIcon()
+                    ],
+                    flexibleSpace: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 0,vertical: 20),
+                      alignment: Alignment.bottomLeft,
+                      child: Text('Pokedex', style: TextStyle(fontSize: getFontSize(context,25), fontWeight: FontWeight.w700),),
+                    ),
+                    expandedHeight: getDimention(context, 130),
+                  ),
+                  _pokemonList()
+                ],
+              ),
+           ),
           AnimatedPositioned(
             bottom: 16 + 60.0,
             right: showFabButton ? 25 : 0,
