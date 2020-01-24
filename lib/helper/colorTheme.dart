@@ -27,7 +27,7 @@ Color setSecondaryColor(String type){
            type.contains('ghost')  ? Color(0xff6d3bad)  :
             Color(0xfff79496);
   }
-  Color setprimaryColor(String type){
+Color setprimaryColor(String type){
     if(type == null){
     return Color(0xfff79496);
   }
@@ -49,23 +49,25 @@ Color setSecondaryColor(String type){
             Color(0xfffc6b6d);
   }
   
-   Color getRendomColor(int index){
-    List<Color> list = [
-            Color(0xff75bffc)  
-           , Color(0xffbbc7d1)  
-          //  , Color(0xff4bcfb2) 
-          // ,  Color(0xff68c724)  
-          //  , Color(0xff9AB8AC)  
-          //  , Color(0xffe8dd09)  
-          //  , Color(0xffcf9b48)  
-           , Color(0xff1bcfe3)  
-          //  , Color(0xff9bbfbf)  
-          //  , Color(0xffbc6ee0)  
-          //  , Color(0xff72ab22)  
-            ];
-           var no =index == 0 ? 0 :  index % 3 ;
-          //  var  index = Random().nextInt(14);
-           return list[no];
-            
+Color getRendomColor(int index){
+  List<Color> list = [
+          Color(0xff75bffc)  
+         , Color(0xffbbc7d1)  
+        //  , Color(0xff4bcfb2) 
+        // ,  Color(0xff68c724)  
+        //  , Color(0xff9AB8AC)  
+        //  , Color(0xffe8dd09)  
+        //  , Color(0xffcf9b48)  
+         , Color(0xff1bcfe3)  
+        //  , Color(0xff9bbfbf)  
+        //  , Color(0xffbc6ee0)  
+        //  , Color(0xff72ab22)  
+          ];
+         var no =index == 0 ? 0 :  index % 3 ;
+        //  var  index = Random().nextInt(14);
+         return list[no];
   }
-  
+class AppColors{
+  AppColors._();
+  static  Color pokeballColor =  Color(0xfff2f2f2);
+}
