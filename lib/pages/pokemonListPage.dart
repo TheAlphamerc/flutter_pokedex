@@ -13,25 +13,62 @@ class PokemonListPage extends StatefulWidget {
   _PokemonListPageState createState() => _PokemonListPageState();
 }
 
-class _PokemonListPageState extends State<PokemonListPage>
-    with TickerProviderStateMixin {
+class _PokemonListPageState extends State<PokemonListPage>  with TickerProviderStateMixin {
   List<Pokemon> list = [];
   AnimationController _controller;
+  bool isOpened = false;
+  AnimationController _animationController;
+  Animation<double> _animateIcon;
+  Curve _curve = Curves.easeOut;
+  Animation<double> _translateButton;
   bool showFabButton =  false, card1 = true,card2= false, card3 = false;
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
 
   @override
   void initState() {
     _controller = AnimationController(
      vsync: this, duration: Duration(milliseconds: 4000));
     _controller.repeat();
-    // list = widget.model.allPokemon;
-  
+     _animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500))
+          ..addListener(() {
+            setState(() {});
+          });
+    _animateIcon = Tween<double>(begin: 0.0, end: 1.0).animate(_animationController);
+   _translateButton = Tween<double>(
+      begin: -200,
+      end: 0,
+    ).animate(CurvedAnimation(parent: _animationController,curve: Interval(0.0,1,curve: _curve,),
+    ));
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+     _animationController.dispose();
+    super.dispose();
+  }
+
+  animate() {
+    if (!isOpened) {
+      _animationController.forward();
+    } else {
+      _animationController.reverse();
+    }
+    isOpened = !isOpened;
+    showFabButton = !showFabButton;
+  }
+
+  Widget _floatingActionButton() {
+    return FloatingActionButton(
+      backgroundColor: Color(0xff6c79dc),
+      onPressed: animate,
+      tooltip: 'Toggle',
+      child: AnimatedIcon(
+        icon: AnimatedIcons.menu_close,
+        progress: _animateIcon,
+      ),
+    );
   }
  
   Widget _pokemonCard(PokemonListModel model) {
@@ -276,82 +313,126 @@ class _PokemonListPageState extends State<PokemonListPage>
       );
   }
  
-  Widget _floatingActionButton(){
+  Widget _floatingActionButtonColumn(){
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
-        Material(
-          elevation: 4,
-          color: Colors.transparent,
-          shape:  RoundedRectangleBorder(
-           borderRadius: new BorderRadius.circular(18.0),
+         _smallFabButton(
+          Icons.favorite,
+          text: 'Favourite Pokemon',
+          animationValue: 6,
+          isEnable: false,
+          onPressed: (){
+             animate();
+          }),
+         _smallFabButton(
+          Icons.donut_small,
+          text: 'All Genration',
+          animationValue: 5,
+          isEnable: false,
+          onPressed: (){
+             animate();
+          }),
+        _smallFabButton(
+          Icons.gamepad,
+          text: 'All Type',
+          animationValue: 4,
+          isEnable: false,
+          onPressed: (){
+             animate();
+          }),
+           _smallFabButton(
+          Icons.search,
+          text: 'Search',
+          animationValue: 3,
+          isEnable: false,
+          onPressed: (){
+             animate();
+          }),
+        _smallFabButton(
+          Icons.filter_1,
+          text: 'Layout',
+          animationValue: 3,
+          isEnable: card1,
+          onPressed:(){
+                  setState(() {
+                     card1 = true;
+                     card2 = false;
+                     card3 = false;
+                  });
+                  animate();
+                },
         ),
-          child: Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: card1 ? Colors.blue : Colors.grey
-            ),
-            child: IconButton(
-               onPressed: (){
-                setState(() {
-                   card1 = true;
-                   card2 = false;
-                   card3 = false;
-                });
-              },
-              icon: Icon(Icons.filter_1,color: Colors.white,),)
-          ),
+        SizedBox(height: 3,),
+        _smallFabButton(
+          Icons.filter_2,
+          text: 'Layout',
+          animationValue: 2,
+          isEnable: card2,
+          onPressed: (){
+            setState(() {
+               card1 = false;
+               card2 = true;
+               card3 = false;
+            });
+             animate();
+          },
         ),
-      SizedBox(key: Key('SizedBox_1'),height: 5,),
-      Material(
-        color: Colors.transparent,
-        elevation: 5,
-        shape:  RoundedRectangleBorder(
-           borderRadius: new BorderRadius.circular(18.0),
+        _smallFabButton(
+          Icons.filter_3,
+          text: 'Layout',
+          animationValue: 1,
+          isEnable: card3,
+          onPressed: (){
+            setState(() {
+               card1 = false;
+               card2 = false;
+               card3 = true;
+            });
+             animate();
+          },
         ),
-        child:  Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: card2 ? Colors.blue : Colors.grey
-          ),
-          child: IconButton(
-             onPressed: (){
-              setState(() {
-                 card1 = false;
-                 card2 = true;
-                 card3 = false;
-              });
-            },
-            icon: Icon(Icons.filter_2,color: Colors.white,),)
-        ),
-      ),
-     SizedBox(
-        height: 5,),
-    Material(
-       color: Colors.transparent,
-        elevation: 5,
-        shape:  RoundedRectangleBorder(
-           borderRadius: new BorderRadius.circular(18.0),
-        ),
-      child:  Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: card3 ? Colors.blue : Colors.grey
-          ),
-          child: IconButton(
-            onPressed: (){
-              setState(() {
-                 card1 = false;
-                 card2 = false;
-                 card3 = true;
-              });
-            },
-            icon: Icon(Icons.filter_3,color: Colors.white,),)
-        ),
-    ),
     ],);
   }
- 
+  
+  Widget _smallFabButton(IconData iconData,{Function onPressed,double animationValue,bool isEnable,String text = ''}){
+    return  Container(
+              margin:  EdgeInsets.symmetric(vertical: 8),
+              child: Transform(
+              transform: Matrix4.translationValues(
+                 _translateButton.value * animationValue,
+                 0.0,
+                 0.0,
+              ),
+              child:  Material(
+                elevation: 4,
+                color: Colors.transparent,
+                shape:  RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(30.0),
+                ),
+                child: InkWell(
+                  onTap: onPressed,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 15,vertical: 8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                      color: isEnable ? Color(0xff6c79dc) : Colors.white,//isEnable ? Colors.blue : Colors.white
+                    ),
+                    child: Row(
+                      children: <Widget>[
+                        Text(text,style: TextStyle(fontWeight: FontWeight.bold, color: isEnable ? Colors.white : Colors.black)),
+                        SizedBox(width: 5,),
+                        Icon(iconData,color:isEnable ? Colors.white : Color(0xff6c79dc),size: 20,),
+                      ],
+                    )
+                  ),
+                )
+              ),
+      ),
+    );
+  }
+  
   Widget _panelRow(String title,String value){
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10,horizontal: 20),
@@ -448,18 +529,8 @@ class _PokemonListPageState extends State<PokemonListPage>
 
   @override
   Widget build(BuildContext context) {
-    final state = Provider.of<PokemonState>(context,);
     return Scaffold(
-      floatingActionButton:  FloatingActionButton(
-            isExtended: false,
-             onPressed: (){
-               setState(() {
-                 showFabButton = !showFabButton;
-               });
-             },
-             backgroundColor: Color(0xff6c79dc),
-              child: Icon(showFabButton ? Icons.close : Icons.layers),
-        ),
+      floatingActionButton: _floatingActionButton(),
       body: Stack(
         children: <Widget>[
           _topRightPokeball(),
@@ -469,7 +540,7 @@ class _PokemonListPageState extends State<PokemonListPage>
             top: 35,
             child: BackButton(color: Colors.black,),
           ),
-           Container(
+          Container(
              padding: EdgeInsets.symmetric(horizontal: 25),
               child: CustomScrollView(
                 slivers: <Widget>[
@@ -495,12 +566,12 @@ class _PokemonListPageState extends State<PokemonListPage>
            ),
           AnimatedPositioned(
             bottom: 16 + 60.0,
-            right: showFabButton ? 25 : 0,
+            right: 25,//showFabButton ? 25 : 0,
             duration: Duration(milliseconds: 500),
             child: AnimatedOpacity(
               duration: Duration(milliseconds: 500),
               opacity: showFabButton ? 1 : 0,
-              child: _floatingActionButton(),
+              child: _floatingActionButtonColumn(),
             ),
           )
         ],
