@@ -1,11 +1,11 @@
 import 'package:flutte_pokedex/helper/enum.dart';
-import 'package:flutte_pokedex/pages/pokemonListPage.dart';
 import 'package:flutte_pokedex/scoped_model/pokemonState.dart';
 import 'package:flutte_pokedex/widgets/customWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../helper/colorTheme.dart';
 import '../widgets/customWidget.dart';
+import 'PokemonList/pokemonListPage.dart';
 import 'Types/pokemonMovesPage.dart';
 
 class HomePageBody extends StatefulWidget {

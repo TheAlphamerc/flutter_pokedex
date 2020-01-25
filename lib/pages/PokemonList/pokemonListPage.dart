@@ -5,9 +5,13 @@ import 'package:flutte_pokedex/scoped_model/pokemonState.dart';
 import 'package:flutte_pokedex/widgets/customWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../helper/colorTheme.dart';
-import '../widgets/customWidget.dart';
+import '../../helper/colorTheme.dart';
+import '../../widgets/customWidget.dart';
+import '../../widgets/customWidget.dart';
+import 'widget/generationModel.dart';
+import 'widget/pokemonCard.dart';
+import 'widget/pokemonCard3.dart';
+import 'widget/pokemonCard_2.dart';
 
 class PokemonListPage extends StatefulWidget {
   _PokemonListPageState createState() => _PokemonListPageState();
@@ -71,169 +75,6 @@ class _PokemonListPageState extends State<PokemonListPage>  with TickerProviderS
     );
   }
  
-  Widget _pokemonCard(PokemonListModel model) {
-    return InkWell(
-      onTap: () {
-        Navigator.of(context).pushNamed('/detail/${model.name}');
-      },
-      onLongPress: (){ openPokemonshortDetail(model);},
-      child: Container(
-          margin: EdgeInsets.only(left: 0,right: 0, top: 0,bottom: 0),
-          decoration: BoxDecoration(
-              color: setprimaryColor(model.type1),
-              borderRadius: BorderRadius.circular(10)),
-          child: Stack(
-            children: <Widget>[
-              ///[Pokemon ID]
-              Positioned(
-                bottom: getDimention(context, 10),
-                left: getDimention(context, 10),
-                child: customText(getId(model.orderId.toString()),
-                  style:  TextStyle(
-                            color: setSecondaryColor(model.type1),
-                             fontSize: getFontSize(context,12),
-                            fontWeight: FontWeight.w600),
-                            overflow: TextOverflow.ellipsis),
-              ),
-              ///[Pokeball]
-              Positioned(
-                  bottom: 0,
-                  right: 0,
-                  height: getDimention(context, 80),
-                  child: Image.asset(
-                    'assets/images/pokeball.png',
-                    color: setSecondaryColor('#' + model.type1),
-                    height: getDimention(context, 150),
-                  )),
-              /// [Name, Type]    
-              Positioned(
-                  top: getDimention(context, 20),
-                  left:getDimention(context, 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        width: fullWidth(context) * .3 ,
-                        child: customText(
-                          model.name,
-                          context: context,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: getFontSize(context,14),
-                              fontWeight: FontWeight.w600,),
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.start
-                        ),
-                      ),
-                      _pokemonTypeWidget(model.type1,setSecondaryColor(model.type1)),
-                      SizedBox(height: 5,),
-                      _pokemonTypeWidget(model.type2,setSecondaryColor(model.type1)),
-                    ],
-                  )),
-             /// [Image]
-              Positioned(
-                  bottom: 10,
-                  right: 10,
-                  child:
-                   Hero(
-                    tag: model.orderId,
-                    child:  Image( image: customAdvanceNetworkImage(
-                      model.image,),
-                      fit: BoxFit.contain,
-                      height: getDimention(context, 70),
-                    ),
-                  )
-                  )
-            ],
-          )),
-    );
-  }
- 
-  Widget _pokemonTypeWidget(String type, Color color){
-    if(type == null || type.isEmpty){
-      return SizedBox();
-    }
-    else{
-      return Container(
-          padding: EdgeInsets.symmetric(vertical: 1, horizontal: 5),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: color,
-          ),
-          child: Text(
-            type,
-            style: TextStyle(
-                color: Colors.white60,
-                fontSize: getFontSize(context,10),
-                fontWeight: FontWeight.w600),
-          ),
-        );
-    }
-  }
-
-  Widget _pokemonCard_2(PokemonListModel model){
-
-    return  InkWell(
-      onTap: () {
-        Navigator.of(context).pushNamed('/detail/${model.name}');
-      },
-       onLongPress: (){ openPokemonshortDetail(model);},
-      child: Container(
-          decoration: BoxDecoration(
-              color: setprimaryColor(model.type1),
-              borderRadius: BorderRadius.circular(10)),
-          child: Stack(
-            children: <Widget>[
-              Positioned(
-                  bottom: 0,
-                  right: 0,
-                  height: getDimention(context, 110),
-                  child: Image.asset(
-                    'assets/images/pokeball.png',
-                    color: setSecondaryColor('#' + model.type1),
-                  )),
-              Positioned(
-                  bottom: 10,
-                  right: 10,
-                  child:
-                    Hero(
-                    tag: model.orderId,
-                    child:  Image( image: customAdvanceNetworkImage(
-                      model.image,),
-                      fit: BoxFit.contain,
-                      height: getDimention(context, 100),
-                    ),
-                  )
-                 
-                  )
-            ],
-          )),
-    );
-  }
- 
-  Widget _pokemonCard3(PokemonListModel model) {
-    return InkWell(
-      onTap: () {
-        Navigator.of(context).pushNamed('/detail/${model.name}');
-      },
-      onLongPress: (){ openPokemonshortDetail(model);},
-      child: Container(
-        height: 40,
-          decoration: BoxDecoration(
-              color: setprimaryColor(model.type1),
-              borderRadius: BorderRadius.circular(10)),
-          child: Hero(
-                    tag: model.orderId,
-                    child:  Image( image: customAdvanceNetworkImage(
-                      model.image,),
-                      fit: BoxFit.contain,
-                      height: getDimention(context, 30),
-                    ),
-                  ),
-         )
-    );
-  }
- 
   Widget _pokemonList(){
     final state = Provider.of<PokemonState>(context,);
     if(state.isBusy && state.pokemonList ==null){
@@ -266,10 +107,22 @@ class _PokemonListPageState extends State<PokemonListPage>  with TickerProviderS
                 childAspectRatio: card1 ? 1.4 : card2 ? 1 : 1,
                 children: state.pokemonList == null ? [] : 
                 card1 ?
-                state.pokemonList.map((x)=> _pokemonCard(x)).toList() :
+                state.pokemonList.map((x)=> PokemonCard(
+                  model: x,
+                  onPressed: (){ Navigator.of(context).pushNamed('/detail/${x.name}');},
+                  onLongPressed: (){openPokemonshortDetail(x);}
+                  )).toList() :
                 card2 ?
-                state.pokemonList.map((x)=> _pokemonCard_2(x)).toList() :
-                 state.pokemonList.map((x)=> _pokemonCard3(x)).toList() 
+                state.pokemonList.map((x)=>  PokemonCard2(
+                  model: x,
+                  onPressed: (){ Navigator.of(context).pushNamed('/detail/${x.name}');},
+                  onLongPressed: (){openPokemonshortDetail(x);}
+                  )).toList() :
+                 state.pokemonList.map((x)=>  PokemonCard3(
+                  model: x,
+                  onPressed: (){ Navigator.of(context).pushNamed('/detail/${x.name}');},
+                  onLongPressed: (){openPokemonshortDetail(x);}
+                  )).toList()
               );
     }
      
@@ -304,7 +157,7 @@ class _PokemonListPageState extends State<PokemonListPage>  with TickerProviderS
           alignment: Alignment.center,
           padding: EdgeInsets.all(0),
           onPressed: ()async{
-               var result = await showSearch(
+               await showSearch(
                  context: context,
                  delegate: PokemonSearch(state.pokemonList));
              },
@@ -333,6 +186,7 @@ class _PokemonListPageState extends State<PokemonListPage>  with TickerProviderS
           isEnable: false,
           onPressed: (){
              animate();
+             openPokemonGenerationPanel();
           }),
         _smallFabButton(
           Icons.gamepad,
@@ -347,8 +201,12 @@ class _PokemonListPageState extends State<PokemonListPage>  with TickerProviderS
           text: 'Search',
           animationValue: 3,
           isEnable: false,
-          onPressed: (){
+          onPressed: ()async{
              animate();
+             final state = Provider.of<PokemonState>(context,);
+             await showSearch(
+                 context: context,
+                 delegate: PokemonSearch(state.pokemonList));
           }),
         _smallFabButton(
           Icons.filter_1,
@@ -450,7 +308,7 @@ class _PokemonListPageState extends State<PokemonListPage>  with TickerProviderS
     ],),
     );
   }
- 
+  
   String getId(String id){
      return '#' + (id.toString().length == 1  ? '00' + id.toString() : id.toString().length == 2 ? '0'+id.toString() : id.toString());
   }
@@ -526,7 +384,17 @@ class _PokemonListPageState extends State<PokemonListPage>  with TickerProviderS
        )
     );
   }
-
+ 
+  void openPokemonGenerationPanel()async{
+    var _panelHeight = getFontSize(context, 350);
+     await showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+        context: context,
+        isScrollControlled: true,
+        builder: (context)=> GenerationModel()
+    );
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -546,12 +414,12 @@ class _PokemonListPageState extends State<PokemonListPage>  with TickerProviderS
                 slivers: <Widget>[
                   SliverAppBar(
                     automaticallyImplyLeading: true,
-                    leading: null,
+                    leading: SizedBox(),
                     backgroundColor: Colors.transparent,
                     brightness: Brightness.dark,
                     floating: false,
                     actions: <Widget>[
-                      _rightTopSearchIcon()
+                     _rightTopSearchIcon()
                     ],
                     flexibleSpace: Container(
                       padding: EdgeInsets.symmetric(horizontal: 0,vertical: 20),

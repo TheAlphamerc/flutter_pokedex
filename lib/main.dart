@@ -1,11 +1,11 @@
 import 'package:flutte_pokedex/model/pokemon.dart';
 import 'package:flutte_pokedex/pages/homePageBody.dart';
 import 'package:flutte_pokedex/pages/pokemonDetailPage.dart';
-import 'package:flutte_pokedex/pages/pokemonListPage.dart';
 import 'package:flutte_pokedex/scoped_model/moveState.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'pages/PokemonList/pokemonListPage.dart';
 import 'pages/Types/pokemonMovesPage.dart';
 import 'scoped_model/pokemonState.dart';
 

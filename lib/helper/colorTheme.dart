@@ -12,7 +12,7 @@ Color setSecondaryColor(String type){
     //        type.contains('Rock')  ? Color(0xffd1dadf)  :
     //         Color(0xfffc7f7b);
      return type.contains('grass')  ? Color(0xff8ede54)  :
-           type.contains('water') ? Color(0xff98cbf5)  :
+           type.contains('water') ? Color(0xFF58ABF6)  :
            type.contains('rock')  ? Color(0xffd5e1eb)  :
            type.contains('bug')  ? Color(0xff50f2d0):
            type.contains('normal')  ? Color(0xff9fc7b7)  :
@@ -33,7 +33,7 @@ Color setprimaryColor(String type){
   }
   type = type.toLowerCase();
     return type.contains('grass')  ? Color(0xff68c724)  :
-           type.contains('water') ? Color(0xff75bffc)  :
+           type.contains('water') ? Color(0xFF429BED)  :
            type.contains('rock')  ? Color(0xffbbc7d1)  :
            type.contains('bug')  ? Color(0xff4bcfb2) :
            type.contains('normal')  ? Color(0xff9AB8AC)  :
