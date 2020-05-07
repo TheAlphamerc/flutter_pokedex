@@ -1,5 +1,5 @@
-## flutte_pokedex  [![GitHub stars](https://img.shields.io/github/stars/Thealphamerc/flutter_pokedex?style=social)](https://github.com/login?return_to=%2FTheAlphamerc%2Fempty_widget)
-
+## flutte_pokedex ![Twitter URL](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2Fthealphamerc) [![GitHub stars](https://img.shields.io/github/stars/Thealphamerc/flutter_pokedex?style=social)](https://github.com/login?return_to=%2FTheAlphamerc%flutter_pokedex) ![GitHub forks](https://img.shields.io/github/forks/TheAlphamerc/flutter_pokedex?style=social) 
+![Dart CI](https://github.com/TheAlphamerc/flutter_pokedex/workflows/Dart%20CI/badge.svg) ![GitHub pull requests](https://img.shields.io/github/issues-pr/TheAlphamerc/flutter_pokedex) ![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/Thealphamerc/flutter_pokedex) ![GitHub last commit](https://img.shields.io/github/last-commit/Thealphamerc/flutter_pokedex)  ![GitHub issues](https://img.shields.io/github/issues-raw/Thealphamerc/flutter_pokedex) [![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/Thealphamerc/flutter_pokedex) 
 
  A digital pokemon encyclopedia that categorizes Pokemon on the basis of their abilties, move, and power.</BR>
 This sample is based on [Pokedex App](https://dribbble.com/shots/6545819-Pokedex-Apps) designed by [Saepul Nahwan](https://dribbble.com/saepulnahwan23)
