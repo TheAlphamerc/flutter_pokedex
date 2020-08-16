@@ -67,6 +67,10 @@ Plugin Name        | Stars
 >
 > * [PayPal](https://www.paypal.me/TheAlphamerc/)
 
+> You can also nominate me for Github Star developer program
+> https://stars.github.com/nominate
+
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
