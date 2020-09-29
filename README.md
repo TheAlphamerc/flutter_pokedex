@@ -2,7 +2,7 @@
 ![Dart CI](https://github.com/TheAlphamerc/flutter_pokedex/workflows/Dart%20CI/badge.svg) ![GitHub pull requests](https://img.shields.io/github/issues-pr/TheAlphamerc/flutter_pokedex) ![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/Thealphamerc/flutter_pokedex) ![GitHub last commit](https://img.shields.io/github/last-commit/Thealphamerc/flutter_pokedex)  ![GitHub issues](https://img.shields.io/github/issues-raw/Thealphamerc/flutter_pokedex) [![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/Thealphamerc/flutter_pokedex) 
 
  A digital pokemon encyclopedia that categorizes Pokemon on the basis of their abilties, move, and power.</BR>
-This sample is based on [Pokedex App](https://dribbble.com/shots/6545819-Pokedex-Apps) designed by [Saepul Nahwan](https://dribbble.com/saepulnahwan23)
+The app design is based on [Pokedex App](https://dribbble.com/shots/6545819-Pokedex-Apps) designed by [Saepul Nahwan](https://dribbble.com/saepulnahwan23)
 <img src="https://cdn.dribbble.com/users/1171520/screenshots/6545819/dribbble.png"  /> 
 
 ## Download App ![GitHub All Releases](https://img.shields.io/github/downloads/Thealphamerc/flutter_pokedex/total?color=green)
@@ -51,8 +51,8 @@ I welcome and encourage all pull requests. It usually will take me within 24-48 
 |[Smart Home App](https://github.com/TheAlphamerc/flutter_smart_home_app)|[![GitHub stars](https://img.shields.io/github/stars/Thealphamerc/flutter_smart_home_app?style=social)](https://github.com/login?return_to=%2FTheAlphamerc%flutter_smart_home_app)
 |[Yatch Booking App](https://github.com/TheAlphamerc/flutter_yatch_booking)|[![GitHub stars](https://img.shields.io/github/stars/Thealphamerc/flutter_yatch_booking?style=social)](https://github.com/login?return_to=%2FTheAlphamerc%flutter_yatch_booking)
 
-## Flutter plugins
-Plugin Name        | Stars        
+## Flutter packages
+Package Name        | Stars        
 :-------------------------|-------------------------
 |[Empty widget](https://github.com/TheAlphamerc/empty_widget) |[![GitHub stars](https://img.shields.io/github/stars/Thealphamerc/empty_widget?style=social)](https://github.com/login?return_to=%2FTheAlphamerc%empty_widget)
 |[Add Thumbnail](https://github.com/TheAlphamerc/flutter_plugin_add_thumbnail) |[![GitHub stars](https://img.shields.io/github/stars/Thealphamerc/flutter_plugin_add_thumbnail?style=social)](https://github.com/login?return_to=%2FTheAlphamerc%flutter_plugin_add_thumbnail)
